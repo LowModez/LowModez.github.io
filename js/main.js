@@ -1,5 +1,5 @@
 /* ============================================================
-   Ethan McKinzie — Portfolio Scripts
+   Ethan McKinzie Portfolio Scripts
    ------------------------------------------------------------
    This site is built with HTML and CSS first. JavaScript is only
    used where CSS genuinely cannot do the job, so this file stays

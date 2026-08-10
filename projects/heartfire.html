@@ -5,10 +5,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Heartfire &mdash; C++ Terminal Dungeon Crawler | Ethan McKinzie</title>
+    <title>Heartfire: C++ Terminal Dungeon Crawler | Ethan McKinzie</title>
     <meta name="description" content="Case study: Heartfire, a terminal-based dark fantasy dungeon crawler written in C++ to practice multi-file program structure, classes, and game state.">
 
+    <link rel="canonical" href="https://lowmodez.github.io/projects/heartfire.html">
+    <meta name="theme-color" content="#0d0d0f">
+
     <!-- Paths step up one level, since this page lives in /projects/. -->
+    <link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="../assets/icons/favicon-32.png" sizes="32x32" type="image/png">
+    <link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png">
+
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Ethan McKinzie">
+    <meta property="og:title" content="Heartfire: C++ Terminal Dungeon Crawler">
+    <meta property="og:description" content="Case study: a terminal-based dark fantasy dungeon crawler written in C++ to practice multi-file program structure, classes, and game state.">
+    <meta property="og:url" content="https://lowmodez.github.io/projects/heartfire.html">
+    <meta property="og:image" content="https://lowmodez.github.io/assets/images/og-preview.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Ethan McKinzie, Computer Science Student, IT Background, Developer.">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Heartfire: C++ Terminal Dungeon Crawler">
+    <meta name="twitter:description" content="Case study: a terminal-based dark fantasy dungeon crawler written in C++ to practice multi-file program structure, classes, and game state.">
+    <meta name="twitter:image" content="https://lowmodez.github.io/assets/images/og-preview.png">
+
     <link rel="stylesheet" href="../css/styles.css">
 </head>
 
@@ -65,10 +87,10 @@
                      label/value pairs like this. -->
                 <dl class="case-meta">
                     <dt>status</dt>
-                    <dd>In development &mdash; personal project, not a commercial release</dd>
+                    <dd>In development. A personal project, not a commercial release.</dd>
 
                     <dt>role</dt>
-                    <dd>Solo developer &mdash; design and implementation</dd>
+                    <dd>Solo developer, handling design and implementation</dd>
 
                     <dt>tech</dt>
                     <dd>C++, object-oriented programming, Visual Studio, Git, ANSI escape codes, ASCII and Unicode art</dd>
@@ -83,7 +105,7 @@
                 <p>
                     Heartfire is a dungeon crawler that runs entirely in a terminal window.
                     The player creates a character, works through a hub area, then descends
-                    through floors of a dungeon &mdash; fighting enemies, managing an
+                    through floors of a dungeon, fighting enemies, managing an
                     inventory, and searching rooms for the keys and treasure needed to keep
                     going. Locations include Tradefall, The Weeping Willow, and the
                     Wyrmheart Depths, ending at a final dragon encounter.
@@ -103,7 +125,7 @@
                 <h2 id="goal-heading">Goal</h2>
                 <p>
                     Coursework exercises are usually one file and a few dozen lines. I
-                    wanted to find out what happens after that &mdash; where a program stops
+                    wanted to find out what happens after that, when a program stops
                     fitting in your head and organization starts to matter more than syntax.
                     Heartfire is the project I use to run into those problems on purpose.
                 </p>
@@ -147,14 +169,14 @@
             <section aria-labelledby="concepts-heading" data-reveal>
                 <h2 id="concepts-heading">Technical concepts practiced</h2>
                 <ul class="case-list">
-                    <li><strong>Multi-file organization</strong> &mdash; splitting the program across headers and source files instead of one long <code>main()</code></li>
-                    <li><strong>Classes and objects</strong> &mdash; modeling the player, enemies, items, and rooms as types with their own data and behavior</li>
-                    <li><strong>Collections</strong> &mdash; holding groups of things, such as an inventory or the enemies in a room</li>
-                    <li><strong>Game state</strong> &mdash; tracking what persists between turns, floors, and encounters</li>
-                    <li><strong>Menu-driven input</strong> &mdash; reading player choices and handling input that isn't valid</li>
-                    <li><strong>Terminal presentation</strong> &mdash; ANSI escape codes for color, ASCII and Unicode for layout</li>
-                    <li><strong>Debugging</strong> &mdash; stepping through logic in Visual Studio to find where state goes wrong</li>
-                    <li><strong>Version control</strong> &mdash; Git for history and for keeping work-in-progress separate</li>
+                    <li><strong>Multi-file organization</strong>: splitting the program across headers and source files instead of one long <code>main()</code></li>
+                    <li><strong>Classes and objects</strong>: modeling the player, enemies, items, and rooms as types with their own data and behavior</li>
+                    <li><strong>Collections</strong>: holding groups of things, such as an inventory or the enemies in a room</li>
+                    <li><strong>Game state</strong>: tracking what persists between turns, floors, and encounters</li>
+                    <li><strong>Menu-driven input</strong>: reading player choices and handling input that isn't valid</li>
+                    <li><strong>Terminal presentation</strong>: ANSI escape codes for color, ASCII and Unicode for layout</li>
+                    <li><strong>Debugging</strong>: stepping through logic in Visual Studio to find where state goes wrong</li>
+                    <li><strong>Version control</strong>: Git for history and for keeping work-in-progress separate</li>
                 </ul>
             </section>
 

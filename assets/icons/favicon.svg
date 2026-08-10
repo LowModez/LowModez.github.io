@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="E monogram">
+    <title>Ethan McKinzie</title>
+    <!-- Amber rounded square with a dark E. Dark-on-amber matches the
+         primary button on the site, and keeps the mark legible at 16px
+         where thin light-on-dark strokes disappear. -->
+    <rect width="64" height="64" rx="14" fill="#ffb020"/>
+    <path d="M21 18 H43 V25 H28 V29 H40 V36 H28 V39 H43 V46 H21 Z" fill="#1a1204"/>
+</svg>

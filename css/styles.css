@@ -1,5 +1,5 @@
 /* ============================================================
-   Ethan McKinzie — Portfolio Stylesheet
+   Ethan McKinzie Portfolio Stylesheet
    ------------------------------------------------------------
    Single stylesheet, organized top to bottom in the same order
    the page is built. Each section below gets filled in during
@@ -1454,7 +1454,7 @@ main > section {
 }
 
 .case-list li::before {
-    content: "\2014"; /* em dash */
+    content: "\2013"; /* en dash, short enough to read as a list marker */
     position: absolute;
     left: 0;
     color: var(--group);
