@@ -493,6 +493,12 @@ main > section {
     color: var(--text-primary);
 }
 
+/* Compact size, for buttons sitting inside the header bar. */
+.btn--sm {
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--text-xs);
+}
+
 /* --- Cards -----------------------------------------------
    Raised panel used for projects, skill groups, and education
    entries. */
@@ -583,12 +589,256 @@ main > section {
 
 /* ============================================================
    07  HEADER / NAVIGATION
+   ------------------------------------------------------------
+   Written desktop-first: the rules here describe the full
+   horizontal navigation, and the media query in section 15
+   collapses it into a toggle menu on narrow screens.
    ============================================================ */
+
+.site-header {
+    /* sticky keeps the bar visible while scrolling but, unlike
+       fixed, it still occupies space in the normal flow. */
+    position: sticky;
+    top: 0;
+    z-index: 50;
+
+    height: var(--header-height);
+
+    /* Semi-transparent so content softly shows through, with a
+       blur behind it. The solid fallback color is listed first
+       for browsers without backdrop-filter support. */
+    background-color: rgba(13, 13, 15, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    border-bottom: 1px solid var(--border);
+}
+
+.site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+    height: 100%;
+}
+
+/* --- Brand ------------------------------------------------
+   The real name, kept as the most prominent item in the bar. */
+.brand {
+    font-size: var(--text-base);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+    white-space: nowrap;
+}
+
+.brand:hover {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+/* --- Nav list --------------------------------------------- */
+.site-nav__list {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+}
+
+/* :not(.btn) excludes the GitHub button, which already has its
+   own styling from the button component. */
+.site-nav__list a:not(.btn) {
+    position: relative;
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+}
+
+.site-nav__list a:not(.btn):hover {
+    color: var(--text-primary);
+    text-decoration: none;
+}
+
+/* An amber underline that grows from the left on hover. Using a
+   pseudo-element rather than text-decoration allows the width to
+   be animated. */
+.site-nav__list a:not(.btn)::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -0.35rem;
+    width: 0;
+    height: 1px;
+    background-color: var(--accent);
+    transition: width var(--transition);
+}
+
+.site-nav__list a:not(.btn):hover::after,
+.site-nav__list a:not(.btn):focus-visible::after {
+    width: 100%;
+}
+
+/* --- Mobile toggle button --------------------------------
+   Hidden on desktop; section 15 reveals it on narrow screens. */
+.nav-toggle {
+    display: none;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+
+    width: 2.75rem;
+    height: 2.75rem;
+
+    background-color: transparent;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    color: var(--text-primary);
+    cursor: pointer;
+
+    transition: border-color var(--transition);
+}
+
+.nav-toggle:hover {
+    border-color: var(--accent);
+}
+
+/* The hamburger icon is drawn in CSS rather than loaded as an
+   image: three bars, where the middle one is the element itself
+   and the outer two are its ::before and ::after.
+   currentColor means the bars inherit the button's text color. */
+.nav-toggle__bars {
+    position: relative;
+    width: 1.25rem;
+    height: 2px;
+    background-color: currentColor;
+    border-radius: 2px;
+    transition: background-color var(--transition);
+}
+
+.nav-toggle__bars::before,
+.nav-toggle__bars::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: currentColor;
+    border-radius: 2px;
+    transition: transform var(--transition);
+}
+
+.nav-toggle__bars::before { top: -6px; }
+.nav-toggle__bars::after  { top: 6px; }
+
+/* When the menu is open, the bars become an X.
+   This selects on aria-expanded, the same attribute screen
+   readers use, so the visual state and the announced state come
+   from one source and cannot fall out of sync. */
+.nav-toggle[aria-expanded="true"] .nav-toggle__bars {
+    background-color: transparent;
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle__bars::before {
+    transform: translateY(6px) rotate(45deg);
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle__bars::after {
+    transform: translateY(-6px) rotate(-45deg);
+}
 
 
 /* ============================================================
    08  HERO
    ============================================================ */
+
+.hero {
+    display: flex;
+    align-items: center;
+
+    /* Fills the screen below the header, but stops growing on very
+       tall displays so the layout never looks stretched.
+       svh is the "small viewport height" unit, which accounts for
+       mobile browser toolbars that 100vh ignores. */
+    min-height: min(calc(100svh - var(--header-height)), 44rem);
+
+    /* Overrides the shared section padding for a tighter top. */
+    padding-block: var(--space-12) var(--space-16);
+
+    /* A single very faint amber wash in the upper left. Static, no
+       animation, low opacity: enough to keep the top of the page
+       from feeling flat without becoming a glow effect. */
+    background-image: radial-gradient(
+        55% 45% at 12% 0%,
+        var(--accent-soft),
+        transparent 70%
+    );
+    background-repeat: no-repeat;
+}
+
+/* The hero is a flex container so its content can be vertically
+   centered. Without an explicit width, a flex child shrinks to fit
+   its text instead of spanning the section. */
+.hero__content {
+    width: 100%;
+}
+
+/* --- Role line -------------------------------------------
+   Sits directly under the name. Not a heading, because it is a
+   description rather than a section title. */
+.hero__roles {
+    margin-top: var(--space-4);
+    font-size: var(--text-xl);
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.hero__sep {
+    color: var(--accent);
+    margin-inline: var(--space-2);
+    font-weight: 400;
+}
+
+/* --- Intro paragraph -------------------------------------- */
+.hero__intro {
+    margin-top: var(--space-6);
+    font-size: var(--text-lg);
+}
+
+/* --- Monospace facts -------------------------------------
+   The amber left rule groups the lines together and ties them to
+   the accent without adding a box. */
+.hero__meta {
+    margin-top: var(--space-8);
+    padding-left: var(--space-4);
+    border-left: 2px solid var(--border-strong);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+}
+
+.hero__meta li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-3);
+}
+
+.hero__meta li + li {
+    margin-top: var(--space-2);
+}
+
+/* Fixed width aligns the values into a column, like a key/value
+   listing in a terminal. */
+.hero__meta-key {
+    flex: 0 0 auto;
+    min-width: 5rem;
+    color: var(--accent);
+}
+
+/* --- Calls to action -------------------------------------- */
+.hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-top: var(--space-10);
+}
 
 
 /* ============================================================
@@ -618,7 +868,20 @@ main > section {
 
 /* ============================================================
    14  FOOTER
+   ------------------------------------------------------------
+   Minimal for now so the bottom of the page does not look
+   unfinished. Expanded in the contact / footer phase.
    ============================================================ */
+
+.site-footer {
+    border-top: 1px solid var(--border);
+    padding-block: var(--space-8);
+}
+
+.site-footer p {
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+}
 
 
 /* ============================================================
@@ -629,10 +892,70 @@ main > section {
    rules reliably override the ones above them.
    ============================================================ */
 
-/* --- Tablet and below ------------------------------------- */
+/* --- Tablet and below -------------------------------------
+   The navigation collapses into a toggle menu here. */
 @media (max-width: 48rem) {
     :root {
         --gutter: var(--space-5);
+    }
+
+    /* Reveal the hamburger button. */
+    .nav-toggle {
+        display: inline-flex;
+    }
+
+    /* The menu becomes a panel dropping out of the header.
+       It is positioned against .site-header, which counts as a
+       positioned ancestor because it is sticky. top: 100% places
+       the panel immediately below the bar. */
+    .site-nav {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+
+        background-color: var(--bg-surface);
+        border-bottom: 1px solid var(--border);
+        box-shadow: var(--shadow-raised);
+    }
+
+    /* js/main.js adds this class to open the panel. */
+    .site-nav.is-open {
+        display: block;
+    }
+
+    /* Links stack vertically and become full-width tap targets. */
+    .site-nav__list {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: var(--space-2) var(--gutter) var(--space-5);
+    }
+
+    .site-nav__list a:not(.btn) {
+        display: block;
+        padding: var(--space-3) 0;
+        font-size: var(--text-base);
+        color: var(--text-primary);
+    }
+
+    /* The sliding underline is a pointer affordance and reads as
+       clutter in a stacked list, so it is switched off here. */
+    .site-nav__list a:not(.btn)::after {
+        display: none;
+    }
+
+    .site-nav__list li + li {
+        border-top: 1px solid var(--border);
+    }
+
+    /* The GitHub button gets breathing room and no divider above it.
+       Two class names outrank the "li + li" rule above on
+       specificity, so this wins without needing !important. */
+    .site-nav__list .site-nav__action {
+        margin-top: var(--space-4);
+        border-top: 0;
     }
 }
 
@@ -646,6 +969,14 @@ main > section {
        comfortable to tap. */
     .btn {
         width: 100%;
+    }
+
+    /* Let the hero size to its content on a phone. Reserving a full
+       screen height pushes everything below it too far down when the
+       viewport is already short. */
+    .hero {
+        min-height: auto;
+        padding-block: var(--space-10) var(--space-16);
     }
 }
 

@@ -18,20 +18,34 @@
 
     <!-- ============================================================
          HEADER / NAVIGATION
-         Built in the navigation phase.
          ============================================================ -->
     <header class="site-header">
-        <nav class="site-nav" aria-label="Main navigation">
-            <a class="site-nav__brand" href="#top">Ethan McKinzie</a>
+        <div class="site-header__inner container">
+            <a class="brand" href="#top">Ethan McKinzie</a>
 
-            <ul class="site-nav__list">
-                <li><a href="#about">About</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#education">Education</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
+            <!-- The toggle is only visible on narrow screens. CSS hides
+                 it on desktop, where the menu is always shown.
+                 aria-expanded tells screen readers whether the menu is
+                 open; js/main.js keeps that value accurate.
+                 aria-controls points at the element it opens. -->
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-menu">
+                <span class="nav-toggle__bars" aria-hidden="true"></span>
+                <span class="visually-hidden">Menu</span>
+            </button>
+
+            <nav class="site-nav" id="site-menu" aria-label="Main navigation">
+                <ul class="site-nav__list">
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#skills">Skills</a></li>
+                    <li><a href="#education">Education</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li class="site-nav__action">
+                        <a class="btn btn--ghost btn--sm" href="https://github.com/LowModez" target="_blank" rel="noopener">GitHub</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
     <main id="main">
@@ -39,15 +53,50 @@
              HERO
              ============================================================ -->
         <section id="top" class="hero" aria-labelledby="hero-heading">
-            <h1 id="hero-heading">Ethan McKinzie</h1>
-            <!-- Headline, intro copy, and calls-to-action added in the hero phase. -->
+            <div class="hero__content">
+                <h1 id="hero-heading">Ethan McKinzie</h1>
+
+                <p class="hero__roles">
+                    Computer Science Student
+                    <span class="hero__sep" aria-hidden="true">/</span>
+                    IT Background
+                    <span class="hero__sep" aria-hidden="true">/</span>
+                    Developer
+                </p>
+
+                <p class="hero__intro measure">
+                    Computer Science student with an Information Technology foundation,
+                    building software while bringing hands-on experience with systems,
+                    networking, infrastructure, and technical troubleshooting.
+                </p>
+
+                <!-- Small monospace facts. This is the restrained terminal
+                     touch: it reads as technical while giving a recruiter
+                     the two things they look for first. -->
+                <ul class="hero__meta">
+                    <li>
+                        <span class="hero__meta-key">education</span>
+                        <span>B.S. Computer Science, Artificial Intelligence concentration &mdash; in progress</span>
+                    </li>
+                    <li>
+                        <span class="hero__meta-key">focus</span>
+                        <span>C++, software development, systems, networking</span>
+                    </li>
+                </ul>
+
+                <div class="hero__actions">
+                    <a class="btn btn--primary" href="#projects">View Projects</a>
+                    <a class="btn btn--ghost" href="https://github.com/LowModez" target="_blank" rel="noopener">GitHub</a>
+                </div>
+            </div>
         </section>
 
         <!-- ============================================================
              ABOUT
              ============================================================ -->
         <section id="about" aria-labelledby="about-heading">
-            <h2 id="about-heading">About</h2>
+            <p class="eyebrow">01 / About</p>
+            <h2 id="about-heading" class="section-title">About</h2>
         </section>
 
         <!-- ============================================================
@@ -56,7 +105,8 @@
              case-study page inside /projects/.
              ============================================================ -->
         <section id="projects" aria-labelledby="projects-heading">
-            <h2 id="projects-heading">Projects</h2>
+            <p class="eyebrow">02 / Projects</p>
+            <h2 id="projects-heading" class="section-title">Projects</h2>
         </section>
 
         <!-- ============================================================
@@ -64,14 +114,16 @@
              Grouped by category. No percentages or proficiency bars.
              ============================================================ -->
         <section id="skills" aria-labelledby="skills-heading">
-            <h2 id="skills-heading">Skills &amp; Technologies</h2>
+            <p class="eyebrow">03 / Skills</p>
+            <h2 id="skills-heading" class="section-title">Skills &amp; Technologies</h2>
         </section>
 
         <!-- ============================================================
              EDUCATION
              ============================================================ -->
         <section id="education" aria-labelledby="education-heading">
-            <h2 id="education-heading">Education</h2>
+            <p class="eyebrow">04 / Education</p>
+            <h2 id="education-heading" class="section-title">Education</h2>
         </section>
 
         <!-- ============================================================
@@ -79,7 +131,8 @@
              Email, GitHub, LinkedIn, and the resume link.
              ============================================================ -->
         <section id="contact" aria-labelledby="contact-heading">
-            <h2 id="contact-heading">Contact</h2>
+            <p class="eyebrow">05 / Contact</p>
+            <h2 id="contact-heading" class="section-title">Contact</h2>
         </section>
     </main>
 
@@ -87,8 +140,10 @@
          FOOTER
          ============================================================ -->
     <footer class="site-footer">
-        <!-- The year is filled in by js/main.js so it never goes stale. -->
-        <p>&copy; <span data-current-year>2026</span> Ethan McKinzie</p>
+        <div class="container">
+            <!-- The year is filled in by js/main.js so it never goes stale. -->
+            <p>&copy; <span data-current-year>2026</span> Ethan McKinzie</p>
+        </div>
     </footer>
 
     <script src="js/main.js"></script>
