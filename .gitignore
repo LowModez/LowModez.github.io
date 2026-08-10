@@ -1,0 +1,25 @@
+# ---- Visual Studio ----
+.vs/
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# ---- Editors ----
+.vscode/
+*.swp
+*.swo
+*~
+
+# ---- Operating system ----
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+# ---- Logs / temp ----
+*.log
+*.tmp
