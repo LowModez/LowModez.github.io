@@ -134,12 +134,74 @@
 
         <!-- ============================================================
              PROJECTS
-             Each project becomes an <article> card here, linking to a
-             case-study page inside /projects/.
+             Cards are not linked yet. Each one gets a "Read case study"
+             link once its page exists inside /projects/.
              ============================================================ -->
         <section id="projects" aria-labelledby="projects-heading">
             <p class="eyebrow">02 / Projects</p>
             <h2 id="projects-heading" class="section-title">Projects</h2>
+
+            <p class="projects__intro measure">
+                Personal projects I use to practice what I'm learning and to document
+                how I approach building and troubleshooting things.
+            </p>
+
+            <div class="project-grid">
+                <!-- --- Heartfire --- -->
+                <article class="card project">
+                    <div class="project__header">
+                        <div>
+                            <p class="eyebrow eyebrow--muted">Software / C++</p>
+                            <h3 class="project__title">Heartfire</h3>
+                        </div>
+                        <p class="status">in-development</p>
+                    </div>
+
+                    <p class="project__desc">
+                        A terminal-based dark fantasy dungeon crawler built to practice
+                        multi-file program structure, classes, and game state in C++. The
+                        player creates a character, explores rooms across multiple floors,
+                        fights turn-based encounters, searches for keys and treasure, and
+                        descends toward a final dragon encounter. The interface is drawn
+                        with ASCII and Unicode art using ANSI terminal colors.
+                    </p>
+
+                    <ul class="tag-list project__tags" aria-label="Technologies used">
+                        <li class="tag">C++</li>
+                        <li class="tag">OOP</li>
+                        <li class="tag">Visual Studio</li>
+                        <li class="tag">Git</li>
+                        <li class="tag">ANSI / ASCII UI</li>
+                    </ul>
+                </article>
+
+                <!-- --- Home Lab --- -->
+                <article class="card project">
+                    <div class="project__header">
+                        <div>
+                            <p class="eyebrow eyebrow--muted">Systems / Virtualization</p>
+                            <h3 class="project__title">Home Lab &amp; Virtualization Environment</h3>
+                        </div>
+                        <p class="status">ongoing</p>
+                    </div>
+
+                    <p class="project__desc">
+                        A personal lab environment built to practice virtualization, Windows
+                        Server administration, and networking outside of a production
+                        setting. Proxmox runs as the hypervisor hosting Windows Server and
+                        Windows client virtual machines, which gives me somewhere to work
+                        through Active Directory concepts, virtual networking, and system
+                        configuration &mdash; and somewhere I can break things and rebuild them.
+                    </p>
+
+                    <ul class="tag-list project__tags" aria-label="Technologies used">
+                        <li class="tag">Proxmox</li>
+                        <li class="tag">Windows Server</li>
+                        <li class="tag">Active Directory</li>
+                        <li class="tag">Virtual Networking</li>
+                    </ul>
+                </article>
+            </div>
         </section>
 
         <!-- ============================================================

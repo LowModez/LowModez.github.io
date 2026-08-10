@@ -858,6 +858,55 @@ main > section {
    10  PROJECTS
    ============================================================ */
 
+.projects__intro {
+    margin-bottom: var(--space-8);
+}
+
+/* auto-fit with minmax is a responsive grid without media queries:
+   each column is at least 19rem wide and shares the leftover space
+   equally, and the browser fits as many columns as will fit. Two
+   cards sit side by side on a desktop and stack on a phone. */
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+    gap: var(--space-6);
+}
+
+/* Category label and title on the left, status pill on the right.
+   align-items: flex-start keeps the pill on the first line when a
+   title wraps to two lines. */
+.project__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-4);
+}
+
+/* flex: 0 0 auto stops the pill from being squeezed narrower than
+   its text by a long title next to it. */
+.project__header .status {
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
+
+/* The category eyebrow sits directly above the title, so it does
+   not need the larger gap the class carries by default. */
+.project__header .eyebrow {
+    margin-bottom: var(--space-2);
+}
+
+.project__desc {
+    margin-top: var(--space-4);
+}
+
+/* margin-top: auto pushes the tags to the bottom of the card. The
+   .card class is a flex column, so in a row of cards with
+   different amounts of text the tag rows still line up. */
+.project__tags {
+    margin-top: auto;
+    padding-top: var(--space-6);
+}
+
 
 /* ============================================================
    11  SKILLS
