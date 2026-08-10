@@ -566,6 +566,15 @@ main > section {
     padding: var(--space-1) var(--space-3);
 }
 
+/* Neutral variant for something finished. The amber pill is
+   reserved for what is currently active, so the eye lands on the
+   in-progress item first. */
+.status--done {
+    color: var(--text-secondary);
+    background-color: transparent;
+    border-color: var(--border-strong);
+}
+
 /* --- Section heading -------------------------------------
    Shared treatment for the h2 of each major section, with a short
    amber rule beneath it to separate sections without a full-width
@@ -968,6 +977,48 @@ main > section {
 /* ============================================================
    12  EDUCATION
    ============================================================ */
+
+.education-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+    gap: var(--space-5);
+}
+
+/* Degree and concentration on the left, status pill on the right.
+   flex-start keeps the pill aligned to the first line when a long
+   degree title wraps. */
+.education__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-4);
+}
+
+.education__header .status {
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
+
+.education__degree {
+    font-size: var(--text-lg);
+}
+
+.education__focus {
+    margin-top: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--accent);
+}
+
+/* The institution sits at the bottom in monospace, matching the
+   small technical labels used elsewhere. margin-top: auto holds it
+   to the bottom edge so both cards align. */
+.education__school {
+    margin-top: auto;
+    padding-top: var(--space-5);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+}
 
 
 /* ============================================================
