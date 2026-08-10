@@ -20,7 +20,8 @@
      12  Education
      13  Contact
      14  Footer
-     15  Responsive
+     15  Case study pages
+     16  Responsive
    ============================================================ */
 
 
@@ -907,6 +908,32 @@ main > section {
     padding-top: var(--space-6);
 }
 
+/* --- Case study link -------------------------------------
+   Only present on cards that actually have a page to open. */
+.project__links {
+    margin-top: var(--space-5);
+}
+
+.project__link {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+}
+
+/* The arrow slides right on hover. inline-block is required
+   because transform has no effect on inline elements. */
+.project__link span {
+    display: inline-block;
+    transition: transform var(--transition);
+}
+
+.project__link:hover {
+    text-decoration: none;
+}
+
+.project__link:hover span {
+    transform: translateX(3px);
+}
+
 
 /* ============================================================
    11  SKILLS
@@ -942,7 +969,157 @@ main > section {
 
 
 /* ============================================================
-   15  RESPONSIVE
+   15  CASE STUDY PAGES
+   ------------------------------------------------------------
+   Shared by every page inside /projects/. These pages are long-form
+   reading, so the column is narrower than the main site container.
+   ============================================================ */
+
+.case {
+    width: 100%;
+    max-width: 52rem;
+    margin-inline: auto;
+    padding: var(--space-12) var(--gutter) var(--space-20);
+}
+
+/* --- Back link -------------------------------------------- */
+.case__back {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-10);
+}
+
+/* --- Title block ------------------------------------------ */
+.case__header {
+    padding-bottom: var(--space-10);
+    border-bottom: 1px solid var(--border);
+    margin-bottom: var(--space-12);
+}
+
+.case__tagline {
+    margin-top: var(--space-5);
+    font-size: var(--text-lg);
+    max-width: var(--measure);
+}
+
+/* --- At-a-glance list ------------------------------------
+   A two-column grid: labels sized to their content, values taking
+   the rest. max-content means the first column is exactly as wide
+   as its longest label. */
+.case-meta {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: var(--space-3) var(--space-6);
+    margin-top: var(--space-8);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+}
+
+.case-meta dt {
+    color: var(--accent);
+}
+
+.case-meta dd {
+    color: var(--text-secondary);
+}
+
+/* --- Body sections --------------------------------------- */
+.case > section + section {
+    margin-top: var(--space-12);
+}
+
+.case h2 {
+    font-size: var(--text-2xl);
+    margin-bottom: var(--space-5);
+}
+
+.case p {
+    max-width: var(--measure);
+}
+
+/* --- Bulleted lists --------------------------------------
+   An amber dash instead of a default bullet. The marker is drawn
+   with a pseudo-element so its color is independent of the text. */
+.case-list {
+    display: grid;
+    gap: var(--space-3);
+    max-width: var(--measure);
+}
+
+.case-list li {
+    position: relative;
+    padding-left: var(--space-6);
+    color: var(--text-secondary);
+}
+
+.case-list li::before {
+    content: "\2014"; /* em dash */
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+}
+
+.case-list strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+/* --- Numbered gameplay loop ------------------------------
+   CSS counters generate the numbers, so reordering the list in the
+   HTML renumbers it automatically.
+   decimal-leading-zero renders 1 as "01", which matches the
+   monospace labels used elsewhere on the site. */
+.loop-list {
+    display: grid;
+    gap: var(--space-2);
+    counter-reset: step;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+}
+
+.loop-list li {
+    display: flex;
+    gap: var(--space-4);
+}
+
+.loop-list li::before {
+    counter-increment: step;
+    content: counter(step, decimal-leading-zero);
+    color: var(--accent);
+}
+
+/* --- Screenshot gallery ----------------------------------
+   Written ahead of the images so screenshots can be dropped in
+   without touching the stylesheet. */
+.case-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    gap: var(--space-5);
+}
+
+.case-gallery figure {
+    margin: 0;
+}
+
+.case-gallery img {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background-color: var(--bg-surface);
+}
+
+.case-gallery figcaption {
+    margin-top: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+}
+
+
+/* ============================================================
+   16  RESPONSIVE
    ------------------------------------------------------------
    Most sizing above is already fluid via clamp(), so this section
    holds only genuine layout changes. Kept at the bottom so these
