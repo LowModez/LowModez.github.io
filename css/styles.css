@@ -11,44 +11,356 @@
      03  Base elements
      04  Layout / containers
      05  Utilities
-     06  Header / Navigation
-     07  Hero
-     08  About
-     09  Projects
-     10  Skills
-     11  Education
-     12  Contact
-     13  Footer
-     14  Responsive
+     06  Components (buttons, cards, tags)
+     07  Header / Navigation
+     08  Hero
+     09  About
+     10  Projects
+     11  Skills
+     12  Education
+     13  Contact
+     14  Footer
+     15  Responsive
    ============================================================ */
 
 
 /* ============================================================
    01  VARIABLES
-   Every color, font, and spacing value lives here so nothing
-   is hardcoded further down the file.
-   Filled in during the design-system phase.
+   ------------------------------------------------------------
+   Every color, font size, and spacing value used on this site is
+   declared here. Rules further down reference these names instead
+   of raw values, so the entire look can be adjusted from one place.
    ============================================================ */
 :root {
-    /* Colors, typography, and spacing scale go here. */
+    /* --- Backgrounds -----------------------------------------
+       Three depths: the page itself, raised panels such as cards,
+       and a slightly lighter step for hover states. */
+    --bg-primary: #0d0d0f;
+    --bg-surface: #15161a;
+    --bg-surface-raised: #1c1e23;
+
+    /* --- Borders ---------------------------------------------
+       Low-contrast dividers. Subtle on purpose: on a dark theme,
+       borders should suggest structure, not draw attention. */
+    --border: #26282f;
+    --border-strong: #33363f;
+
+    /* --- Text -----------------------------------------------
+       Off-white rather than pure #fff. Pure white on near-black
+       is harsh to read for more than a paragraph or two.
+       Contrast against --bg-primary:
+         primary   ~15.9:1
+         secondary  ~6.9:1
+       Both clear WCAG AA (4.5:1) for body text. */
+    --text-primary: #e8e8ea;
+    --text-secondary: #9a9ba1;
+    --text-muted: #6f717a;
+
+    /* --- Accent ---------------------------------------------
+       Warm amber, one accent only. ~10.6:1 against the page
+       background, so it stays legible as link and label text
+       rather than being decoration that cannot be read.
+       The dim and soft variants are for borders and tinted
+       backgrounds, never for text. */
+    --accent: #ffb020;
+    --accent-hover: #ffc352;
+    --accent-dim: rgba(255, 176, 32, 0.35);
+    --accent-soft: rgba(255, 176, 32, 0.09);
+
+    /* --- Typography -----------------------------------------
+       System font stacks: no web fonts to download, which means
+       no extra network request, no layout shift while a font
+       loads, and text that renders instantly. Monospace is
+       reserved for small technical labels. */
+    --font-sans: system-ui, -apple-system, "Segoe UI", Roboto,
+                 "Helvetica Neue", Arial, sans-serif;
+    --font-mono: ui-monospace, "Cascadia Code", Consolas,
+                 "SF Mono", Menlo, monospace;
+
+    /* Fluid type scale. clamp(min, preferred, max) lets each size
+       grow with the viewport and then stop, so headings shrink
+       sensibly on phones without a pile of media queries.
+       The 'vw' unit in the middle value is a percentage of the
+       viewport width. */
+    --text-xs: 0.75rem;
+    --text-sm: 0.875rem;
+    --text-base: 1rem;
+    --text-lg: 1.125rem;
+    --text-xl: clamp(1.25rem, 0.6vw + 1.1rem, 1.5rem);
+    --text-2xl: clamp(1.5rem, 1.2vw + 1.2rem, 2rem);
+    --text-3xl: clamp(1.875rem, 2vw + 1.3rem, 2.75rem);
+    --text-4xl: clamp(2.25rem, 3.5vw + 1.4rem, 4rem);
+
+    --leading-tight: 1.2;
+    --leading-normal: 1.6;
+    --leading-relaxed: 1.75;
+
+    /* Wider letter-spacing for the small uppercase monospace
+       labels. Cramped uppercase text is hard to read. */
+    --tracking-wide: 0.08em;
+    --tracking-wider: 0.14em;
+
+    /* --- Spacing --------------------------------------------
+       A 4px scale. Sticking to these steps is what keeps spacing
+       consistent between sections built weeks apart. */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.25rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+    --space-10: 2.5rem;
+    --space-12: 3rem;
+    --space-16: 4rem;
+    --space-20: 5rem;
+    --space-24: 6rem;
+
+    /* --- Layout ---------------------------------------------
+       Content stops at --container so lines of text never get
+       uncomfortably long on a wide monitor. --measure caps
+       paragraph width for the same reason. */
+    --container: 68rem;
+    --measure: 42rem;
+    --gutter: var(--space-6);
+
+    /* Vertical rhythm between major sections. */
+    --section-gap: clamp(var(--space-16), 8vw, var(--space-24));
+
+    /* --- Borders and shadows --------------------------------- */
+    --radius-sm: 4px;
+    --radius: 8px;
+    --radius-lg: 12px;
+
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-raised: 0 8px 24px rgba(0, 0, 0, 0.45);
+
+    /* --- Motion ---------------------------------------------
+       Short, consistent transitions. Anything longer than about
+       250ms starts to feel sluggish on hover. */
+    --transition-fast: 120ms ease;
+    --transition: 180ms ease;
+
+    /* Height of the fixed header, reserved now so anchor links
+       and scroll offsets can reference it in the next phase. */
+    --header-height: 4rem;
 }
 
 
 /* ============================================================
    02  RESET
+   ------------------------------------------------------------
+   A deliberately small reset. Only the browser defaults that
+   actually cause layout problems are cleared.
    ============================================================ */
+
+/* border-box means padding and borders count inside an element's
+   declared width, so a 300px card stays 300px once padded. */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* Browsers apply their own margins to headings, paragraphs, and
+   lists. Clearing them means all spacing comes from this file. */
+body,
+h1, h2, h3, h4, h5, h6,
+p,
+figure,
+blockquote,
+ul, ol,
+dl, dd {
+    margin: 0;
+}
+
+/* Lists used for navigation and tag rows should not show bullets.
+   Semantic lists inside prose keep their markers, restored in
+   section 03. */
+ul, ol {
+    padding: 0;
+    list-style: none;
+}
+
+/* Media should never overflow its container. */
+img,
+picture,
+svg,
+video {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+/* Form controls do not inherit typography by default. */
+input,
+button,
+textarea,
+select {
+    font: inherit;
+    color: inherit;
+}
+
+/* Long words and URLs wrap instead of forcing a horizontal
+   scrollbar on narrow screens. */
+h1, h2, h3, h4, h5, h6, p, li, a {
+    overflow-wrap: break-word;
+}
 
 
 /* ============================================================
    03  BASE ELEMENTS
-   body, headings, paragraphs, links, lists, images.
    ============================================================ */
+
+html {
+    /* Anchor targets land below the fixed header instead of
+       hiding underneath it. */
+    scroll-padding-top: calc(var(--header-height) + var(--space-4));
+
+    /* Guarantees no accidental sideways scrolling anywhere. */
+    overflow-x: hidden;
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
+
+    /* Smoother glyph rendering for light text on dark backgrounds. */
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+
+    /* min-height keeps the footer at the bottom on short pages. */
+    min-height: 100vh;
+}
+
+/* --- Headings ---------------------------------------------
+   Tighter line height than body text, since large type needs
+   proportionally less leading. text-wrap: balance evens out the
+   line lengths of multi-line headings in modern browsers. */
+h1, h2, h3, h4 {
+    line-height: var(--leading-tight);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+}
+
+h1 { font-size: var(--text-4xl); }
+h2 { font-size: var(--text-3xl); }
+h3 { font-size: var(--text-xl); }
+h4 { font-size: var(--text-lg); }
+
+/* --- Paragraphs ------------------------------------------- */
+p {
+    color: var(--text-secondary);
+    line-height: var(--leading-relaxed);
+}
+
+/* Paragraphs that follow another paragraph get separated. Using
+   the sibling selector avoids a trailing margin on the last one. */
+p + p {
+    margin-top: var(--space-4);
+}
+
+/* --- Links -----------------------------------------------
+   Underline offset keeps the line clear of letter descenders.
+   Color, not just underline, changes on hover. */
+a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+}
+
+/* --- Prose lists -----------------------------------------
+   Restores markers for lists inside body copy, which the reset
+   stripped for navigation and tag rows. */
+.prose ul,
+.prose ol {
+    padding-left: var(--space-6);
+    list-style: revert;
+    color: var(--text-secondary);
+}
+
+.prose li + li {
+    margin-top: var(--space-2);
+}
+
+/* --- Inline code ------------------------------------------ */
+code,
+kbd,
+samp,
+pre {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+}
+
+code {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.15em 0.4em;
+    color: var(--text-primary);
+}
+
+/* --- Horizontal rule -------------------------------------- */
+hr {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: var(--space-12) 0;
+}
+
+/* --- Focus ------------------------------------------------
+   :focus-visible shows the ring for keyboard users but not on
+   mouse clicks. A visible focus indicator is a requirement, not
+   a decoration, so it uses the accent color at full strength. */
+:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: var(--radius-sm);
+}
+
+/* --- Text selection --------------------------------------- */
+::selection {
+    background-color: var(--accent-dim);
+    color: var(--text-primary);
+}
 
 
 /* ============================================================
    04  LAYOUT / CONTAINERS
-   Page width, section padding, grid helpers.
    ============================================================ */
+
+/* Centers content and stops it from spanning an entire wide
+   monitor. margin-inline is shorthand for left and right. */
+.container {
+    width: 100%;
+    max-width: var(--container);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+}
+
+/* Each top-level section is its own centered container, so no
+   extra wrapper markup is needed inside index.html. */
+main > section {
+    width: 100%;
+    max-width: var(--container);
+    margin-inline: auto;
+    padding: var(--section-gap) var(--gutter);
+}
+
+/* Caps paragraph width for readability. Roughly 65-75 characters
+   per line is the comfortable range for sustained reading. */
+.measure {
+    max-width: var(--measure);
+}
 
 
 /* ============================================================
@@ -61,56 +373,299 @@
 .skip-link {
     position: absolute;
     left: -9999px;
+    z-index: 100;
+    background-color: var(--bg-surface-raised);
+    color: var(--text-primary);
+    padding: var(--space-3) var(--space-5);
+    border: 1px solid var(--accent);
+    border-radius: var(--radius);
 }
 
 .skip-link:focus {
-    left: 0;
-    top: 0;
+    left: var(--space-4);
+    top: var(--space-4);
+    text-decoration: none;
+}
+
+/* Hides an element visually while leaving it readable by screen
+   readers. Used for headings that are structurally necessary but
+   visually redundant. */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+/* Small uppercase monospace label. This is the restrained
+   terminal touch: enough to read as technical without turning
+   the page into a fake console.
+   Used for things like "01 / PROJECTS". */
+.eyebrow {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: var(--space-3);
+}
+
+/* Neutral variant for labels that should not compete with a
+   nearby accent element. */
+.eyebrow--muted {
+    color: var(--text-muted);
 }
 
 
 /* ============================================================
-   06  HEADER / NAVIGATION
+   06  COMPONENTS
+   ------------------------------------------------------------
+   Reusable pieces the later section phases will assemble.
+   Nothing in index.html uses these yet.
+   ============================================================ */
+
+/* --- Buttons ---------------------------------------------
+   .btn is the shared shape and behavior. A modifier class
+   (.btn--primary / .btn--ghost) supplies the colors, so the two
+   variants can never drift apart in size or alignment. */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+
+    padding: var(--space-3) var(--space-6);
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+
+    font-size: var(--text-sm);
+    font-weight: 500;
+    line-height: 1;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+
+    transition: background-color var(--transition),
+                border-color var(--transition),
+                color var(--transition),
+                transform var(--transition-fast);
+}
+
+.btn:hover {
+    text-decoration: none;
+}
+
+/* Pressing the button nudges it down a pixel: cheap, immediate
+   physical feedback with no animation library involved. */
+.btn:active {
+    transform: translateY(1px);
+}
+
+/* Solid amber. Dark text on the accent because amber is a light
+   color, and light-on-light would be unreadable. */
+.btn--primary {
+    background-color: var(--accent);
+    color: #1a1204;
+    font-weight: 600;
+}
+
+.btn--primary:hover {
+    background-color: var(--accent-hover);
+    color: #1a1204;
+}
+
+/* Outlined, for secondary actions sitting next to the primary one. */
+.btn--ghost {
+    background-color: transparent;
+    border-color: var(--border-strong);
+    color: var(--text-primary);
+}
+
+.btn--ghost:hover {
+    border-color: var(--accent);
+    background-color: var(--accent-soft);
+    color: var(--text-primary);
+}
+
+/* --- Cards -----------------------------------------------
+   Raised panel used for projects, skill groups, and education
+   entries. */
+.card {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    transition: border-color var(--transition),
+                transform var(--transition),
+                box-shadow var(--transition);
+}
+
+/* Lifts slightly and warms its border on hover. Applied only to
+   cards that are actually interactive. */
+.card--interactive:hover {
+    border-color: var(--accent-dim);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-raised);
+}
+
+/* Keyboard equivalent of the hover state, so the effect is not
+   mouse-only. */
+.card--interactive:focus-within {
+    border-color: var(--accent-dim);
+}
+
+/* --- Tags ------------------------------------------------
+   Technology labels, e.g. C++ or Proxmox. Monospace signals
+   "technical term" without needing extra explanation. */
+.tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+.tag {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
+    background-color: var(--bg-surface-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: var(--space-1) var(--space-3);
+    white-space: nowrap;
+}
+
+/* --- Status pill -----------------------------------------
+   Honest project state: "in-development", "personal-project".
+   Lowercase and monospace to read like a value, not a boast. */
+.status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--accent);
+    background-color: var(--accent-soft);
+    border: 1px solid var(--accent-dim);
+    border-radius: 999px;
+    padding: var(--space-1) var(--space-3);
+}
+
+/* --- Section heading -------------------------------------
+   Shared treatment for the h2 of each major section, with a short
+   amber rule beneath it to separate sections without a full-width
+   divider line. */
+.section-title {
+    position: relative;
+    padding-bottom: var(--space-4);
+    margin-bottom: var(--space-8);
+}
+
+.section-title::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 2.5rem;
+    height: 2px;
+    background-color: var(--accent);
+    border-radius: 999px;
+}
+
+
+/* ============================================================
+   07  HEADER / NAVIGATION
    ============================================================ */
 
 
 /* ============================================================
-   07  HERO
+   08  HERO
    ============================================================ */
 
 
 /* ============================================================
-   08  ABOUT
+   09  ABOUT
    ============================================================ */
 
 
 /* ============================================================
-   09  PROJECTS
+   10  PROJECTS
    ============================================================ */
 
 
 /* ============================================================
-   10  SKILLS
+   11  SKILLS
    ============================================================ */
 
 
 /* ============================================================
-   11  EDUCATION
+   12  EDUCATION
    ============================================================ */
 
 
 /* ============================================================
-   12  CONTACT
+   13  CONTACT
    ============================================================ */
 
 
 /* ============================================================
-   13  FOOTER
+   14  FOOTER
    ============================================================ */
 
 
 /* ============================================================
-   14  RESPONSIVE
-   Narrow-width overrides. Kept at the bottom so they reliably
-   override the rules above them.
+   15  RESPONSIVE
+   ------------------------------------------------------------
+   Most sizing above is already fluid via clamp(), so this section
+   holds only genuine layout changes. Kept at the bottom so these
+   rules reliably override the ones above them.
    ============================================================ */
+
+/* --- Tablet and below ------------------------------------- */
+@media (max-width: 48rem) {
+    :root {
+        --gutter: var(--space-5);
+    }
+}
+
+/* --- Phone ------------------------------------------------ */
+@media (max-width: 30rem) {
+    :root {
+        --gutter: var(--space-4);
+    }
+
+    /* Buttons stretch to full width on narrow screens so they are
+       comfortable to tap. */
+    .btn {
+        width: 100%;
+    }
+}
+
+/* --- Reduced motion --------------------------------------
+   Respects the operating system setting for users who find
+   movement distracting or get motion sickness. Transitions are
+   reduced to near-zero rather than removed, so state changes
+   still register. */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    .card--interactive:hover,
+    .btn:active {
+        transform: none;
+    }
+}
