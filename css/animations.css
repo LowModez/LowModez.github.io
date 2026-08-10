@@ -1,0 +1,430 @@
+/* ============================================================
+   animations.css
+   Every keyframe and motion rule on the site, in one place
+   ------------------------------------------------------------
+   Part of the stylesheet set loaded by every page. See
+   css/README.md for the load order and what belongs where.
+
+   Loaded after the section files so its rules can layer motion
+   on top of components that are already styled.
+
+   TWO RULES THIS FILE FOLLOWS
+     1. Nothing here is required to read the page. Every animation
+        either starts from a visible state or is scoped behind a
+        class that JavaScript adds only when it is safe.
+     2. Everything here is switched off by the reduced-motion
+        block at the end of css/responsive.css.
+
+   CONTENTS
+     A  Keyframes
+     B  Page load
+     C  Reveal on scroll
+     D  Hover and interaction
+     E  Continuous ambient motion
+     F  Scroll-driven progress bar
+   ============================================================ */
+
+
+/* ============================================================
+   A  KEYFRAMES
+   All named animations, defined once and reused below.
+   ============================================================ */
+
+/* Fade upward into place. The workhorse: page load and reveals. */
+@keyframes rise-in {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: none; }
+}
+
+/* Fade in from the left, for items in a horizontal row. */
+@keyframes slide-in-left {
+    from { opacity: 0; transform: translateX(-10px); }
+    to   { opacity: 1; transform: none; }
+}
+
+/* Plain fade, where movement would be distracting. */
+@keyframes fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Grows a rule outward from its left edge. Used for the short
+   accent line under section headings. */
+@keyframes draw-line {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+}
+
+/* A soft double-pulse, for the dot on an in-progress status pill.
+   It rests for most of the cycle so it reads as a heartbeat rather
+   than a blinking light. */
+@keyframes pulse-dot {
+     0%   { opacity: 1;   transform: scale(1); }
+     12%  { opacity: 0.5; transform: scale(1.5); }
+     24%  { opacity: 1;   transform: scale(1); }
+    100%  { opacity: 1;   transform: scale(1); }
+}
+
+/* Sweeps a highlight across an element, left to right. Used once
+   per hover on buttons and cards. */
+@keyframes shine-sweep {
+    from { transform: translateX(-120%); }
+    to   { transform: translateX(220%); }
+}
+
+/* Very slow drift of the page's background washes. The distances
+   are small on purpose: the movement should be noticeable only if
+   you look for it. */
+@keyframes drift {
+      0% { transform: translate3d(0, 0, 0) scale(1); }
+     50% { transform: translate3d(2%, 1.5%, 0) scale(1.06); }
+    100% { transform: translate3d(0, 0, 0) scale(1); }
+}
+
+/* Blinking cursor for the monospace terminal touches. */
+@keyframes caret-blink {
+    0%, 45%   { opacity: 1; }
+    55%, 100% { opacity: 0; }
+}
+
+
+/* ============================================================
+   B  PAGE LOAD
+   Runs once, immediately, without waiting on JavaScript.
+   ============================================================ */
+
+/* --- Header ----------------------------------------------- */
+.site-header {
+    animation: fade-in 500ms ease both;
+}
+
+/* Nav items arrive one after another. Because they are already
+   visible without the animation, a failure here costs nothing. */
+.site-nav__list > li {
+    animation: slide-in-left 400ms ease both;
+}
+
+.site-nav__list > li:nth-child(1) { animation-delay:  60ms; }
+.site-nav__list > li:nth-child(2) { animation-delay: 110ms; }
+.site-nav__list > li:nth-child(3) { animation-delay: 160ms; }
+.site-nav__list > li:nth-child(4) { animation-delay: 210ms; }
+.site-nav__list > li:nth-child(5) { animation-delay: 260ms; }
+.site-nav__list > li:nth-child(6) { animation-delay: 310ms; }
+
+/* --- Hero -------------------------------------------------
+   Each block of the hero rises in turn. "both" as the fill mode
+   holds an element at its starting state during its delay, so
+   nothing flashes into place early. */
+.hero__content > * {
+    animation: rise-in 600ms ease both;
+}
+
+.hero__content > *:nth-child(2) { animation-delay:  90ms; }
+.hero__content > *:nth-child(3) { animation-delay: 180ms; }
+.hero__content > *:nth-child(4) { animation-delay: 270ms; }
+.hero__content > *:nth-child(5) { animation-delay: 360ms; }
+
+/* The amber rule beside the hero facts draws itself downward. */
+.hero__meta {
+    position: relative;
+}
+
+.hero__meta::before {
+    content: "";
+    position: absolute;
+    left: -2px;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    background-color: var(--accent);
+    transform-origin: top;
+    animation: draw-line 600ms ease 500ms both;
+}
+
+/* --- Case study pages ------------------------------------- */
+.case__header {
+    animation: rise-in 550ms ease both;
+}
+
+.case__back {
+    animation: slide-in-left 450ms ease both;
+}
+
+
+/* ============================================================
+   C  REVEAL ON SCROLL
+   ------------------------------------------------------------
+   Elements marked data-reveal in the HTML fade and rise as they
+   scroll into view.
+
+   The hidden starting state is scoped inside .js-reveal, a class
+   that js/scroll-reveal.js puts on <html>, and only after it has
+   confirmed that JavaScript is running and that the visitor has
+   not asked for reduced motion.
+
+   That ordering is the whole safety mechanism: with no JavaScript
+   the class never appears, these rules never apply, and every
+   section is simply visible. An animation must never be able to
+   make content disappear.
+   ============================================================ */
+
+.js-reveal [data-reveal] {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 500ms ease, transform 500ms ease;
+}
+
+.js-reveal [data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+}
+
+/* Items in a grid arrive one after another rather than together.
+   Each position waits slightly longer than the one before it. */
+.js-reveal [data-reveal]:nth-child(2) { transition-delay:  70ms; }
+.js-reveal [data-reveal]:nth-child(3) { transition-delay: 140ms; }
+.js-reveal [data-reveal]:nth-child(4) { transition-delay: 210ms; }
+.js-reveal [data-reveal]:nth-child(5) { transition-delay: 280ms; }
+.js-reveal [data-reveal]:nth-child(6) { transition-delay: 350ms; }
+
+/* Once a card is revealed, its technology tags follow in sequence.
+   The delays are relative to the card, so the tags always trail
+   their own card rather than the page. */
+.js-reveal [data-reveal] .tag {
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 300ms ease, transform 300ms ease;
+}
+
+.js-reveal [data-reveal].is-visible .tag {
+    opacity: 1;
+    transform: none;
+}
+
+.js-reveal [data-reveal].is-visible .tag:nth-child(1) { transition-delay: 150ms; }
+.js-reveal [data-reveal].is-visible .tag:nth-child(2) { transition-delay: 190ms; }
+.js-reveal [data-reveal].is-visible .tag:nth-child(3) { transition-delay: 230ms; }
+.js-reveal [data-reveal].is-visible .tag:nth-child(4) { transition-delay: 270ms; }
+.js-reveal [data-reveal].is-visible .tag:nth-child(5) { transition-delay: 310ms; }
+.js-reveal [data-reveal].is-visible .tag:nth-child(6) { transition-delay: 350ms; }
+.js-reveal [data-reveal].is-visible .tag:nth-child(7) { transition-delay: 390ms; }
+.js-reveal [data-reveal].is-visible .tag:nth-child(8) { transition-delay: 430ms; }
+
+/* A revealed heading draws its accent rule in afterwards. The
+   delay is what makes it read as a deliberate underline rather
+   than part of the same fade. */
+.js-reveal .section-title[data-reveal]::after {
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 500ms ease 200ms;
+}
+
+.js-reveal .section-title[data-reveal].is-visible::after {
+    transform: scaleX(1);
+}
+
+/* Case study list items cascade instead of appearing as a block. */
+.js-reveal [data-reveal] .case-list li,
+.js-reveal [data-reveal] .loop-list li {
+    opacity: 0;
+    transform: translateX(-8px);
+    transition: opacity 350ms ease, transform 350ms ease;
+}
+
+.js-reveal [data-reveal].is-visible .case-list li,
+.js-reveal [data-reveal].is-visible .loop-list li {
+    opacity: 1;
+    transform: none;
+}
+
+.js-reveal [data-reveal].is-visible li:nth-child(1) { transition-delay:  60ms; }
+.js-reveal [data-reveal].is-visible li:nth-child(2) { transition-delay: 110ms; }
+.js-reveal [data-reveal].is-visible li:nth-child(3) { transition-delay: 160ms; }
+.js-reveal [data-reveal].is-visible li:nth-child(4) { transition-delay: 210ms; }
+.js-reveal [data-reveal].is-visible li:nth-child(5) { transition-delay: 260ms; }
+.js-reveal [data-reveal].is-visible li:nth-child(6) { transition-delay: 310ms; }
+.js-reveal [data-reveal].is-visible li:nth-child(7) { transition-delay: 360ms; }
+.js-reveal [data-reveal].is-visible li:nth-child(8) { transition-delay: 410ms; }
+
+
+/* ============================================================
+   D  HOVER AND INTERACTION
+   ============================================================ */
+
+/* --- Shine sweep -----------------------------------------
+   A narrow diagonal highlight that crosses the element once per
+   hover. overflow: hidden on the parent clips it to the shape.
+
+   The gradient is white at very low alpha, so it lightens whatever
+   is underneath instead of introducing a new color. */
+.btn--primary,
+.card--interactive {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn--primary::after,
+.card--interactive::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 45%;
+    height: 100%;
+    pointer-events: none;
+    transform: translateX(-120%);
+    background-image: linear-gradient(
+        100deg,
+        transparent,
+        rgba(255, 255, 255, 0.13),
+        transparent
+    );
+}
+
+.btn--primary:hover::after,
+.card--interactive:hover::after,
+.card--interactive:focus-within::after {
+    animation: shine-sweep 750ms ease;
+}
+
+/* --- Nav underline ---------------------------------------
+   Scaling a pseudo-element is cheaper for the browser to animate
+   than changing its width, because scale does not force the page
+   to be laid out again. */
+.site-nav__list a:not(.btn)::after {
+    width: 100%;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--transition);
+}
+
+.site-nav__list a:not(.btn):hover::after,
+.site-nav__list a:not(.btn):focus-visible::after {
+    transform: scaleX(1);
+}
+
+/* --- Brand ------------------------------------------------ */
+.brand {
+    transition: color var(--transition), transform var(--transition);
+}
+
+.brand:hover {
+    transform: translateY(-1px);
+}
+
+/* --- Skill category dot ----------------------------------
+   Grows slightly when its card is hovered, which ties the dot to
+   the card it labels. */
+.skill-group__title::before {
+    transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.card:hover .skill-group__title::before {
+    transform: scale(1.35);
+    box-shadow: 0 0 0 4px var(--group-soft);
+}
+
+/* --- Case study back link -------------------------------- */
+.case__back {
+    transition: transform var(--transition);
+}
+
+.case__back:hover {
+    transform: translateX(-4px);
+}
+
+/* --- Case study list markers ----------------------------- */
+.case-list li::before {
+    transition: transform var(--transition);
+}
+
+.case-list li:hover::before {
+    transform: translateX(3px);
+}
+
+/* --- Footer ----------------------------------------------- */
+.site-footer__note {
+    transition: color var(--transition);
+}
+
+.site-footer:hover .site-footer__note {
+    color: var(--text-secondary);
+}
+
+
+/* ============================================================
+   E  CONTINUOUS AMBIENT MOTION
+   ------------------------------------------------------------
+   The only thing on the site that moves without being asked. It is
+   a 40-second cycle on a background gradient at under 10% opacity,
+   with no sharp edges, so it registers as depth rather than
+   animation. Nothing in the foreground moves on its own.
+   ============================================================ */
+
+body::before {
+    animation: drift 40s ease-in-out infinite;
+}
+
+/* The dot inside an in-progress status pill. Only pills marked
+   .status--live pulse, so a "completed" pill stays still. */
+.status--live::before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background-color: currentColor;
+    animation: pulse-dot 2.8s ease-in-out infinite;
+}
+
+/* A blinking caret, for monospace labels that should feel like a
+   live terminal line. Applied with .has-caret. */
+.has-caret::after {
+    content: "_";
+    margin-left: 1px;
+    color: var(--accent);
+    animation: caret-blink 1.2s step-end infinite;
+}
+
+
+/* ============================================================
+   F  SCROLL-DRIVEN PROGRESS BAR
+   ------------------------------------------------------------
+   A thin bar across the top of the viewport that fills as the page
+   is scrolled.
+
+   This uses a scroll-driven animation: animation-timeline: scroll()
+   ties the animation's progress to the scroll position instead of
+   to elapsed time, so no JavaScript and no scroll listener is
+   involved. The browser drives it.
+
+   Support is not universal yet, so the whole thing sits inside an
+   @supports block. Browsers without it simply never show the bar,
+   which costs the visitor nothing.
+   ============================================================ */
+
+@supports (animation-timeline: scroll()) {
+    .scroll-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 60;
+
+        width: 100%;
+        height: 2px;
+        transform-origin: left;
+        transform: scaleX(0);
+
+        /* Three accents across the bar, so it also acts as a small
+           reminder of the color system. */
+        background-image: linear-gradient(
+            90deg,
+            var(--accent),
+            var(--accent-2),
+            var(--accent-3)
+        );
+
+        animation: draw-line linear;
+        animation-timeline: scroll();
+    }
+}

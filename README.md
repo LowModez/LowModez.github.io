@@ -85,14 +85,29 @@ Then visit `http://localhost:8000`.
 ```text
 LowModez.github.io/
 ├── index.html                  Single-page main site
+├── 404.html                    Custom not-found page
 ├── README.md
 ├── .gitignore
 │
-├── css/
-│   └── styles.css              All styles, in 16 numbered sections
+├── css/                        One concern per file, see css/README.md
+│   ├── README.md               Load order and where things belong
+│   ├── tokens.css              Custom properties only
+│   ├── base.css                Reset, base elements, page background
+│   ├── layout.css              Containers, section rhythm, footer
+│   ├── utilities.css           Small single-purpose helpers
+│   ├── components.css          Buttons, cards, tags, accent modifiers
+│   ├── header.css              Header, navigation, mobile menu
+│   ├── home.css                Home page sections
+│   ├── page.css                Projects index and 404 page
+│   ├── case-study.css          Project case study pages
+│   ├── animations.css          Every keyframe and motion rule
+│   └── responsive.css          Media queries and reduced motion
 │
-├── js/
-│   └── main.js                 Footer year, mobile nav, scroll reveal
+├── js/                         One behavior per file
+│   ├── footer-year.js          Keeps the copyright year current
+│   ├── mobile-nav.js           Narrow-screen navigation menu
+│   ├── scroll-reveal.js        Fades sections in on scroll
+│   └── main.js                 Entry point, calls the above
 │
 ├── assets/
 │   ├── images/                 Screenshots and the social preview image
@@ -100,12 +115,23 @@ LowModez.github.io/
 │   └── documents/              Resume
 │
 └── projects/
+    ├── index.html              Projects index
     ├── heartfire.html          Case study: C++ dungeon crawler
     └── home-lab.html           Case study: virtualization lab
 ```
 
-`css/styles.css` opens with a numbered table of contents matching the order the
-page is built, from design tokens through to responsive rules.
+### How the files fit together
+
+The CSS is split by responsibility and loaded with separate `<link>` tags in a
+fixed cascade order, documented in [css/README.md](css/README.md). Tokens come
+first, then the rules that consume them, then motion, then responsive
+overrides. Each page loads only the section files it needs.
+
+The JavaScript follows the same idea: each file defines exactly one function
+and runs nothing. `main.js` is the only file that calls anything, so there is a
+single place to see what a page does on load. Plain `<script>` tags rather than
+ES modules, so the site still works when `index.html` is opened directly from
+disk.
 
 ---
 

@@ -1,0 +1,289 @@
+/* ============================================================
+   components.css
+   Reusable pieces: buttons, cards, tags, status pills
+   ------------------------------------------------------------
+   Part of the stylesheet set loaded by every page. See
+   css/README.md for the load order and what belongs where.
+   ============================================================ */
+
+/* ============================================================
+   06  COMPONENTS
+   ------------------------------------------------------------
+   Reusable pieces the later section phases will assemble.
+   Nothing in index.html uses these yet.
+   ============================================================ */
+
+/* --- Buttons ---------------------------------------------
+   .btn is the shared shape and behavior. A modifier class
+   (.btn--primary / .btn--ghost) supplies the colors, so the two
+   variants can never drift apart in size or alignment. */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+
+    padding: var(--space-3) var(--space-6);
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+
+    font-size: var(--text-sm);
+    font-weight: 500;
+    line-height: 1;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+
+    transition: background-color var(--transition),
+                border-color var(--transition),
+                color var(--transition),
+                transform var(--transition-fast);
+}
+
+.btn:hover {
+    text-decoration: none;
+}
+
+/* Pressing the button nudges it down a pixel: cheap, immediate
+   physical feedback with no animation library involved. */
+.btn:active {
+    transform: translateY(1px);
+}
+
+/* Solid amber. Dark text on the accent because amber is a light
+   color, and light-on-light would be unreadable. */
+.btn--primary {
+    background-color: var(--accent);
+    color: #1a1204;
+    font-weight: 600;
+}
+
+/* Lifts a pixel and casts a warm shadow in its own color, so the
+   button looks lit rather than outlined. */
+.btn--primary:hover {
+    background-color: var(--accent-hover);
+    color: #1a1204;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 176, 32, 0.20);
+}
+
+/* Outlined, for secondary actions sitting next to the primary one. */
+.btn--ghost {
+    background-color: transparent;
+    border-color: var(--border-strong);
+    color: var(--text-primary);
+}
+
+.btn--ghost:hover {
+    border-color: var(--accent);
+    background-color: var(--accent-soft);
+    color: var(--text-primary);
+    transform: translateY(-2px);
+}
+
+/* Compact size, for buttons sitting inside the header bar. */
+.btn--sm {
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--text-xs);
+}
+
+/* --- Cards -----------------------------------------------
+   Raised panel used for projects, skill groups, and education
+   entries. */
+.card {
+    /* relative positions the accent line drawn by ::before. */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+
+    /* overflow: hidden keeps the accent line inside the rounded
+       corners instead of poking past them. */
+    overflow: hidden;
+
+    transition: border-color var(--transition),
+                transform var(--transition),
+                box-shadow var(--transition);
+}
+
+/* A hairline along the top edge that fades in on hover, in
+   whatever color this card's category uses. Drawn as a gradient so
+   it is brightest in the middle and disappears at both ends
+   instead of stopping abruptly. */
+.card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-image: linear-gradient(
+        90deg,
+        transparent,
+        var(--group),
+        transparent
+    );
+    opacity: 0;
+    transition: opacity var(--transition);
+}
+
+.card:hover::before,
+.card:focus-within::before {
+    opacity: 1;
+}
+
+/* Every card warms its border on hover. */
+.card:hover {
+    border-color: var(--group-dim);
+}
+
+/* Only cards that actually lead somewhere lift off the page. The
+   shadow includes a faint ring in the category color. */
+.card--interactive:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-raised), 0 0 0 1px var(--group-soft);
+}
+
+/* Keyboard equivalent of the hover state, so the effect is not
+   mouse-only. */
+.card--interactive:focus-within {
+    border-color: var(--group-dim);
+}
+
+/* --- Tags ------------------------------------------------
+   Technology labels, e.g. C++ or Proxmox. Monospace signals
+   "technical term" without needing extra explanation. */
+.tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+.tag {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
+    background-color: var(--bg-surface-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: var(--space-1) var(--space-3);
+    white-space: nowrap;
+
+    transition: border-color var(--transition),
+                color var(--transition),
+                background-color var(--transition);
+}
+
+/* Tags respond individually to the cursor, tinted in the color of
+   the category they belong to. Small, but it makes a static list
+   of technologies feel like part of the page. */
+.tag:hover {
+    color: var(--text-primary);
+    border-color: var(--group-dim);
+    background-color: var(--group-soft);
+}
+
+/* --- Status pill -----------------------------------------
+   Honest project state: "in-development", "personal-project".
+   Lowercase and monospace to read like a value, not a boast. */
+.status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--accent);
+    background-color: var(--accent-soft);
+    border: 1px solid var(--accent-dim);
+    border-radius: 999px;
+    padding: var(--space-1) var(--space-3);
+}
+
+/* Neutral variant for something finished. The amber pill is
+   reserved for what is currently active, so the eye lands on the
+   in-progress item first. */
+.status--done {
+    color: var(--text-secondary);
+    background-color: transparent;
+    border-color: var(--border-strong);
+}
+
+/* --- Category accent modifiers ---------------------------
+   Add one of these to any element to change which accent its
+   subtree uses. Because the rules elsewhere all reference
+   --group / --group-dim / --group-soft rather than a fixed color,
+   overriding the three variables here is enough: borders, hover
+   tints, accent lines, and tags all follow automatically.
+
+   Omitting a modifier leaves the element on amber, the default set
+   in :root. */
+.accent-teal {
+    --group: var(--accent-2);
+    --group-dim: var(--accent-2-dim);
+    --group-soft: var(--accent-2-soft);
+}
+
+.accent-violet {
+    --group: var(--accent-3);
+    --group-dim: var(--accent-3-dim);
+    --group-soft: var(--accent-3-soft);
+}
+
+/* Explicit reset back to amber. Needed for a card that should stay
+   amber while sitting inside a section that sets another accent,
+   since --group would otherwise be inherited. */
+.accent-amber {
+    --group: var(--accent);
+    --group-dim: var(--accent-dim);
+    --group-soft: var(--accent-soft);
+}
+
+.accent-blue {
+    --group: var(--accent-4);
+    --group-dim: var(--accent-4-dim);
+    --group-soft: var(--accent-4-soft);
+}
+
+.accent-rose {
+    --group: var(--accent-5);
+    --group-dim: var(--accent-5-dim);
+    --group-soft: var(--accent-5-soft);
+}
+
+/* For categories that should stay quiet, such as transferable
+   professional skills. */
+.accent-neutral {
+    --group: var(--text-muted);
+    --group-dim: var(--border-strong);
+    --group-soft: rgba(255, 255, 255, 0.03);
+}
+
+/* --- Section heading -------------------------------------
+   Shared treatment for the h2 of each major section, with a short
+   accent rule beneath it to separate sections without a full-width
+   divider line. The rule takes the section's own accent color, so
+   Education reads blue and Contact reads rose.
+
+   The animation that draws this rule in lives in
+   css/animations.css. */
+.section-title {
+    position: relative;
+    padding-bottom: var(--space-4);
+    margin-bottom: var(--space-8);
+}
+
+.section-title::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 2.5rem;
+    height: 2px;
+    background-color: var(--group);
+    border-radius: 999px;
+}

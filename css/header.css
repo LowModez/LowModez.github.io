@@ -1,0 +1,158 @@
+/* ============================================================
+   header.css
+   Site header, navigation, and the mobile menu
+   ------------------------------------------------------------
+   Part of the stylesheet set loaded by every page. See
+   css/README.md for the load order and what belongs where.
+   ============================================================ */
+
+/* ============================================================
+   07  HEADER / NAVIGATION
+   ------------------------------------------------------------
+   Written desktop-first: the rules here describe the full
+   horizontal navigation, and the media query in section 15
+   collapses it into a toggle menu on narrow screens.
+   ============================================================ */
+
+.site-header {
+    /* sticky keeps the bar visible while scrolling but, unlike
+       fixed, it still occupies space in the normal flow. */
+    position: sticky;
+    top: 0;
+    z-index: 50;
+
+    height: var(--header-height);
+
+    /* Semi-transparent so content softly shows through, with a
+       blur behind it. The solid fallback color is listed first
+       for browsers without backdrop-filter support. */
+    background-color: rgba(13, 13, 15, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    border-bottom: 1px solid var(--border);
+}
+
+.site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+    height: 100%;
+}
+
+/* --- Brand ------------------------------------------------
+   The real name, kept as the most prominent item in the bar. */
+.brand {
+    font-size: var(--text-base);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+    white-space: nowrap;
+}
+
+.brand:hover {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+/* --- Nav list --------------------------------------------- */
+.site-nav__list {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+}
+
+/* :not(.btn) excludes the GitHub button, which already has its
+   own styling from the button component. */
+.site-nav__list a:not(.btn) {
+    position: relative;
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+}
+
+.site-nav__list a:not(.btn):hover {
+    color: var(--text-primary);
+    text-decoration: none;
+}
+
+/* An amber underline drawn as a pseudo-element rather than with
+   text-decoration, so it can be animated. The grow-on-hover motion
+   itself lives in css/animations.css. */
+.site-nav__list a:not(.btn)::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -0.35rem;
+    width: 100%;
+    height: 1px;
+    background-color: var(--accent);
+}
+
+/* --- Mobile toggle button --------------------------------
+   Hidden on desktop; section 15 reveals it on narrow screens. */
+.nav-toggle {
+    display: none;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+
+    width: 2.75rem;
+    height: 2.75rem;
+
+    background-color: transparent;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    color: var(--text-primary);
+    cursor: pointer;
+
+    transition: border-color var(--transition);
+}
+
+.nav-toggle:hover {
+    border-color: var(--accent);
+}
+
+/* The hamburger icon is drawn in CSS rather than loaded as an
+   image: three bars, where the middle one is the element itself
+   and the outer two are its ::before and ::after.
+   currentColor means the bars inherit the button's text color. */
+.nav-toggle__bars {
+    position: relative;
+    width: 1.25rem;
+    height: 2px;
+    background-color: currentColor;
+    border-radius: 2px;
+    transition: background-color var(--transition);
+}
+
+.nav-toggle__bars::before,
+.nav-toggle__bars::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: currentColor;
+    border-radius: 2px;
+    transition: transform var(--transition);
+}
+
+.nav-toggle__bars::before { top: -6px; }
+.nav-toggle__bars::after  { top: 6px; }
+
+/* When the menu is open, the bars become an X.
+   This selects on aria-expanded, the same attribute screen
+   readers use, so the visual state and the announced state come
+   from one source and cannot fall out of sync. */
+.nav-toggle[aria-expanded="true"] .nav-toggle__bars {
+    background-color: transparent;
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle__bars::before {
+    transform: translateY(6px) rotate(45deg);
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle__bars::after {
+    transform: translateY(-6px) rotate(-45deg);
+}

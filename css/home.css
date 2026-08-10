@@ -1,0 +1,380 @@
+/* ============================================================
+   home.css
+   Sections that appear only on the home page
+   ------------------------------------------------------------
+   Part of the stylesheet set loaded by every page. See
+   css/README.md for the load order and what belongs where.
+   ============================================================ */
+
+/* ============================================================
+   08  HERO
+   ============================================================ */
+
+.hero {
+    display: flex;
+    align-items: center;
+
+    /* Fills the screen below the header, but stops growing on very
+       tall displays so the layout never looks stretched.
+       svh is the "small viewport height" unit, which accounts for
+       mobile browser toolbars that 100vh ignores. */
+    min-height: min(calc(100svh - var(--header-height)), 44rem);
+
+    /* Overrides the shared section padding for a tighter top. */
+    padding-block: var(--space-12) var(--space-16);
+
+    /* The hero used to carry its own amber wash. That now lives on
+       body::before so it spans the whole page at full width instead
+       of being clipped to this section's centered column. */
+}
+
+/* The hero's staggered entrance animation lives in
+   css/animations.css, along with every other motion rule. */
+
+/* The hero is a flex container so its content can be vertically
+   centered. Without an explicit width, a flex child shrinks to fit
+   its text instead of spanning the section. */
+.hero__content {
+    width: 100%;
+}
+
+/* --- Role line -------------------------------------------
+   Sits directly under the name. Not a heading, because it is a
+   description rather than a section title. */
+.hero__roles {
+    margin-top: var(--space-4);
+    font-size: var(--text-xl);
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.hero__sep {
+    color: var(--accent);
+    margin-inline: var(--space-2);
+    font-weight: 400;
+}
+
+/* --- Intro paragraph -------------------------------------- */
+.hero__intro {
+    margin-top: var(--space-6);
+    font-size: var(--text-lg);
+}
+
+/* --- Monospace facts -------------------------------------
+   The amber left rule groups the lines together and ties them to
+   the accent without adding a box. */
+.hero__meta {
+    margin-top: var(--space-8);
+    padding-left: var(--space-4);
+    border-left: 2px solid var(--border-strong);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+}
+
+.hero__meta li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-3);
+}
+
+.hero__meta li + li {
+    margin-top: var(--space-2);
+}
+
+/* Fixed width aligns the values into a column, like a key/value
+   listing in a terminal. */
+.hero__meta-key {
+    flex: 0 0 auto;
+    min-width: 5rem;
+    color: var(--accent);
+}
+
+/* --- Calls to action -------------------------------------- */
+.hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-top: var(--space-10);
+}
+
+
+/* ============================================================
+   09  ABOUT
+   ============================================================ */
+
+/* The lead paragraph is set slightly larger and in the primary
+   text color. It gives the section an entry point instead of
+   presenting four paragraphs of identical weight. */
+.about__lead {
+    font-size: var(--text-lg);
+    color: var(--text-primary);
+}
+
+
+/* ============================================================
+   10  PROJECTS
+   ============================================================ */
+
+.projects__intro {
+    margin-bottom: var(--space-8);
+}
+
+/* auto-fit with minmax is a responsive grid without media queries:
+   each column is at least 19rem wide and shares the leftover space
+   equally, and the browser fits as many columns as will fit. Two
+   cards sit side by side on a desktop and stack on a phone. */
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+    gap: var(--space-6);
+}
+
+/* Category label and title on the left, status pill on the right.
+   align-items: flex-start keeps the pill on the first line when a
+   title wraps to two lines. */
+.project__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-4);
+}
+
+/* flex: 0 0 auto stops the pill from being squeezed narrower than
+   its text by a long title next to it. */
+.project__header .status {
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
+
+/* The category eyebrow sits directly above the title, so it does
+   not need the larger gap the class carries by default. It is
+   colored by the card's category rather than always amber. */
+.project__header .eyebrow {
+    margin-bottom: var(--space-2);
+    color: var(--group);
+}
+
+/* The status pill also follows the card's category color. */
+.project .status {
+    color: var(--group);
+    background-color: var(--group-soft);
+    border-color: var(--group-dim);
+}
+
+/* Sized explicitly rather than left to the heading default, because
+   the same card is an h3 on the home page (under the "Projects"
+   section heading) and an h2 on the projects index page (where the
+   page title is the h1). The card should look identical either way. */
+.project__title {
+    font-size: var(--text-xl);
+}
+
+.project__desc {
+    margin-top: var(--space-4);
+}
+
+/* margin-top: auto pushes the tags to the bottom of the card. The
+   .card class is a flex column, so in a row of cards with
+   different amounts of text the tag rows still line up. */
+.project__tags {
+    margin-top: auto;
+    padding-top: var(--space-6);
+}
+
+/* --- Case study link -------------------------------------
+   Only present on cards that actually have a page to open. */
+.project__links {
+    margin-top: var(--space-5);
+}
+
+/* The link to the full projects index, below the grid. */
+.projects__all {
+    margin-top: var(--space-8);
+}
+
+.project__link {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+}
+
+/* The arrow slides right on hover. inline-block is required
+   because transform has no effect on inline elements. */
+.project__link span {
+    display: inline-block;
+    transition: transform var(--transition);
+}
+
+.project__link:hover {
+    text-decoration: none;
+}
+
+.project__link:hover span {
+    transform: translateX(3px);
+}
+
+
+/* ============================================================
+   11  SKILLS
+   ============================================================ */
+
+.skills__intro {
+    margin-bottom: var(--space-8);
+}
+
+/* Narrower minimum than the project grid, since these cards hold
+   short tags rather than paragraphs. The browser fits two or three
+   columns depending on the width available. */
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: var(--space-5);
+}
+
+/* Category name, separated from its tags by a hairline rule. Kept
+   at body size: these are labels, not section headings, and sizing
+   them up would compete with the h2 above. */
+.skill-group__title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--text-primary);
+    padding-bottom: var(--space-3);
+    margin-bottom: var(--space-4);
+
+    /* Tinted in the category's own color rather than plain gray. */
+    border-bottom: 1px solid var(--group-dim);
+}
+
+/* A small dot in the category color. This is what makes the
+   grouping readable at a glance: teal cards are systems work,
+   violet cards are physical infrastructure. */
+.skill-group__title::before {
+    content: "";
+    flex: 0 0 auto;
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background-color: var(--group);
+}
+
+
+/* ============================================================
+   12  EDUCATION
+   ============================================================ */
+
+.education-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+    gap: var(--space-5);
+}
+
+/* Degree and concentration on the left, status pill on the right.
+   flex-start keeps the pill aligned to the first line when a long
+   degree title wraps. */
+.education__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-4);
+}
+
+.education__header .status {
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
+
+.education__degree {
+    font-size: var(--text-lg);
+}
+
+.education__focus {
+    margin-top: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--accent);
+}
+
+/* The institution sits at the bottom in monospace, matching the
+   small technical labels used elsewhere. margin-top: auto holds it
+   to the bottom edge so both cards align. */
+.education__school {
+    margin-top: auto;
+    padding-top: var(--space-5);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+}
+
+
+/* ============================================================
+   13  CONTACT
+   ============================================================ */
+
+.contact__intro {
+    margin-bottom: var(--space-8);
+}
+
+/* A single column capped at reading width. Contact rows read as a
+   list, and stretching two or three of them across a wide screen
+   would leave awkward gaps. */
+.contact-list {
+    display: grid;
+    gap: var(--space-3);
+    max-width: var(--measure);
+}
+
+.contact-item {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-4);
+
+    padding: var(--space-4) var(--space-5);
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    transition: border-color var(--transition),
+                background-color var(--transition),
+                transform var(--transition);
+}
+
+/* Nudges right on hover, in the direction the link leads. */
+.contact-item:hover {
+    border-color: var(--accent-dim);
+    background-color: var(--bg-surface-raised);
+    text-decoration: none;
+    transform: translateX(4px);
+}
+
+/* Fixed-width label aligns the values into a column, matching the
+   key/value treatment used in the hero. */
+.contact-item__label {
+    flex: 0 0 auto;
+    min-width: 5rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--accent);
+}
+
+.contact-item__value {
+    color: var(--text-primary);
+    overflow-wrap: anywhere;
+}
+
+/* Location is not a link, so it gets no hover response. */
+.contact-item--static:hover {
+    border-color: var(--border);
+    background-color: var(--bg-surface);
+    transform: none;
+}
+
+.contact__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-top: var(--space-8);
+}

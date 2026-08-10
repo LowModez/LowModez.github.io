@@ -43,10 +43,25 @@
     <meta name="twitter:description" content="Computer Science student with an Information Technology background, building software in C++ alongside hands-on experience with systems and networking.">
     <meta name="twitter:image" content="https://lowmodez.github.io/assets/images/og-preview.png">
 
-    <link rel="stylesheet" href="css/styles.css">
+    <!-- Stylesheets load in cascade order: tokens, then the rules that
+         use them, then motion, then responsive overrides. Separate link
+         tags rather than @import so the browser fetches them in
+         parallel. See css/README.md. -->
+    <link rel="stylesheet" href="css/tokens.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/utilities.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/responsive.css">
 </head>
 
 <body>
+    <!-- Fills as the page scrolls. Pure CSS, see animations.css. -->
+    <div class="scroll-progress" aria-hidden="true"></div>
+
     <!-- Lets keyboard users jump straight past the navigation. -->
     <a class="skip-link" href="#main">Skip to main content</a>
 
@@ -60,7 +75,7 @@
             <!-- The toggle is only visible on narrow screens. CSS hides
                  it on desktop, where the menu is always shown.
                  aria-expanded tells screen readers whether the menu is
-                 open; js/main.js keeps that value accurate.
+                 open; js/mobile-nav.js keeps that value accurate.
                  aria-controls points at the element it opens. -->
             <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-menu">
                 <span class="nav-toggle__bars" aria-hidden="true"></span>
@@ -90,7 +105,7 @@
             <div class="hero__content">
                 <h1 id="hero-heading">Ethan McKinzie</h1>
 
-                <p class="hero__roles">
+                <p class="hero__roles has-caret">
                     Computer Science Student
                     <span class="hero__sep" aria-hidden="true">/</span>
                     IT Background
@@ -189,7 +204,7 @@
                             <p class="eyebrow">Software / C++</p>
                             <h3 class="project__title">Heartfire</h3>
                         </div>
-                        <p class="status">in-development</p>
+                        <p class="status status--live">in-development</p>
                     </div>
 
                     <p class="project__desc">
@@ -223,7 +238,7 @@
                             <p class="eyebrow">Systems / Virtualization</p>
                             <h3 class="project__title">Home Lab &amp; Virtualization Environment</h3>
                         </div>
-                        <p class="status">ongoing</p>
+                        <p class="status status--live">ongoing</p>
                     </div>
 
                     <p class="project__desc">
@@ -249,13 +264,21 @@
                     </p>
                 </article>
             </div>
+
+            <p class="projects__all" data-reveal>
+                <a class="project__link" href="projects/index.html">
+                    All projects <span aria-hidden="true">&rarr;</span>
+                </a>
+            </p>
         </section>
 
         <!-- ============================================================
              SKILLS
              Grouped by category. No percentages or proficiency bars.
              ============================================================ -->
-        <section id="skills" aria-labelledby="skills-heading">
+        <!-- accent-violet colors this section's label and heading rule. Cards
+             inside it set their own accent; see css/README.md. -->
+        <section id="skills" aria-labelledby="skills-heading" class="accent-violet">
             <p class="eyebrow" data-reveal>03 / Skills</p>
             <h2 id="skills-heading" class="section-title" data-reveal>Skills &amp; Technologies</h2>
 
@@ -266,7 +289,7 @@
             </p>
 
             <div class="skills-grid">
-                <article class="card skill-group" data-reveal>
+                <article class="card skill-group accent-amber" data-reveal>
                     <h3 class="skill-group__title">Programming</h3>
                     <ul class="tag-list">
                         <li class="tag">C++</li>
@@ -279,7 +302,7 @@
                     </ul>
                 </article>
 
-                <article class="card skill-group" data-reveal>
+                <article class="card skill-group accent-amber" data-reveal>
                     <h3 class="skill-group__title">Development Tools</h3>
                     <ul class="tag-list">
                         <li class="tag">Git</li>
@@ -342,7 +365,7 @@
         <!-- ============================================================
              EDUCATION
              ============================================================ -->
-        <section id="education" aria-labelledby="education-heading">
+        <section id="education" aria-labelledby="education-heading" class="accent-blue">
             <p class="eyebrow" data-reveal>04 / Education</p>
             <h2 id="education-heading" class="section-title" data-reveal>Education</h2>
 
@@ -355,7 +378,7 @@
                             <h3 class="education__degree">Bachelor of Science, Computer Science</h3>
                             <p class="education__focus">Artificial Intelligence Concentration</p>
                         </div>
-                        <p class="status">in progress</p>
+                        <p class="status status--live">in progress</p>
                     </div>
                     <p class="education__school">Full Sail University</p>
                 </li>
@@ -377,7 +400,7 @@
              CONTACT
              Email, GitHub, LinkedIn, and the resume link.
              ============================================================ -->
-        <section id="contact" aria-labelledby="contact-heading">
+        <section id="contact" aria-labelledby="contact-heading" class="accent-rose">
             <p class="eyebrow" data-reveal>05 / Contact</p>
             <h2 id="contact-heading" class="section-title" data-reveal>Contact</h2>
 
@@ -460,6 +483,11 @@
         </div>
     </footer>
 
+    <!-- Each file defines one behavior. main.js runs last and is the
+         only file that calls anything. -->
+    <script src="js/footer-year.js"></script>
+    <script src="js/mobile-nav.js"></script>
+    <script src="js/scroll-reveal.js"></script>
     <script src="js/main.js"></script>
 </body>
 

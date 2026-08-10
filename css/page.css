@@ -1,0 +1,120 @@
+/* ============================================================
+   page.css
+   Standalone pages: the projects index and the 404 page
+   ------------------------------------------------------------
+   Part of the stylesheet set loaded by every page. See
+   css/README.md for the load order and what belongs where.
+
+   These pages are neither the single-page home layout nor a long
+   case study, so they share a small page-header pattern here
+   rather than borrowing one of those.
+   ============================================================ */
+
+
+/* ============================================================
+   PAGE HEADER
+   Title block used at the top of a standalone page.
+   ============================================================ */
+
+.page-header {
+    padding-bottom: var(--space-8);
+    margin-bottom: var(--space-10);
+    border-bottom: 1px solid var(--border);
+
+    /* Rises into place on load. These pages have no hero, so the
+       heading itself is the first impression. */
+    animation: rise-in 550ms ease both;
+}
+
+.page-header__lead {
+    margin-top: var(--space-5);
+    font-size: var(--text-lg);
+}
+
+/* The accent rule beneath the title, matching the treatment on the
+   home page's section headings. */
+.page-header h1 {
+    position: relative;
+    padding-bottom: var(--space-4);
+}
+
+.page-header h1::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 3rem;
+    height: 2px;
+    border-radius: 999px;
+    background-color: var(--group);
+
+    transform-origin: left;
+    animation: draw-line 500ms ease 350ms both;
+}
+
+/* A closing note under a page's content. */
+.page-footnote {
+    margin-top: var(--space-10);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+    max-width: var(--measure);
+}
+
+
+/* ============================================================
+   NOT FOUND
+   The 404 page centers a short message instead of filling the
+   viewport with an empty layout.
+   ============================================================ */
+
+.notfound {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+
+    min-height: min(calc(100svh - var(--header-height)), 40rem);
+}
+
+/* Oversized status code, set in monospace and dimmed so it reads as
+   a label rather than shouting at someone who is already lost. */
+.notfound__code {
+    font-family: var(--font-mono);
+    font-size: clamp(4rem, 14vw, 8rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: var(--group);
+
+    /* Faint, so the message below it stays the focus. */
+    opacity: 0.22;
+
+    animation: fade-in 700ms ease both;
+}
+
+.notfound h1 {
+    margin-top: var(--space-4);
+}
+
+.notfound__lead {
+    margin-top: var(--space-5);
+    font-size: var(--text-lg);
+    max-width: var(--measure);
+}
+
+.notfound__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-top: var(--space-10);
+}
+
+/* The whole block rises in as one piece. */
+.notfound > * {
+    animation: rise-in 550ms ease both;
+}
+
+.notfound > *:nth-child(2) { animation-delay:  90ms; }
+.notfound > *:nth-child(3) { animation-delay: 180ms; }
+.notfound > *:nth-child(4) { animation-delay: 270ms; }

@@ -1,0 +1,221 @@
+/* ============================================================
+   base.css
+   Reset, base element styles, and the page background
+   ------------------------------------------------------------
+   Part of the stylesheet set loaded by every page. See
+   css/README.md for the load order and what belongs where.
+   ============================================================ */
+
+/* ============================================================
+   02  RESET
+   ------------------------------------------------------------
+   A deliberately small reset. Only the browser defaults that
+   actually cause layout problems are cleared.
+   ============================================================ */
+
+/* border-box means padding and borders count inside an element's
+   declared width, so a 300px card stays 300px once padded. */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* Browsers apply their own margins to headings, paragraphs, and
+   lists. Clearing them means all spacing comes from this file. */
+body,
+h1, h2, h3, h4, h5, h6,
+p,
+figure,
+blockquote,
+ul, ol,
+dl, dd {
+    margin: 0;
+}
+
+/* Lists used for navigation and tag rows should not show bullets.
+   Semantic lists inside prose keep their markers, restored in
+   section 03. */
+ul, ol {
+    padding: 0;
+    list-style: none;
+}
+
+/* Media should never overflow its container. */
+img,
+picture,
+svg,
+video {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+/* Form controls do not inherit typography by default. */
+input,
+button,
+textarea,
+select {
+    font: inherit;
+    color: inherit;
+}
+
+/* Long words and URLs wrap instead of forcing a horizontal
+   scrollbar on narrow screens. */
+h1, h2, h3, h4, h5, h6, p, li, a {
+    overflow-wrap: break-word;
+}
+
+
+/* ============================================================
+   03  BASE ELEMENTS
+   ============================================================ */
+
+html {
+    /* Anchor targets land below the fixed header instead of
+       hiding underneath it. */
+    scroll-padding-top: calc(var(--header-height) + var(--space-4));
+
+    /* Anchor links glide instead of jumping. The reduced-motion
+       block at the end of this file turns this off. */
+    scroll-behavior: smooth;
+
+    /* Guarantees no accidental sideways scrolling anywhere. */
+    overflow-x: hidden;
+
+    /* The base color lives on <html> rather than <body> so the
+       gradient layer below can sit behind the body content. */
+    background-color: var(--bg-primary);
+}
+
+body {
+    /* position: relative establishes the stacking context that the
+       fixed background layer below is placed into. */
+    position: relative;
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
+
+    /* Smoother glyph rendering for light text on dark backgrounds. */
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+
+    /* min-height keeps the footer at the bottom on short pages. */
+    min-height: 100vh;
+}
+
+/* --- Page background --------------------------------------
+   Three soft color washes covering the whole page, not just the
+   hero: amber upper left, teal upper right, violet along the
+   bottom. Together they keep large dark areas from looking flat.
+
+   Why a fixed pseudo-element instead of a background on <body>:
+     - position: fixed with inset: 0 covers the entire viewport at
+       full width, so the wash spans the page rather than being
+       confined to the centered content column.
+     - It stays put while the page scrolls, so the color does not
+       repeat or streak down a long page.
+     - background-attachment: fixed would achieve something similar
+       but is unreliable on iOS.
+
+   z-index: -1 places it behind all content. pointer-events: none
+   means it can never intercept a click.
+   Alpha values are 5-10%: present, never a glow effect.
+   ---------------------------------------------------------- */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+
+    background-image:
+        radial-gradient(60rem 40rem at 5% -10%, rgba(255, 176, 32, 0.10), transparent 65%),
+        radial-gradient(50rem 35rem at 100% 8%, rgba(91, 209, 196, 0.06), transparent 60%),
+        radial-gradient(55rem 40rem at 60% 105%, rgba(167, 139, 250, 0.05), transparent 60%);
+    background-repeat: no-repeat;
+}
+
+/* --- Headings ---------------------------------------------
+   Tighter line height than body text, since large type needs
+   proportionally less leading. text-wrap: balance evens out the
+   line lengths of multi-line headings in modern browsers. */
+h1, h2, h3, h4 {
+    line-height: var(--leading-tight);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+}
+
+h1 { font-size: var(--text-4xl); }
+h2 { font-size: var(--text-3xl); }
+h3 { font-size: var(--text-xl); }
+h4 { font-size: var(--text-lg); }
+
+/* --- Paragraphs ------------------------------------------- */
+p {
+    color: var(--text-secondary);
+    line-height: var(--leading-relaxed);
+}
+
+/* Paragraphs that follow another paragraph get separated. Using
+   the sibling selector avoids a trailing margin on the last one. */
+p + p {
+    margin-top: var(--space-4);
+}
+
+/* --- Links -----------------------------------------------
+   Underline offset keeps the line clear of letter descenders.
+   Color, not just underline, changes on hover. */
+a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+}
+
+/* --- Inline code ------------------------------------------ */
+code,
+kbd,
+samp,
+pre {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+}
+
+code {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.15em 0.4em;
+    color: var(--text-primary);
+}
+
+/* --- Horizontal rule -------------------------------------- */
+hr {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: var(--space-12) 0;
+}
+
+/* --- Focus ------------------------------------------------
+   :focus-visible shows the ring for keyboard users but not on
+   mouse clicks. A visible focus indicator is a requirement, not
+   a decoration, so it uses the accent color at full strength. */
+:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: var(--radius-sm);
+}
+
+/* --- Text selection --------------------------------------- */
+::selection {
+    background-color: var(--accent-dim);
+    color: var(--text-primary);
+}

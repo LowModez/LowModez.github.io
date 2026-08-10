@@ -31,10 +31,25 @@
     <meta name="twitter:description" content="Case study: a personal lab built with Proxmox, Windows Server, and Windows clients to practice virtualization, systems administration, and networking.">
     <meta name="twitter:image" content="https://lowmodez.github.io/assets/images/og-preview.png">
 
-    <link rel="stylesheet" href="../css/styles.css">
+    <!-- Stylesheets load in cascade order: tokens, then the rules that
+         use them, then motion, then responsive overrides. Separate link
+         tags rather than @import so the browser fetches them in
+         parallel. See css/README.md. -->
+    <link rel="stylesheet" href="../css/tokens.css">
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/utilities.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/header.css">
+    <link rel="stylesheet" href="../css/case-study.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <link rel="stylesheet" href="../css/responsive.css">
 </head>
 
 <body>
+    <!-- Fills as the page scrolls. Pure CSS, see animations.css. -->
+    <div class="scroll-progress" aria-hidden="true"></div>
+
     <a class="skip-link" href="#main">Skip to main content</a>
 
     <!-- ============================================================
@@ -251,6 +266,11 @@
         </div>
     </footer>
 
+    <!-- Each file defines one behavior. main.js runs last and is the
+         only file that calls anything. -->
+    <script src="../js/footer-year.js"></script>
+    <script src="../js/mobile-nav.js"></script>
+    <script src="../js/scroll-reveal.js"></script>
     <script src="../js/main.js"></script>
 </body>
 

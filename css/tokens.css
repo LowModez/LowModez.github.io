@@ -1,0 +1,178 @@
+/* ============================================================
+   tokens.css
+   Design tokens: every color, size, and spacing value
+   ------------------------------------------------------------
+   Part of the stylesheet set loaded by every page. See
+   css/README.md for the load order and what belongs where.
+   ============================================================ */
+
+/* ============================================================
+   01  VARIABLES
+   ------------------------------------------------------------
+   Every color, font size, and spacing value used on this site is
+   declared here. Rules further down reference these names instead
+   of raw values, so the entire look can be adjusted from one place.
+   ============================================================ */
+:root {
+    /* --- Backgrounds -----------------------------------------
+       Three depths: the page itself, raised panels such as cards,
+       and a slightly lighter step for hover states. */
+    --bg-primary: #0d0d0f;
+    --bg-surface: #15161a;
+    --bg-surface-raised: #1c1e23;
+
+    /* --- Borders ---------------------------------------------
+       Low-contrast dividers. Subtle on purpose: on a dark theme,
+       borders should suggest structure, not draw attention. */
+    --border: #26282f;
+    --border-strong: #33363f;
+
+    /* --- Text -----------------------------------------------
+       Off-white rather than pure #fff. Pure white on near-black
+       is harsh to read for more than a paragraph or two.
+       Contrast against --bg-primary:
+         primary   ~15.9:1
+         secondary  ~6.9:1
+       Both clear WCAG AA (4.5:1) for body text. */
+    --text-primary: #e8e8ea;
+    --text-secondary: #9a9ba1;
+
+    /* Lightened from #6f717a, which measured 3.99:1 on the page
+       background and 3.43:1 on raised panels - both below the 4.5:1
+       WCAG AA minimum for normal-size text. This value clears AA on
+       all three background depths (5.5:1, 5.1:1, 4.7:1). It is used
+       for footer text and figure captions, which are small, so
+       passing here matters more than the extra bit of contrast
+       costs in visual hierarchy. */
+    --text-muted: #868892;
+
+    /* --- Accent ---------------------------------------------
+       Warm amber, one accent only. ~10.6:1 against the page
+       background, so it stays legible as link and label text
+       rather than being decoration that cannot be read.
+       The dim and soft variants are for borders and tinted
+       backgrounds, never for text. */
+    --accent: #ffb020;
+    --accent-hover: #ffc352;
+    --accent-dim: rgba(255, 176, 32, 0.35);
+    --accent-soft: rgba(255, 176, 32, 0.09);
+
+    /* --- Category accents -----------------------------------
+       Two supporting hues. These are not decoration: each one is
+       tied to a category of work, so the color carries meaning.
+
+         amber   software, and anything currently active
+         teal    systems and networking
+         violet  physical infrastructure and hardware
+
+       Amber stays dominant. These two appear only on category
+       labels and the hover states of the cards they belong to.
+       Contrast against --bg-primary:
+         teal   ~11.7:1
+         violet  ~7.2:1
+       Both clear WCAG AA, since both are used as label text. */
+    --accent-2: #5bd1c4;
+    --accent-2-dim: rgba(91, 209, 196, 0.35);
+    --accent-2-soft: rgba(91, 209, 196, 0.09);
+
+    --accent-3: #a78bfa;
+    --accent-3-dim: rgba(167, 139, 250, 0.35);
+    --accent-3-soft: rgba(167, 139, 250, 0.09);
+
+    /* Blue for education and study, rose for getting in touch.
+       Contrast against --bg-primary:
+         blue  ~9.1:1
+         rose ~10.0:1
+       Both clear AAA, measured on all three background depths. */
+    --accent-4: #7db4ff;
+    --accent-4-dim: rgba(125, 180, 255, 0.35);
+    --accent-4-soft: rgba(125, 180, 255, 0.09);
+
+    --accent-5: #ff9fb0;
+    --accent-5-dim: rgba(255, 159, 176, 0.35);
+    --accent-5-soft: rgba(255, 159, 176, 0.09);
+
+    /* Default "current category" colors. A card can override these
+       three on itself, and every rule that references them picks up
+       the change without needing its own variant. */
+    --group: var(--accent);
+    --group-dim: var(--accent-dim);
+    --group-soft: var(--accent-soft);
+
+    /* --- Typography -----------------------------------------
+       System font stacks: no web fonts to download, which means
+       no extra network request, no layout shift while a font
+       loads, and text that renders instantly. Monospace is
+       reserved for small technical labels. */
+    --font-sans: system-ui, -apple-system, "Segoe UI", Roboto,
+                 "Helvetica Neue", Arial, sans-serif;
+    --font-mono: ui-monospace, "Cascadia Code", Consolas,
+                 "SF Mono", Menlo, monospace;
+
+    /* Fluid type scale. clamp(min, preferred, max) lets each size
+       grow with the viewport and then stop, so headings shrink
+       sensibly on phones without a pile of media queries.
+       The 'vw' unit in the middle value is a percentage of the
+       viewport width. */
+    --text-xs: 0.75rem;
+    --text-sm: 0.875rem;
+    --text-base: 1rem;
+    --text-lg: 1.125rem;
+    --text-xl: clamp(1.25rem, 0.6vw + 1.1rem, 1.5rem);
+    --text-2xl: clamp(1.5rem, 1.2vw + 1.2rem, 2rem);
+    --text-3xl: clamp(1.875rem, 2vw + 1.3rem, 2.75rem);
+    --text-4xl: clamp(2.25rem, 3.5vw + 1.4rem, 4rem);
+
+    --leading-tight: 1.2;
+    --leading-normal: 1.6;
+    --leading-relaxed: 1.75;
+
+    /* Wider letter-spacing for the small uppercase monospace
+       labels. Cramped uppercase text is hard to read. */
+    --tracking-wide: 0.08em;
+    --tracking-wider: 0.14em;
+
+    /* --- Spacing --------------------------------------------
+       A 4px scale. Sticking to these steps is what keeps spacing
+       consistent between sections built weeks apart. */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.25rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+    --space-10: 2.5rem;
+    --space-12: 3rem;
+    --space-16: 4rem;
+    --space-20: 5rem;
+    --space-24: 6rem;
+
+    /* --- Layout ---------------------------------------------
+       Content stops at --container so lines of text never get
+       uncomfortably long on a wide monitor. --measure caps
+       paragraph width for the same reason. */
+    --container: 68rem;
+    --measure: 42rem;
+    --gutter: var(--space-6);
+
+    /* Vertical rhythm between major sections. */
+    --section-gap: clamp(var(--space-16), 8vw, var(--space-24));
+
+    /* --- Borders and shadows --------------------------------- */
+    --radius-sm: 4px;
+    --radius: 8px;
+    --radius-lg: 12px;
+
+    --shadow-raised: 0 8px 24px rgba(0, 0, 0, 0.45);
+
+    /* --- Motion ---------------------------------------------
+       Short, consistent transitions. Anything longer than about
+       250ms starts to feel sluggish on hover. */
+    --transition-fast: 120ms ease;
+    --transition: 180ms ease;
+
+    /* Height of the fixed header, reserved now so anchor links
+       and scroll offsets can reference it in the next phase. */
+    --header-height: 4rem;
+}

@@ -1,0 +1,71 @@
+/* ============================================================
+   layout.css
+   Containers, section rhythm, and the footer
+   ------------------------------------------------------------
+   Part of the stylesheet set loaded by every page. See
+   css/README.md for the load order and what belongs where.
+   ============================================================ */
+
+/* ============================================================
+   04  LAYOUT / CONTAINERS
+   ============================================================ */
+
+/* Centers content and stops it from spanning an entire wide
+   monitor. margin-inline is shorthand for left and right. */
+.container {
+    width: 100%;
+    max-width: var(--container);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+}
+
+/* Each top-level section is its own centered container, so no
+   extra wrapper markup is needed inside index.html. */
+main > section {
+    width: 100%;
+    max-width: var(--container);
+    margin-inline: auto;
+    padding: var(--section-gap) var(--gutter);
+}
+
+/* Caps paragraph width for readability. Roughly 65-75 characters
+   per line is the comfortable range for sustained reading. */
+.measure {
+    max-width: var(--measure);
+}
+
+
+/* ============================================================
+   14  FOOTER
+   ------------------------------------------------------------
+   Minimal for now so the bottom of the page does not look
+   unfinished. Expanded in the contact / footer phase.
+   ============================================================ */
+
+.site-footer {
+    border-top: 1px solid var(--border);
+    padding-block: var(--space-8);
+    margin-top: var(--space-12);
+}
+
+/* Copyright left, build note right. wrap lets them stack on a
+   narrow screen without a media query. */
+.site-footer__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3) var(--space-6);
+}
+
+.site-footer p {
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+}
+
+/* Monospace, and honest about the stack. On a developer portfolio
+   this is a small credibility signal rather than filler. */
+.site-footer__note {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+}

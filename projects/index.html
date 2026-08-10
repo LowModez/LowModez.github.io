@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Projects | Ethan McKinzie</title>
+    <meta name="description" content="Software and systems projects by Ethan McKinzie, including a C++ terminal dungeon crawler and a Proxmox virtualization lab.">
+
+    <link rel="canonical" href="https://lowmodez.github.io/projects/">
+    <meta name="theme-color" content="#0d0d0f">
+
+    <!-- Paths step up one level, since this page lives in /projects/. -->
+    <link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="../assets/icons/favicon-32.png" sizes="32x32" type="image/png">
+    <link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Ethan McKinzie">
+    <meta property="og:title" content="Projects | Ethan McKinzie">
+    <meta property="og:description" content="Software and systems projects, including a C++ terminal dungeon crawler and a Proxmox virtualization lab.">
+    <meta property="og:url" content="https://lowmodez.github.io/projects/">
+    <meta property="og:image" content="https://lowmodez.github.io/assets/images/og-preview.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Ethan McKinzie, Computer Science Student, IT Background, Developer.">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Projects | Ethan McKinzie">
+    <meta name="twitter:description" content="Software and systems projects, including a C++ terminal dungeon crawler and a Proxmox virtualization lab.">
+    <meta name="twitter:image" content="https://lowmodez.github.io/assets/images/og-preview.png">
+
+    <!-- Stylesheets load in cascade order: tokens, then the rules that
+         use them, then motion, then responsive overrides. Separate link
+         tags rather than @import so the browser fetches them in
+         parallel. See css/README.md.
+         home.css is included because this page reuses the project card
+         and grid styles defined there. -->
+    <link rel="stylesheet" href="../css/tokens.css">
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/utilities.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/header.css">
+    <link rel="stylesheet" href="../css/home.css">
+    <link rel="stylesheet" href="../css/page.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+</head>
+
+<body>
+    <!-- Fills as the page scrolls. Pure CSS, see animations.css. -->
+    <div class="scroll-progress" aria-hidden="true"></div>
+
+    <a class="skip-link" href="#main">Skip to main content</a>
+
+    <!-- ============================================================
+         HEADER / NAVIGATION
+         ============================================================ -->
+    <header class="site-header">
+        <div class="site-header__inner container">
+            <a class="brand" href="../index.html">Ethan McKinzie</a>
+
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-menu">
+                <span class="nav-toggle__bars" aria-hidden="true"></span>
+                <span class="visually-hidden">Menu</span>
+            </button>
+
+            <nav class="site-nav" id="site-menu" aria-label="Main navigation">
+                <ul class="site-nav__list">
+                    <li><a href="../index.html#about">About</a></li>
+                    <li><a href="../index.html#projects">Projects</a></li>
+                    <li><a href="../index.html#skills">Skills</a></li>
+                    <li><a href="../index.html#education">Education</a></li>
+                    <li><a href="../index.html#contact">Contact</a></li>
+                    <li class="site-nav__action">
+                        <a class="btn btn--ghost btn--sm" href="https://github.com/LowModez" target="_blank" rel="noopener">GitHub</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main">
+        <section aria-labelledby="projects-heading">
+            <header class="page-header">
+                <p class="eyebrow">Index / Projects</p>
+                <h1 id="projects-heading">Projects</h1>
+                <p class="page-header__lead measure">
+                    Everything I've built and documented so far. Each project has a
+                    case study covering what it does, how it is put together, and what
+                    I was practicing by building it.
+                </p>
+            </header>
+
+            <div class="project-grid">
+                <!-- --- Heartfire --- -->
+                <article class="card card--interactive project" data-reveal>
+                    <div class="project__header">
+                        <div>
+                            <p class="eyebrow">Software / C++</p>
+                            <h2 class="project__title">Heartfire</h2>
+                        </div>
+                        <p class="status status--live">in-development</p>
+                    </div>
+
+                    <p class="project__desc">
+                        A terminal-based dark fantasy dungeon crawler built to practice
+                        multi-file program structure, classes, and game state in C++. The
+                        player creates a character, explores rooms across multiple floors,
+                        fights turn-based encounters, searches for keys and treasure, and
+                        descends toward a final dragon encounter.
+                    </p>
+
+                    <ul class="tag-list project__tags" aria-label="Technologies used">
+                        <li class="tag">C++</li>
+                        <li class="tag">OOP</li>
+                        <li class="tag">Visual Studio</li>
+                        <li class="tag">Git</li>
+                        <li class="tag">ANSI / ASCII UI</li>
+                    </ul>
+
+                    <p class="project__links">
+                        <a class="project__link" href="heartfire.html">
+                            Read case study <span aria-hidden="true">&rarr;</span>
+                        </a>
+                    </p>
+                </article>
+
+                <!-- --- Home Lab --- -->
+                <article class="card card--interactive project accent-teal" data-reveal>
+                    <div class="project__header">
+                        <div>
+                            <p class="eyebrow">Systems / Virtualization</p>
+                            <h2 class="project__title">Home Lab &amp; Virtualization</h2>
+                        </div>
+                        <p class="status status--live">ongoing</p>
+                    </div>
+
+                    <p class="project__desc">
+                        A personal lab environment built to practice virtualization, Windows
+                        Server administration, and networking outside of a production
+                        setting. Proxmox runs as the hypervisor hosting Windows Server and
+                        Windows client virtual machines, which gives me somewhere to work
+                        through Active Directory concepts and virtual networking.
+                    </p>
+
+                    <ul class="tag-list project__tags" aria-label="Technologies used">
+                        <li class="tag">Proxmox</li>
+                        <li class="tag">Windows Server</li>
+                        <li class="tag">Active Directory</li>
+                        <li class="tag">Virtual Networking</li>
+                    </ul>
+
+                    <p class="project__links">
+                        <a class="project__link" href="home-lab.html">
+                            Read case study <span aria-hidden="true">&rarr;</span>
+                        </a>
+                    </p>
+                </article>
+            </div>
+
+            <p class="page-footnote" data-reveal>
+                More will appear here as I build them. I would rather list two projects
+                I can talk through in detail than pad the page.
+            </p>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container site-footer__inner">
+            <p class="site-footer__copy">&copy; <span data-current-year>2026</span> Ethan McKinzie</p>
+            <p class="site-footer__note">Built with HTML, CSS, and vanilla JavaScript.</p>
+        </div>
+    </footer>
+
+    <!-- Each file defines one behavior. main.js runs last and is the
+         only file that calls anything. -->
+    <script src="../js/footer-year.js"></script>
+    <script src="../js/mobile-nav.js"></script>
+    <script src="../js/scroll-reveal.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+
+</html>

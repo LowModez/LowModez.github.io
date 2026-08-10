@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Page not found | Ethan McKinzie</title>
+    <meta name="description" content="That page does not exist on Ethan McKinzie's portfolio.">
+
+    <!-- A 404 page should never appear in search results. -->
+    <meta name="robots" content="noindex">
+    <meta name="theme-color" content="#0d0d0f">
+
+    <!-- ============================================================
+         IMPORTANT: every path on this page is root-absolute, starting
+         with a single slash.
+
+         GitHub Pages serves this file for ANY address that does not
+         exist, at any depth. A visitor could land here from
+         /projects/typo/ or /a/b/c/. Relative paths such as
+         "css/base.css" would resolve against whatever fake folder
+         they typed and fail to load, leaving an unstyled page.
+
+         The trade-off: root-absolute paths do not resolve when this
+         single file is opened directly from disk by double-clicking
+         it. That is fine, because a 404 page only does its job when
+         it is being served.
+         ============================================================ -->
+    <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="/assets/icons/favicon-32.png" sizes="32x32" type="image/png">
+    <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+
+    <link rel="stylesheet" href="/css/tokens.css">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/utilities.css">
+    <link rel="stylesheet" href="/css/components.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/page.css">
+    <link rel="stylesheet" href="/css/animations.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+</head>
+
+<body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+
+    <!-- ============================================================
+         HEADER / NAVIGATION
+         ============================================================ -->
+    <header class="site-header">
+        <div class="site-header__inner container">
+            <a class="brand" href="/">Ethan McKinzie</a>
+
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-menu">
+                <span class="nav-toggle__bars" aria-hidden="true"></span>
+                <span class="visually-hidden">Menu</span>
+            </button>
+
+            <nav class="site-nav" id="site-menu" aria-label="Main navigation">
+                <ul class="site-nav__list">
+                    <li><a href="/#about">About</a></li>
+                    <li><a href="/#projects">Projects</a></li>
+                    <li><a href="/#skills">Skills</a></li>
+                    <li><a href="/#education">Education</a></li>
+                    <li><a href="/#contact">Contact</a></li>
+                    <li class="site-nav__action">
+                        <a class="btn btn--ghost btn--sm" href="https://github.com/LowModez" target="_blank" rel="noopener">GitHub</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main">
+        <section class="notfound" aria-labelledby="notfound-heading">
+            <p class="notfound__code" aria-hidden="true">404</p>
+
+            <h1 id="notfound-heading">Page not found</h1>
+
+            <p class="notfound__lead">
+                That address does not exist. It may have been moved, or the link
+                that brought you here may have a typo in it.
+            </p>
+
+            <div class="notfound__actions">
+                <a class="btn btn--primary" href="/">Back to home</a>
+                <a class="btn btn--ghost" href="/projects/">View projects</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container site-footer__inner">
+            <p class="site-footer__copy">&copy; <span data-current-year>2026</span> Ethan McKinzie</p>
+            <p class="site-footer__note">Built with HTML, CSS, and vanilla JavaScript.</p>
+        </div>
+    </footer>
+
+    <script src="/js/footer-year.js"></script>
+    <script src="/js/mobile-nav.js"></script>
+    <script src="/js/scroll-reveal.js"></script>
+    <script src="/js/main.js"></script>
+</body>
+
+</html>
