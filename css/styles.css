@@ -1025,6 +1025,68 @@ main > section {
    13  CONTACT
    ============================================================ */
 
+.contact__intro {
+    margin-bottom: var(--space-8);
+}
+
+/* A single column capped at reading width. Contact rows read as a
+   list, and stretching two or three of them across a wide screen
+   would leave awkward gaps. */
+.contact-list {
+    display: grid;
+    gap: var(--space-3);
+    max-width: var(--measure);
+}
+
+.contact-item {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-4);
+
+    padding: var(--space-4) var(--space-5);
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    transition: border-color var(--transition),
+                background-color var(--transition);
+}
+
+.contact-item:hover {
+    border-color: var(--accent-dim);
+    background-color: var(--bg-surface-raised);
+    text-decoration: none;
+}
+
+/* Fixed-width label aligns the values into a column, matching the
+   key/value treatment used in the hero. */
+.contact-item__label {
+    flex: 0 0 auto;
+    min-width: 5rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--accent);
+}
+
+.contact-item__value {
+    color: var(--text-primary);
+    overflow-wrap: anywhere;
+}
+
+/* Location is not a link, so it gets no hover response. */
+.contact-item--static:hover {
+    border-color: var(--border);
+    background-color: var(--bg-surface);
+}
+
+.contact__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-top: var(--space-8);
+}
+
 
 /* ============================================================
    14  FOOTER
@@ -1036,11 +1098,29 @@ main > section {
 .site-footer {
     border-top: 1px solid var(--border);
     padding-block: var(--space-8);
+    margin-top: var(--space-12);
+}
+
+/* Copyright left, build note right. wrap lets them stack on a
+   narrow screen without a media query. */
+.site-footer__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3) var(--space-6);
 }
 
 .site-footer p {
     font-size: var(--text-sm);
     color: var(--text-muted);
+}
+
+/* Monospace, and honest about the stack. On a developer portfolio
+   this is a small credibility signal rather than filler. */
+.site-footer__note {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
 }
 
 

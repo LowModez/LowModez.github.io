@@ -345,6 +345,72 @@
         <section id="contact" aria-labelledby="contact-heading">
             <p class="eyebrow">05 / Contact</p>
             <h2 id="contact-heading" class="section-title">Contact</h2>
+
+            <p class="contact__intro measure">
+                I'm open to software development, IT, and technical support roles,
+                including internships. If you'd like to talk about an opportunity,
+                the links below are the best way to reach me.
+            </p>
+
+            <!-- ============================================================
+                 ETHAN: three items are commented out below because I will
+                 not publish contact details you have not confirmed.
+                 Uncomment and fill in whichever you want on the site:
+
+                   1. EMAIL     - which address should recruiters use?
+                                  A firstname.lastname style address reads
+                                  better to a hiring manager than a handle.
+                   2. LINKEDIN  - paste your profile URL.
+                   3. LOCATION  - "Dallas-Fort Worth, Texas" or similar.
+                                  Recruiters filter on location, so this
+                                  usually helps. City and state only, never
+                                  a street address.
+
+                 The resume button further down works the same way: drop the
+                 PDF into assets/documents/ and uncomment it.
+                 ============================================================ -->
+            <ul class="contact-list">
+                <!--
+                <li>
+                    <a class="contact-item" href="mailto:YOUR_EMAIL_HERE">
+                        <span class="contact-item__label">email</span>
+                        <span class="contact-item__value">YOUR_EMAIL_HERE</span>
+                    </a>
+                </li>
+                -->
+
+                <li>
+                    <a class="contact-item" href="https://github.com/LowModez" target="_blank" rel="noopener">
+                        <span class="contact-item__label">github</span>
+                        <span class="contact-item__value">github.com/LowModez</span>
+                    </a>
+                </li>
+
+                <!--
+                <li>
+                    <a class="contact-item" href="YOUR_LINKEDIN_URL_HERE" target="_blank" rel="noopener">
+                        <span class="contact-item__label">linkedin</span>
+                        <span class="contact-item__value">linkedin.com/in/YOUR_HANDLE</span>
+                    </a>
+                </li>
+                -->
+
+                <!--
+                <li>
+                    <p class="contact-item contact-item--static">
+                        <span class="contact-item__label">location</span>
+                        <span class="contact-item__value">Dallas-Fort Worth, Texas</span>
+                    </p>
+                </li>
+                -->
+            </ul>
+
+            <!--
+            <div class="contact__actions">
+                <a class="btn btn--primary" href="assets/documents/YOUR_RESUME.pdf" target="_blank" rel="noopener">View Resume</a>
+                <a class="btn btn--ghost" href="assets/documents/YOUR_RESUME.pdf" download>Download Resume</a>
+            </div>
+            -->
         </section>
     </main>
 
@@ -352,9 +418,10 @@
          FOOTER
          ============================================================ -->
     <footer class="site-footer">
-        <div class="container">
+        <div class="container site-footer__inner">
             <!-- The year is filled in by js/main.js so it never goes stale. -->
-            <p>&copy; <span data-current-year>2026</span> Ethan McKinzie</p>
+            <p class="site-footer__copy">&copy; <span data-current-year>2026</span> Ethan McKinzie</p>
+            <p class="site-footer__note">Built with HTML, CSS, and vanilla JavaScript.</p>
         </div>
     </footer>
 
