@@ -45,6 +45,8 @@ With five pages and no build step, that is the cheaper problem.
   bare element selector.
 - **Anything that moves** goes in `animations.css`, including its keyframes,
   and gets a matching entry in the reduced-motion block in `responsive.css`.
+  That second half is not optional: an animation without a reduced-motion
+  entry is an unfinished animation.
 - **Anything specific to one page** goes in that page's file.
 
 ## The accent system
@@ -76,6 +78,60 @@ component needs a color variant of its own.
 A card inside a section inherits that section's accent unless it sets its own.
 That is why cards that should stay amber inside a colored section carry
 `.accent-amber` explicitly.
+
+## How motion is organized
+
+`animations.css` is grouped so a given effect is findable without reading the
+whole file:
+
+| Group | Contains |
+|---|---|
+| A0 | `@property` registrations, which make gradient angles animatable |
+| A | Every `@keyframes`, defined once and reused below |
+| B | Page load: header, nav, hero, case study headers |
+| C | Reveal on scroll, including tag and list cascades |
+| D | Hover and interaction basics |
+| E | Continuous ambient motion |
+| F | Scroll-driven progress bar |
+| G | Glow on hover |
+| H | Pointer spotlight |
+| H2 | Travelling border light |
+| H3 | Three-dimensional tilt |
+| H4 | Page-wide cursor glow |
+| H5 | Clip-path wipe reveals |
+| H6 | Button ripple |
+| H7 | Animated progress bar gradient |
+| H8 | Hero parallax on scroll |
+| I | Text effects |
+| J | Ambient background layers |
+| K | Media and figures |
+| L | Micro-interactions |
+
+### Progressive enhancement
+
+Eleven `@supports` blocks guard the techniques that are not yet universal:
+`mask-composite`, `background-clip: text`, and scroll-driven
+`animation-timeline`. Each is written so that a browser without the feature
+shows the plain version rather than a broken one.
+
+The `background-clip: text` guard is the one to be careful with. That technique
+needs `color: transparent`, so without the guard the hero name would be
+invisible rather than merely unanimated.
+
+### What JavaScript is allowed to do
+
+Three effects need the pointer's position, which CSS cannot read. The scripts
+that supply it write nothing but coordinates:
+
+| File | Writes | Read by |
+|---|---|---|
+| `card-pointer.js` | `--mx`, `--my`, `--rx`, `--ry` | Card spotlight and tilt |
+| `cursor-glow.js` | `--cursor-x`, `--cursor-y` | The page-wide glow |
+
+No script sets a color, a size, an opacity, or a transform. Every visual
+decision stays in this folder. All of them exit early under reduced motion and
+on devices without a hovering pointer, and every property they write has a
+neutral default declared in CSS, so a script that never loads costs nothing.
 
 ## Adding a category color
 

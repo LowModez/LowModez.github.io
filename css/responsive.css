@@ -153,21 +153,109 @@
         transform: none !important;
     }
 
-    /* The shine sweep and the ambient background drift are removed
-       outright rather than merely shortened. */
+    /* The shine sweep is removed outright rather than shortened. */
     .btn--primary::after,
     .card--interactive::after {
         display: none;
     }
 
-    body::before {
+    /* Both ambient background layers hold completely still. They keep
+       their color, so the page still has depth, but nothing drifts,
+       floats, or shifts hue. */
+    body::before,
+    body::after {
+        animation: none !important;
+        filter: none !important;
+    }
+
+    /* The pulsing dot, its halo, the blinking caret, and the cycling
+       hero separators all hold still. */
+    .status--live::before,
+    .has-caret::after,
+    .hero__sep {
         animation: none !important;
     }
 
-    /* The pulsing dot and blinking caret hold still. */
-    .status--live::before,
-    .has-caret::after {
+    /* The hero name is painted with a moving gradient and relies on
+       color: transparent to show it. With the animation stopped it
+       must be returned to a plain solid color, or the name would be
+       left frozen mid-sweep. */
+    .hero h1 {
+        background-image: none !important;
+        color: var(--text-primary) !important;
         animation: none !important;
+    }
+
+    /* Hover glows are kept: they are a state signal, not movement.
+       Only the effects that travel or scale are removed. */
+    .case-gallery figure:hover,
+    .case-gallery figure:hover img,
+    .education:hover::after {
+        transform: none;
+    }
+
+    /* Letter-spacing changes reflow text, which is a form of motion
+       even though nothing appears to move. */
+    section:hover > .eyebrow {
+        letter-spacing: var(--tracking-wider);
+    }
+
+    /* The pointer effects are skipped by js/card-pointer.js under
+       this setting, so the light stays centred and the card stays
+       flat. Pinning the values here makes that true even if the
+       script somehow runs. */
+    .card--interactive {
+        --mx: 50%;
+        --my: 50%;
+        --rx: 0deg;
+        --ry: 0deg;
+    }
+
+    /* No lean, only the lift. */
+    .card--interactive:hover {
+        transform: none;
+    }
+
+    /* The travelling border light becomes a static outline: the ring
+       still marks the hovered card, it just does not travel. */
+    .card:hover::before,
+    .card:focus-within::before {
+        animation: none !important;
+    }
+
+    /* The page-wide cursor glow is removed. js/cursor-glow.js also
+       returns early, so it is never revealed in the first place. */
+    .cursor-glow {
+        display: none;
+    }
+
+    /* Clip-path wipes, the button ripple, the 404 glitch, and the
+       hero's scroll-linked departure all stop. Each is set back to
+       its finished state so nothing is left part-way through. */
+    .js-reveal .section-title[data-reveal].is-visible {
+        animation: none !important;
+        clip-path: none !important;
+    }
+
+    .btn::before {
+        display: none;
+    }
+
+    .notfound__code,
+    .notfound__code:hover {
+        animation: none !important;
+        text-shadow: none !important;
+        transform: none !important;
+    }
+
+    .hero__content {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    .scroll-progress {
+        display: none;
     }
 
     /* A scroll-linked progress bar is movement tied directly to

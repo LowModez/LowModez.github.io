@@ -26,6 +26,36 @@
 
 
 /* ============================================================
+   A0  REGISTERED PROPERTIES
+   ------------------------------------------------------------
+   A plain custom property is just a string to the browser, so it
+   cannot be animated: there is no way to know that "0deg" and
+   "360deg" are two ends of a range rather than two unrelated words.
+
+   @property registers a property with a type, which tells the
+   browser how to interpolate it. Registering --ring-angle as an
+   <angle> is what makes it possible to animate a gradient's
+   rotation, which is otherwise impossible in CSS.
+
+   Without @property support the properties still work as ordinary
+   variables using their initial values, so the effects that depend
+   on them appear but hold still rather than moving.
+   ============================================================ */
+
+@property --ring-angle {
+    syntax: "<angle>";
+    inherits: false;
+    initial-value: 0deg;
+}
+
+@property --sweep-pos {
+    syntax: "<percentage>";
+    inherits: false;
+    initial-value: 0%;
+}
+
+
+/* ============================================================
    A  KEYFRAMES
    All named animations, defined once and reused below.
    ============================================================ */
@@ -93,6 +123,87 @@
 @keyframes caret-blink {
     0%, 45%   { opacity: 1; }
     55%, 100% { opacity: 0; }
+}
+
+/* A highlight travelling across text. Paired with background-clip:
+   text, this reads as a sheen crossing the letters. The background
+   is wider than the element, so moving its position moves the
+   bright band across the glyphs. */
+@keyframes shimmer-text {
+      0% { background-position: 200% 50%; }
+    100% { background-position: -60% 50%; }
+}
+
+/* A halo that breathes outward and fades. Used on the dot of an
+   in-progress status pill, so it reads as something live. */
+@keyframes glow-ring {
+      0% { box-shadow: 0 0 0 0 var(--group-dim); }
+     70% { box-shadow: 0 0 0 7px transparent; }
+    100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+/* Two independent floating paths, so decorative orbs never move in
+   sync with each other. */
+@keyframes float-a {
+      0% { transform: translate(0, 0) scale(1); }
+     50% { transform: translate(4%, -3%) scale(1.1); }
+    100% { transform: translate(0, 0) scale(1); }
+}
+
+@keyframes float-b {
+      0% { transform: translate(0, 0) scale(1.05); }
+     50% { transform: translate(-3%, 4%) scale(0.95); }
+    100% { transform: translate(0, 0) scale(1.05); }
+}
+
+/* Cycles a color through the accent palette. Used on the small
+   separators in the hero, which is the one place the whole color
+   system can be shown off without confusing anything. */
+@keyframes cycle-accents {
+      0% { color: var(--accent); }
+     25% { color: var(--accent-2); }
+     50% { color: var(--accent-3); }
+     75% { color: var(--accent-4); }
+    100% { color: var(--accent); }
+}
+
+/* Nudge right and settle back, for arrows that indicate direction. */
+@keyframes nudge-right {
+      0% { transform: translateX(0); }
+     50% { transform: translateX(5px); }
+    100% { transform: translateX(0); }
+}
+
+/* Rotates the registered angle a full turn. Because --ring-angle is
+   registered as an <angle> above, the browser can interpolate it,
+   which spins the conic gradient that uses it. */
+@keyframes ring-spin {
+    to { --ring-angle: 360deg; }
+}
+
+/* Slides a gradient's position across, for the progress bar. */
+@keyframes sweep-gradient {
+    to { --sweep-pos: 100%; }
+}
+
+/* Wipes an element into view from the left by shrinking the inset
+   on its right edge. clip-path reveals rather than fades, which
+   reads as a sharper, more deliberate entrance than opacity. */
+@keyframes wipe-in {
+    from { clip-path: inset(0 100% 0 0); }
+    to   { clip-path: inset(0 0 0 0); }
+}
+
+/* An RGB split that jitters, then settles. Used once, on the 404
+   page's status code, where being playful costs nothing. */
+@keyframes glitch {
+      0%   { transform: none;                    text-shadow: none; }
+     18%   { transform: translate(-3px, 1px);    text-shadow: 3px 0 var(--accent-5), -3px 0 var(--accent-2); }
+     22%   { transform: translate(2px, -2px);    text-shadow: -3px 0 var(--accent-5), 3px 0 var(--accent-2); }
+     26%   { transform: none;                    text-shadow: none; }
+     58%   { transform: translate(2px, 1px);     text-shadow: 2px 0 var(--accent-4), -2px 0 var(--accent-3); }
+     61%   { transform: none;                    text-shadow: none; }
+    100%   { transform: none;                    text-shadow: none; }
 }
 
 
@@ -337,17 +448,7 @@
     transform: translateY(-1px);
 }
 
-/* --- Skill category dot ----------------------------------
-   Grows slightly when its card is hovered, which ties the dot to
-   the card it labels. */
-.skill-group__title::before {
-    transition: transform var(--transition), box-shadow var(--transition);
-}
-
-.card:hover .skill-group__title::before {
-    transform: scale(1.35);
-    box-shadow: 0 0 0 4px var(--group-soft);
-}
+/* The skill category dot's hover treatment is in section L. */
 
 /* --- Case study back link -------------------------------- */
 .case__back {
@@ -452,4 +553,668 @@ body::before {
         animation: draw-line linear;
         animation-timeline: scroll();
     }
+}
+
+
+/* ============================================================
+   G  GLOW ON HOVER
+   ------------------------------------------------------------
+   Nothing on this site glows at rest. Every glow here responds to a
+   cursor or to keyboard focus, and each is built from the --glow
+   tokens, so the light always matches the element's own category
+   accent: amber cards glow amber, teal cards glow teal.
+
+   box-shadow is used rather than filter: drop-shadow, because
+   box-shadow is composited by the GPU and does not force the
+   element to be re-rasterized on every frame.
+   ============================================================ */
+
+.card {
+    transition: border-color var(--transition),
+                transform var(--transition-slow) var(--ease-out),
+                box-shadow var(--transition-slow);
+}
+
+.card--interactive:hover,
+.card--interactive:focus-within {
+    box-shadow: var(--glow);
+}
+
+/* --- Buttons ---------------------------------------------- */
+.btn--primary:hover {
+    box-shadow:
+        0 0 20px -2px rgba(255, 176, 32, 0.45),
+        0 10px 28px rgba(0, 0, 0, 0.45);
+}
+
+.btn--ghost:hover {
+    box-shadow: var(--glow-sm);
+}
+
+/* --- Tags ------------------------------------------------
+   Tags lift and glow one at a time under the cursor. Because a tag
+   sits inside a card that may set its own accent, each glows in its
+   card's color with no extra classes.
+
+   The --ease-back curve overshoots very slightly before settling,
+   which is what makes the lift feel physical rather than linear. */
+.tag {
+    transition: border-color var(--transition),
+                color var(--transition),
+                background-color var(--transition),
+                box-shadow var(--transition),
+                transform var(--transition) var(--ease-back);
+}
+
+.tag:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--glow-sm);
+}
+
+/* --- Navigation ------------------------------------------- */
+.site-nav__list a:not(.btn) {
+    transition: color var(--transition), text-shadow var(--transition);
+}
+
+.site-nav__list a:not(.btn):hover,
+.brand:hover {
+    text-shadow: var(--glow-text);
+}
+
+/* The hamburger bars light up and take on the accent color. */
+.nav-toggle:hover {
+    box-shadow: var(--glow-sm);
+}
+
+.nav-toggle:hover .nav-toggle__bars,
+.nav-toggle:hover .nav-toggle__bars::before,
+.nav-toggle:hover .nav-toggle__bars::after {
+    background-color: var(--accent);
+    box-shadow: 0 0 8px var(--accent-dim);
+}
+
+/* --- Contact rows ---------------------------------------- */
+.contact-item:hover {
+    box-shadow: var(--glow-sm);
+}
+
+/* --- Section headings ------------------------------------
+   Hovering a heading warms the text and lights its accent rule.
+   A small reward for reading rather than scrolling past. */
+.section-title,
+.page-header h1 {
+    transition: text-shadow var(--transition-slow);
+}
+
+.section-title:hover,
+.page-header h1:hover {
+    text-shadow: var(--glow-text);
+}
+
+.section-title::after,
+.page-header h1::after {
+    transition: box-shadow var(--transition-slow),
+                transform var(--transition-slow);
+}
+
+.section-title:hover::after,
+.page-header h1:hover::after {
+    box-shadow: 0 0 14px var(--group);
+}
+
+/* --- Focus ring ------------------------------------------
+   The keyboard focus indicator gets a soft halo as well as its
+   outline, which makes it easier to track while tabbing. */
+:focus-visible {
+    box-shadow: 0 0 0 4px var(--accent-soft);
+    transition: box-shadow var(--transition-fast);
+}
+
+.skip-link:focus {
+    box-shadow: var(--glow);
+}
+
+
+/* ============================================================
+   H  POINTER SPOTLIGHT
+   ------------------------------------------------------------
+   A soft light on each interactive card that follows the cursor.
+
+   How it works: js/card-spotlight.js writes the pointer's position
+   into two custom properties on the card, --mx and --my, as
+   percentages. The radial gradient below is centred on those
+   coordinates, so as the numbers change the light moves.
+
+   This is the only effect on the site that needs JavaScript, because
+   CSS cannot read the pointer position. It degrades cleanly: the
+   properties below default to 50% 50%, so with no script the light
+   simply sits in the middle of the card and reads as a faint
+   highlight. Nothing looks broken or missing.
+
+   The gradient is a background-image on the card itself rather than
+   a pseudo-element, because ::before is already the top accent line
+   and ::after is the shine sweep.
+   ============================================================ */
+
+.card--interactive {
+    /* Fallback position, used until the script sets real values. */
+    --mx: 50%;
+    --my: 50%;
+
+    background-image: radial-gradient(
+        14rem circle at var(--mx) var(--my),
+        var(--group-soft),
+        transparent 62%
+    );
+    background-repeat: no-repeat;
+}
+
+
+/* ============================================================
+   H2  TRAVELLING BORDER LIGHT
+   ------------------------------------------------------------
+   A bright arc that runs around the outside edge of a card while it
+   is hovered, in the card's own accent color.
+
+   Three techniques combine here:
+
+   1. A conic-gradient is a gradient swept around a centre point
+      rather than along a line. Rotating its start angle moves the
+      bright arc around the shape.
+
+   2. The rotation is animated by changing --ring-angle, which is
+      registered as an <angle> at the top of this file. That
+      registration is what makes the rotation possible at all.
+
+   3. The gradient fills the whole card, so a mask cuts out
+      everything except a 1px frame. Two mask layers are declared:
+      one clipped to the content box, one covering the whole element.
+      Compositing them with "exclude" keeps only the difference
+      between the two, which is exactly the border ring.
+
+   Degradation: without @property the angle cannot be interpolated,
+   so the arc appears in a fixed position instead of travelling.
+   Without mask support the gradient would fill the card, so the
+   whole effect is wrapped in @supports to prevent that.
+   ============================================================ */
+
+@supports ((mask-composite: exclude) or (-webkit-mask-composite: xor)) {
+    .card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        pointer-events: none;
+
+        /* Matches the card's own corner rounding. */
+        border-radius: inherit;
+
+        /* The thickness of the ring. */
+        padding: 1px;
+
+        background-image: conic-gradient(
+            from var(--ring-angle, 0deg),
+            transparent 0deg,
+            var(--group) 50deg,
+            transparent 130deg,
+            transparent 360deg
+        );
+
+        /* Layer one is clipped to the content box, layer two covers
+           everything. Excluding one from the other leaves the 1px
+           padding area: the frame. */
+        -webkit-mask:
+            linear-gradient(#000 0 0) content-box,
+            linear-gradient(#000 0 0);
+        mask:
+            linear-gradient(#000 0 0) content-box,
+            linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+
+        opacity: 0;
+        transition: opacity var(--transition-slow);
+    }
+
+    .card:hover::before,
+    .card:focus-within::before {
+        opacity: 1;
+        animation: ring-spin 4s linear infinite;
+    }
+}
+
+
+/* ============================================================
+   H3  THREE-DIMENSIONAL TILT
+   ------------------------------------------------------------
+   Cards lean toward the cursor, as though the surface were a panel
+   pivoting under the pointer.
+
+   js/card-pointer.js writes --rx and --ry, two rotation angles
+   derived from where the pointer sits inside the card. The CSS
+   applies them.
+
+   perspective() is what turns a flat rotation into a sense of
+   depth: it decides how strongly the far edge converges. A large
+   value gives a gentle, expensive-looking lean; a small one looks
+   like a fairground mirror. 900px is deliberately restrained, and
+   the script caps the rotation at a few degrees.
+
+   The properties default to 0deg, so with no JavaScript the card
+   simply lifts on hover exactly as it did before.
+   ============================================================ */
+
+.card--interactive {
+    --rx: 0deg;
+    --ry: 0deg;
+}
+
+.card--interactive:hover {
+    transform:
+        perspective(900px)
+        rotateX(var(--rx))
+        rotateY(var(--ry))
+        translateY(-3px);
+}
+
+
+/* ============================================================
+   H4  CURSOR GLOW
+   ------------------------------------------------------------
+   A single soft light that follows the pointer across the whole
+   page, sitting behind all content.
+
+   js/cursor-glow.js writes the pointer's viewport position into
+   --cursor-x and --cursor-y on this element. Everything else is
+   CSS.
+
+   It is one fixed element with one gradient, so the browser is
+   moving a single composited layer rather than recalculating
+   anything. The element defaults to opacity 0 and is only revealed
+   once the script confirms a real pointer exists, which keeps it
+   off touch devices entirely.
+   ============================================================ */
+
+.cursor-glow {
+    position: fixed;
+    inset: 0;
+
+    /* Behind all content, alongside the two ambient background
+       layers. A positive z-index would tint the text it passed over. */
+    z-index: -1;
+    pointer-events: none;
+
+    --cursor-x: 50%;
+    --cursor-y: 50%;
+
+    background-image: radial-gradient(
+        26rem circle at var(--cursor-x) var(--cursor-y),
+        rgba(255, 176, 32, 0.07),
+        transparent 60%
+    );
+
+    opacity: 0;
+    transition: opacity 600ms ease;
+}
+
+/* Added by the script only when a hovering pointer is present. */
+.cursor-glow.is-active {
+    opacity: 1;
+}
+
+
+/* ============================================================
+   H5  CLIP-PATH WIPE REVEALS
+   ------------------------------------------------------------
+   Section headings wipe into view from the left instead of fading.
+
+   clip-path: inset(0 100% 0 0) hides an element by clipping away
+   100% from its right edge, leaving nothing visible. Animating that
+   value to 0 draws the element in from the left, like a strip of
+   tape being laid down.
+
+   This reads as sharper and more intentional than a fade, because
+   the letters arrive at full opacity from the first frame instead of
+   ghosting in. It layers on top of the existing reveal, which is
+   still what handles the vertical movement.
+   ============================================================ */
+
+.js-reveal .section-title[data-reveal].is-visible {
+    animation: wipe-in 620ms var(--ease-out) both;
+}
+
+
+/* ============================================================
+   H6  BUTTON RIPPLE
+   ------------------------------------------------------------
+   A ring that expands out of a button when it is pressed.
+
+   No JavaScript: :active is true only while the mouse button is
+   held, so the animation runs on press and resets on release. The
+   ripple is centred rather than following the click point, which is
+   the tradeoff for keeping this in CSS.
+   ============================================================ */
+
+.btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 120%;
+    aspect-ratio: 1;
+
+    border-radius: 999px;
+    border: 1px solid currentColor;
+
+    /* translate(-50%, -50%) centres the ripple on the button by
+       shifting it back by half its own size. */
+    transform: translate(-50%, -50%) scale(0.2);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.btn:active::before {
+    animation: ripple 500ms var(--ease-out);
+}
+
+@keyframes ripple {
+    from { transform: translate(-50%, -50%) scale(0.2); opacity: 0.5; }
+    to   { transform: translate(-50%, -50%) scale(1);   opacity: 0; }
+}
+
+
+/* ============================================================
+   H7  ANIMATED PROGRESS BAR
+   ------------------------------------------------------------
+   The scroll progress bar's gradient also drifts sideways, so the
+   colors move through the bar as it fills rather than sitting
+   still. Two animations on one element: one driven by scroll, one
+   by time.
+   ============================================================ */
+
+@supports (animation-timeline: scroll()) {
+    .scroll-progress {
+        background-size: 200% 100%;
+        background-position: var(--sweep-pos, 0%) 50%;
+
+        animation:
+            draw-line linear,
+            sweep-gradient 8s linear infinite;
+        animation-timeline: scroll(), auto;
+    }
+}
+
+
+/* ============================================================
+   H8  HERO PARALLAX
+   ------------------------------------------------------------
+   The hero drifts upward and fades slightly as it is scrolled past,
+   so the page feels layered rather than flat.
+
+   animation-timeline: view() links the animation to the element's
+   own journey through the viewport, rather than to the scroll
+   position of the page as a whole. animation-range restricts it to
+   the second half of that journey, so nothing moves while the hero
+   is still the thing being read.
+
+   Pure CSS, no scroll listener. Inside @supports, and the hero is
+   fully visible without it.
+   ============================================================ */
+
+@supports (animation-timeline: view()) {
+    @keyframes hero-depart {
+        to {
+            opacity: 0.35;
+            transform: translateY(-3rem) scale(0.98);
+        }
+    }
+
+    .hero__content {
+        animation: hero-depart linear both;
+        animation-timeline: view();
+        animation-range: exit-crossing 0% exit-crossing 100%;
+    }
+}
+
+
+/* ============================================================
+   I  TEXT EFFECTS
+   ============================================================ */
+
+/* --- Hero name shimmer -----------------------------------
+   A slow sheen crossing the name. The text is painted with a
+   gradient rather than a flat color, and background-clip: text
+   trims that gradient to the shape of the letters. Animating the
+   gradient's position moves the bright band across them.
+
+   The @supports guard is essential rather than cautious: the
+   technique requires color: transparent, so in a browser without
+   background-clip: text the name would be invisible. Guarded this
+   way, such a browser applies none of it and shows solid off-white
+   text instead.
+   ---------------------------------------------------------- */
+@supports ((background-clip: text) or (-webkit-background-clip: text)) {
+    .hero h1 {
+        background-image: linear-gradient(
+            100deg,
+            var(--text-primary) 42%,
+            #ffffff 50%,
+            var(--text-primary) 58%
+        );
+        background-size: 260% 100%;
+        background-repeat: no-repeat;
+
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+
+        /* Starts after the hero has finished arriving. */
+        animation: shimmer-text 7s var(--ease-smooth) 1.2s infinite;
+    }
+}
+
+/* --- Hero separators -------------------------------------
+   The two slashes in the role line cycle through the accent
+   palette. The negative delay on the second one starts it partway
+   through the cycle, so the two are never the same color at the
+   same moment.
+
+   This is the one place the whole palette is shown at once, and it
+   is two characters wide, so it reads as a detail rather than as
+   decoration. */
+.hero__sep {
+    animation: cycle-accents 12s linear infinite;
+}
+
+.hero__sep:nth-of-type(2) {
+    animation-delay: -6s;
+}
+
+/* --- Case study meta labels ------------------------------ */
+.case-meta dt {
+    transition: text-shadow var(--transition);
+}
+
+.case-meta:hover dt {
+    text-shadow: var(--glow-text);
+}
+
+
+/* ============================================================
+   J  AMBIENT BACKGROUND
+   ------------------------------------------------------------
+   Two stacked layers sit behind all content:
+
+     body::before   three broad color washes, drifting slowly
+     body::after    two smaller orbs on an independent float path
+
+   Both are fixed, both sit at negative z-index, both are under 10%
+   opacity, and neither has a hard edge anywhere. The intent is
+   depth, not animation: on a still screenshot it should look like
+   lighting.
+   ============================================================ */
+
+/* Smaller, more defined orbs in the two newest accent colors. */
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+
+    background-image:
+        radial-gradient(20rem circle at 82% 28%, var(--accent-4-soft), transparent 65%),
+        radial-gradient(16rem circle at 18% 72%, var(--accent-5-soft), transparent 65%);
+    background-repeat: no-repeat;
+
+    animation: float-a 34s ease-in-out infinite;
+}
+
+/* Scroll-driven hue shift. The ambient color rotates gradually as
+   the page is scrolled, so the top and the bottom of the site are
+   not lit identically. It is tied to scroll position rather than
+   elapsed time, which means it only moves when the visitor does.
+
+   Inside @supports because scroll-driven animation is not yet
+   universal. Where it is missing, the orbs simply float. */
+@supports (animation-timeline: scroll()) {
+    @keyframes ambient-shift {
+        from { filter: hue-rotate(0deg); }
+        to   { filter: hue-rotate(30deg); }
+    }
+
+    body::after {
+        animation:
+            float-b 34s ease-in-out infinite,
+            ambient-shift linear;
+
+        /* One timeline per animation, in the same order: the float
+           runs on time, the hue shift runs on scroll. */
+        animation-timeline: auto, scroll();
+    }
+}
+
+
+/* ============================================================
+   K  MEDIA AND FIGURES
+   ============================================================ */
+
+/* Screenshots lift and glow on hover, and the image scales inside a
+   clipped figure, so the frame holds still while the picture grows.
+   These rules are already in place for the case study galleries that
+   are waiting on real screenshots. */
+.case-gallery figure {
+    overflow: hidden;
+    border-radius: var(--radius);
+    transition: box-shadow var(--transition-slow),
+                transform var(--transition-slow) var(--ease-out);
+}
+
+/* Screenshots get the largest glow of anything on the site, because
+   they are the largest elements that respond to a cursor. */
+.case-gallery figure:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--glow-lg);
+}
+
+.case-gallery img {
+    transition: transform 600ms var(--ease-out);
+}
+
+.case-gallery figure:hover img {
+    transform: scale(1.04);
+}
+
+
+/* ============================================================
+   L  MICRO-INTERACTIONS
+   ============================================================ */
+
+/* --- Status pill ----------------------------------------
+   The live dot keeps its double-pulse and now also emits a halo
+   that expands and fades on the same rhythm. Two animations on one
+   element, comma separated. */
+.status--live::before {
+    animation:
+        pulse-dot 2.8s ease-in-out infinite,
+        glow-ring 2.8s ease-out infinite;
+}
+
+/* --- Skill category dot ---------------------------------
+   The dot grows and lights up when its card is hovered, which ties
+   the color to the category it labels.
+
+   Two stacked shadows: a wide soft halo, plus a tight ring at the
+   dot's edge. Using box-shadow keeps this on the dot itself. An
+   absolutely positioned ring would have anchored to the card
+   instead, since the heading is not a positioned ancestor. */
+.skill-group__title::before {
+    transition: transform var(--transition) var(--ease-back),
+                box-shadow var(--transition);
+}
+
+.card:hover .skill-group__title::before {
+    transform: scale(1.4);
+    box-shadow:
+        0 0 10px 2px var(--group-dim),
+        0 0 0 4px var(--group-soft);
+}
+
+/* --- Directional arrows ---------------------------------
+   The arrow nudges forward and settles back, once per hover rather
+   than looping. */
+.project__link:hover span {
+    animation: nudge-right 500ms var(--ease-smooth);
+}
+
+.project__link:hover {
+    text-shadow: var(--glow-text);
+}
+
+/* --- Education cards ------------------------------------
+   An accent bar down the left edge that grows into view on hover,
+   in the card's own color. */
+.education::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    background-color: var(--group);
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform var(--transition-slow) var(--ease-out);
+}
+
+.education:hover::after {
+    transform: scaleY(1);
+}
+
+/* --- Eyebrow labels -------------------------------------
+   The small monospace label opens up its letter-spacing when its
+   section is hovered, which pulls the eye toward it. */
+.eyebrow {
+    transition: letter-spacing var(--transition-slow),
+                text-shadow var(--transition-slow);
+}
+
+section:hover > .eyebrow {
+    letter-spacing: 0.18em;
+    text-shadow: var(--glow-text);
+}
+
+/* --- Footer --------------------------------------------- */
+.site-footer__note {
+    transition: color var(--transition), text-shadow var(--transition);
+}
+
+.site-footer:hover .site-footer__note {
+    color: var(--text-secondary);
+    text-shadow: var(--glow-text);
 }

@@ -46,9 +46,17 @@ there is no build pipeline to break between now and whenever someone opens it.
   grids use `repeat(auto-fit, minmax(...))`, so most of the layout adapts on
   its own. Media queries handle only genuine layout changes, such as
   collapsing the navigation.
-- **JavaScript is minimal by design.** Three small functions: the footer year,
-  the mobile navigation menu, and a scroll reveal built on
-  `IntersectionObserver`. Anything CSS can do, CSS does.
+- **JavaScript is minimal by design, and never decides how things look.** The
+  animation is CSS: keyframes, `@property`-registered gradient angles,
+  `clip-path` reveals, masked conic-gradient borders, and scroll-driven
+  timelines. Where an effect needs the pointer's position, which CSS cannot
+  read, a script writes coordinates into custom properties and nothing else.
+  No script sets a color, a size, or a transform.
+- **Progressive enhancement throughout.** Eleven `@supports` blocks guard the
+  newer CSS features, the reveal animations only hide content after a script
+  confirms it can run, and every pointer-driven property has a neutral CSS
+  default. With JavaScript disabled the site is fully readable and still
+  animated.
 - **Accessibility.** Semantic landmarks, one `h1` per page with no skipped
   heading levels, a skip link, visible focus states, alt text on every image,
   and `prefers-reduced-motion` support. Text colors were checked against their
@@ -107,6 +115,8 @@ LowModez.github.io/
 │   ├── footer-year.js          Keeps the copyright year current
 │   ├── mobile-nav.js           Narrow-screen navigation menu
 │   ├── scroll-reveal.js        Fades sections in on scroll
+│   ├── card-pointer.js         Card glow and tilt follow the cursor
+│   ├── cursor-glow.js          Page-wide glow follows the cursor
 │   └── main.js                 Entry point, calls the above
 │
 ├── assets/

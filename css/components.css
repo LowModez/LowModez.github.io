@@ -110,31 +110,8 @@
                 box-shadow var(--transition);
 }
 
-/* A hairline along the top edge that fades in on hover, in
-   whatever color this card's category uses. Drawn as a gradient so
-   it is brightest in the middle and disappears at both ends
-   instead of stopping abruptly. */
-.card::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background-image: linear-gradient(
-        90deg,
-        transparent,
-        var(--group),
-        transparent
-    );
-    opacity: 0;
-    transition: opacity var(--transition);
-}
-
-.card:hover::before,
-.card:focus-within::before {
-    opacity: 1;
-}
+/* ::before on a card is the travelling border light, defined in
+   css/animations.css. It is left free here on purpose. */
 
 /* Every card warms its border on hover. */
 .card:hover {

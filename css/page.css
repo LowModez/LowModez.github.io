@@ -90,7 +90,26 @@
     /* Faint, so the message below it stays the focus. */
     opacity: 0.22;
 
-    animation: fade-in 700ms ease both;
+    /* Fades in, then glitches on a loop with long pauses. The
+       keyframes spend most of their length doing nothing, so the
+       splits read as an occasional flicker rather than as constant
+       movement. This is the one place on the site where being
+       playful costs nothing: the visitor already knows something
+       went wrong, and no recruiter is judging a 404 page.
+
+       The glitch is defined in css/animations.css. */
+    animation:
+        fade-in 700ms ease both,
+        glitch 7s steps(1, end) 1.2s infinite;
+}
+
+/* Hovering the code intensifies it, because someone who is hovering
+   a 404 is probably amusing themselves. */
+.notfound__code:hover {
+    opacity: 0.4;
+    animation:
+        fade-in 700ms ease both,
+        glitch 1.4s steps(1, end) infinite;
 }
 
 .notfound h1 {

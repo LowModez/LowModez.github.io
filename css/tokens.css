@@ -171,6 +171,43 @@
        250ms starts to feel sluggish on hover. */
     --transition-fast: 120ms ease;
     --transition: 180ms ease;
+    --transition-slow: 320ms ease;
+
+    /* Easing curves, named so intent is readable at the call site.
+       The numbers are the two control points of a cubic bezier.
+         smooth  gentle in and out, for most movement
+         out     decelerates into place, for things arriving
+         back    overshoots slightly then settles, for playfulness */
+    --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    /* --- Glow -----------------------------------------------
+       Layered shadows that read as light coming off an element
+       rather than a drop shadow beneath it.
+
+       Each is built from three parts: a tight ring in the element's
+       own accent, a wide soft halo in the same color, and a dark
+       shadow underneath to keep the element grounded. --group means
+       a card glows in whatever color its category uses.
+
+       These are hover-only. Nothing on the site glows at rest. */
+    --glow-sm:
+        0 0 0 1px var(--group-dim),
+        0 0 12px -2px var(--group-soft);
+
+    --glow:
+        0 0 0 1px var(--group-dim),
+        0 0 24px -4px var(--group-soft),
+        0 12px 32px rgba(0, 0, 0, 0.5);
+
+    --glow-lg:
+        0 0 0 1px var(--group-dim),
+        0 0 40px -6px var(--group-soft),
+        0 20px 48px rgba(0, 0, 0, 0.55);
+
+    /* Text glow, for headings and labels on hover. */
+    --glow-text: 0 0 18px var(--group-dim);
 
     /* Height of the fixed header, reserved now so anchor links
        and scroll offsets can reference it in the next phase. */
