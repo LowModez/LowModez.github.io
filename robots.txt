@@ -1,0 +1,5 @@
+# Everything on this site is meant to be found.
+User-agent: *
+Allow: /
+
+Sitemap: https://lowmodez.github.io/sitemap.xml

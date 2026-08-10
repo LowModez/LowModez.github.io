@@ -140,12 +140,17 @@
     }
 
     /* Pseudo-elements that animate from a scaled-down state must be
-       forced to full size, or they would stay invisible once their
-       animation is reduced to nothing. */
+       forced back to full size, or they would stay invisible once
+       their animation is reduced to nothing.
+
+       "none" is used rather than scaleX(1) because these lines scale
+       on different axes, and no transform at all is full size on
+       both. */
     .site-nav__list a:not(.btn)::after,
     .section-title::after,
+    .page-header h1::after,
     .hero__meta::before {
-        transform: scaleX(1) !important;
+        transform: none !important;
     }
 
     /* The shine sweep and the ambient background drift are removed
