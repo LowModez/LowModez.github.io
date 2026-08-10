@@ -939,6 +939,31 @@ main > section {
    11  SKILLS
    ============================================================ */
 
+.skills__intro {
+    margin-bottom: var(--space-8);
+}
+
+/* Narrower minimum than the project grid, since these cards hold
+   short tags rather than paragraphs. The browser fits two or three
+   columns depending on the width available. */
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: var(--space-5);
+}
+
+/* Category name, separated from its tags by a hairline rule. Kept
+   at body size: these are labels, not section headings, and sizing
+   them up would compete with the h2 above. */
+.skill-group__title {
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--text-primary);
+    padding-bottom: var(--space-3);
+    margin-bottom: var(--space-4);
+    border-bottom: 1px solid var(--border);
+}
+
 
 /* ============================================================
    12  EDUCATION
