@@ -55,7 +55,15 @@
        Both clear WCAG AA (4.5:1) for body text. */
     --text-primary: #e8e8ea;
     --text-secondary: #9a9ba1;
-    --text-muted: #6f717a;
+
+    /* Lightened from #6f717a, which measured 3.99:1 on the page
+       background and 3.43:1 on raised panels - both below the 4.5:1
+       WCAG AA minimum for normal-size text. This value clears AA on
+       all three background depths (5.5:1, 5.1:1, 4.7:1). It is used
+       for footer text and figure captions, which are small, so
+       passing here matters more than the extra bit of contrast
+       costs in visual hierarchy. */
+    --text-muted: #868892;
 
     /* --- Accent ---------------------------------------------
        Warm amber, one accent only. ~10.6:1 against the page
@@ -67,6 +75,35 @@
     --accent-hover: #ffc352;
     --accent-dim: rgba(255, 176, 32, 0.35);
     --accent-soft: rgba(255, 176, 32, 0.09);
+
+    /* --- Category accents -----------------------------------
+       Two supporting hues. These are not decoration: each one is
+       tied to a category of work, so the color carries meaning.
+
+         amber   software, and anything currently active
+         teal    systems and networking
+         violet  physical infrastructure and hardware
+
+       Amber stays dominant. These two appear only on category
+       labels and the hover states of the cards they belong to.
+       Contrast against --bg-primary:
+         teal   ~11.7:1
+         violet  ~7.2:1
+       Both clear WCAG AA, since both are used as label text. */
+    --accent-2: #5bd1c4;
+    --accent-2-dim: rgba(91, 209, 196, 0.35);
+    --accent-2-soft: rgba(91, 209, 196, 0.09);
+
+    --accent-3: #a78bfa;
+    --accent-3-dim: rgba(167, 139, 250, 0.35);
+    --accent-3-soft: rgba(167, 139, 250, 0.09);
+
+    /* Default "current category" colors. A card can override these
+       three on itself, and every rule that references them picks up
+       the change without needing its own variant. */
+    --group: var(--accent);
+    --group-dim: var(--accent-dim);
+    --group-soft: var(--accent-soft);
 
     /* --- Typography -----------------------------------------
        System font stacks: no web fonts to download, which means
@@ -133,7 +170,6 @@
     --radius: 8px;
     --radius-lg: 12px;
 
-    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
     --shadow-raised: 0 8px 24px rgba(0, 0, 0, 0.45);
 
     /* --- Motion ---------------------------------------------
@@ -218,12 +254,22 @@ html {
        hiding underneath it. */
     scroll-padding-top: calc(var(--header-height) + var(--space-4));
 
+    /* Anchor links glide instead of jumping. The reduced-motion
+       block at the end of this file turns this off. */
+    scroll-behavior: smooth;
+
     /* Guarantees no accidental sideways scrolling anywhere. */
     overflow-x: hidden;
+
+    /* The base color lives on <html> rather than <body> so the
+       gradient layer below can sit behind the body content. */
+    background-color: var(--bg-primary);
 }
 
 body {
-    background-color: var(--bg-primary);
+    /* position: relative establishes the stacking context that the
+       fixed background layer below is placed into. */
+    position: relative;
     color: var(--text-primary);
     font-family: var(--font-sans);
     font-size: var(--text-base);
@@ -235,6 +281,38 @@ body {
 
     /* min-height keeps the footer at the bottom on short pages. */
     min-height: 100vh;
+}
+
+/* --- Page background --------------------------------------
+   Three soft color washes covering the whole page, not just the
+   hero: amber upper left, teal upper right, violet along the
+   bottom. Together they keep large dark areas from looking flat.
+
+   Why a fixed pseudo-element instead of a background on <body>:
+     - position: fixed with inset: 0 covers the entire viewport at
+       full width, so the wash spans the page rather than being
+       confined to the centered content column.
+     - It stays put while the page scrolls, so the color does not
+       repeat or streak down a long page.
+     - background-attachment: fixed would achieve something similar
+       but is unreliable on iOS.
+
+   z-index: -1 places it behind all content. pointer-events: none
+   means it can never intercept a click.
+   Alpha values are 5-10%: present, never a glow effect.
+   ---------------------------------------------------------- */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+
+    background-image:
+        radial-gradient(60rem 40rem at 5% -10%, rgba(255, 176, 32, 0.10), transparent 65%),
+        radial-gradient(50rem 35rem at 100% 8%, rgba(91, 209, 196, 0.06), transparent 60%),
+        radial-gradient(55rem 40rem at 60% 105%, rgba(167, 139, 250, 0.05), transparent 60%);
+    background-repeat: no-repeat;
 }
 
 /* --- Headings ---------------------------------------------
@@ -278,20 +356,6 @@ a:hover {
     color: var(--accent-hover);
     text-decoration: underline;
     text-underline-offset: 0.2em;
-}
-
-/* --- Prose lists -----------------------------------------
-   Restores markers for lists inside body copy, which the reset
-   stripped for navigation and tag rows. */
-.prose ul,
-.prose ol {
-    padding-left: var(--space-6);
-    list-style: revert;
-    color: var(--text-secondary);
-}
-
-.prose li + li {
-    margin-top: var(--space-2);
 }
 
 /* --- Inline code ------------------------------------------ */
@@ -417,11 +481,38 @@ main > section {
     margin-bottom: var(--space-3);
 }
 
-/* Neutral variant for labels that should not compete with a
-   nearby accent element. */
-.eyebrow--muted {
-    color: var(--text-muted);
+/* --- Reveal on scroll ------------------------------------
+   Elements marked data-reveal in the HTML fade and rise slightly
+   as they scroll into view.
+
+   The hidden starting state is deliberately scoped inside
+   .js-reveal, a class that js/main.js puts on <html>. It is only
+   added when JavaScript is running AND the visitor has not asked
+   for reduced motion.
+
+   That ordering matters: with no JavaScript, the class is never
+   added, these rules never apply, and every section is simply
+   visible. Content can never be trapped in a hidden state by a
+   script that failed to load.
+   ---------------------------------------------------------- */
+.js-reveal [data-reveal] {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 500ms ease, transform 500ms ease;
 }
+
+.js-reveal [data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+}
+
+/* Cards in a grid arrive one after another rather than all at
+   once. Each position waits slightly longer than the one before. */
+.js-reveal [data-reveal]:nth-child(2) { transition-delay: 70ms; }
+.js-reveal [data-reveal]:nth-child(3) { transition-delay: 140ms; }
+.js-reveal [data-reveal]:nth-child(4) { transition-delay: 210ms; }
+.js-reveal [data-reveal]:nth-child(5) { transition-delay: 280ms; }
+.js-reveal [data-reveal]:nth-child(6) { transition-delay: 350ms; }
 
 
 /* ============================================================
@@ -476,9 +567,13 @@ main > section {
     font-weight: 600;
 }
 
+/* Lifts a pixel and casts a warm shadow in its own color, so the
+   button looks lit rather than outlined. */
 .btn--primary:hover {
     background-color: var(--accent-hover);
     color: #1a1204;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 176, 32, 0.20);
 }
 
 /* Outlined, for secondary actions sitting next to the primary one. */
@@ -492,6 +587,7 @@ main > section {
     border-color: var(--accent);
     background-color: var(--accent-soft);
     color: var(--text-primary);
+    transform: translateY(-2px);
 }
 
 /* Compact size, for buttons sitting inside the header bar. */
@@ -504,29 +600,67 @@ main > section {
    Raised panel used for projects, skill groups, and education
    entries. */
 .card {
+    /* relative positions the accent line drawn by ::before. */
+    position: relative;
     display: flex;
     flex-direction: column;
+
     background-color: var(--bg-surface);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
     padding: var(--space-6);
+
+    /* overflow: hidden keeps the accent line inside the rounded
+       corners instead of poking past them. */
+    overflow: hidden;
+
     transition: border-color var(--transition),
                 transform var(--transition),
                 box-shadow var(--transition);
 }
 
-/* Lifts slightly and warms its border on hover. Applied only to
-   cards that are actually interactive. */
+/* A hairline along the top edge that fades in on hover, in
+   whatever color this card's category uses. Drawn as a gradient so
+   it is brightest in the middle and disappears at both ends
+   instead of stopping abruptly. */
+.card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-image: linear-gradient(
+        90deg,
+        transparent,
+        var(--group),
+        transparent
+    );
+    opacity: 0;
+    transition: opacity var(--transition);
+}
+
+.card:hover::before,
+.card:focus-within::before {
+    opacity: 1;
+}
+
+/* Every card warms its border on hover. */
+.card:hover {
+    border-color: var(--group-dim);
+}
+
+/* Only cards that actually lead somewhere lift off the page. The
+   shadow includes a faint ring in the category color. */
 .card--interactive:hover {
-    border-color: var(--accent-dim);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-raised);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-raised), 0 0 0 1px var(--group-soft);
 }
 
 /* Keyboard equivalent of the hover state, so the effect is not
    mouse-only. */
 .card--interactive:focus-within {
-    border-color: var(--accent-dim);
+    border-color: var(--group-dim);
 }
 
 /* --- Tags ------------------------------------------------
@@ -547,6 +681,19 @@ main > section {
     border-radius: var(--radius-sm);
     padding: var(--space-1) var(--space-3);
     white-space: nowrap;
+
+    transition: border-color var(--transition),
+                color var(--transition),
+                background-color var(--transition);
+}
+
+/* Tags respond individually to the cursor, tinted in the color of
+   the category they belong to. Small, but it makes a static list
+   of technologies feel like part of the page. */
+.tag:hover {
+    color: var(--text-primary);
+    border-color: var(--group-dim);
+    background-color: var(--group-soft);
 }
 
 /* --- Status pill -----------------------------------------
@@ -575,6 +722,35 @@ main > section {
     border-color: var(--border-strong);
 }
 
+/* --- Category accent modifiers ---------------------------
+   Add one of these to any element to change which accent its
+   subtree uses. Because the rules elsewhere all reference
+   --group / --group-dim / --group-soft rather than a fixed color,
+   overriding the three variables here is enough: borders, hover
+   tints, accent lines, and tags all follow automatically.
+
+   Omitting a modifier leaves the element on amber, the default set
+   in :root. */
+.accent-teal {
+    --group: var(--accent-2);
+    --group-dim: var(--accent-2-dim);
+    --group-soft: var(--accent-2-soft);
+}
+
+.accent-violet {
+    --group: var(--accent-3);
+    --group-dim: var(--accent-3-dim);
+    --group-soft: var(--accent-3-soft);
+}
+
+/* For categories that should stay quiet, such as transferable
+   professional skills. */
+.accent-neutral {
+    --group: var(--text-muted);
+    --group-dim: var(--border-strong);
+    --group-soft: rgba(255, 255, 255, 0.03);
+}
+
 /* --- Section heading -------------------------------------
    Shared treatment for the h2 of each major section, with a short
    amber rule beneath it to separate sections without a full-width
@@ -594,6 +770,18 @@ main > section {
     height: 2px;
     background-color: var(--accent);
     border-radius: 999px;
+}
+
+/* When the heading is a reveal target, its rule draws itself in
+   after the text has arrived. The delay is what makes it read as a
+   deliberate underline rather than part of the fade. */
+.js-reveal .section-title[data-reveal]::after {
+    width: 0;
+    transition: width 500ms ease 200ms;
+}
+
+.js-reveal .section-title[data-reveal].is-visible::after {
+    width: 2.5rem;
 }
 
 
@@ -772,16 +960,39 @@ main > section {
     /* Overrides the shared section padding for a tighter top. */
     padding-block: var(--space-12) var(--space-16);
 
-    /* A single very faint amber wash in the upper left. Static, no
-       animation, low opacity: enough to keep the top of the page
-       from feeling flat without becoming a glow effect. */
-    background-image: radial-gradient(
-        55% 45% at 12% 0%,
-        var(--accent-soft),
-        transparent 70%
-    );
-    background-repeat: no-repeat;
+    /* The hero used to carry its own amber wash. That now lives on
+       body::before so it spans the whole page at full width instead
+       of being clipped to this section's centered column. */
 }
+
+/* --- Entrance animation ----------------------------------
+   The hero fades up on load, one element at a time. It plays once,
+   it is short, and it is the only thing moving on the page.
+
+   "both" as the fill mode holds each element at its starting state
+   during its delay, so nothing flashes into place early.
+
+   The delays are applied with nth-child rather than inline styles
+   so the markup stays clean. */
+@keyframes rise-in {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+.hero__content > * {
+    animation: rise-in 600ms ease both;
+}
+
+.hero__content > *:nth-child(2) { animation-delay: 90ms; }
+.hero__content > *:nth-child(3) { animation-delay: 180ms; }
+.hero__content > *:nth-child(4) { animation-delay: 270ms; }
+.hero__content > *:nth-child(5) { animation-delay: 360ms; }
 
 /* The hero is a flex container so its content can be vertically
    centered. Without an explicit width, a flex child shrinks to fit
@@ -900,9 +1111,18 @@ main > section {
 }
 
 /* The category eyebrow sits directly above the title, so it does
-   not need the larger gap the class carries by default. */
+   not need the larger gap the class carries by default. It is
+   colored by the card's category rather than always amber. */
 .project__header .eyebrow {
     margin-bottom: var(--space-2);
+    color: var(--group);
+}
+
+/* The status pill also follows the card's category color. */
+.project .status {
+    color: var(--group);
+    background-color: var(--group-soft);
+    border-color: var(--group-dim);
 }
 
 .project__desc {
@@ -965,12 +1185,30 @@ main > section {
    at body size: these are labels, not section headings, and sizing
    them up would compete with the h2 above. */
 .skill-group__title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+
     font-size: var(--text-base);
     font-weight: 600;
     color: var(--text-primary);
     padding-bottom: var(--space-3);
     margin-bottom: var(--space-4);
-    border-bottom: 1px solid var(--border);
+
+    /* Tinted in the category's own color rather than plain gray. */
+    border-bottom: 1px solid var(--group-dim);
+}
+
+/* A small dot in the category color. This is what makes the
+   grouping readable at a glance: teal cards are systems work,
+   violet cards are physical infrastructure. */
+.skill-group__title::before {
+    content: "";
+    flex: 0 0 auto;
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background-color: var(--group);
 }
 
 
@@ -1049,13 +1287,16 @@ main > section {
     border-radius: var(--radius);
 
     transition: border-color var(--transition),
-                background-color var(--transition);
+                background-color var(--transition),
+                transform var(--transition);
 }
 
+/* Nudges right on hover, in the direction the link leads. */
 .contact-item:hover {
     border-color: var(--accent-dim);
     background-color: var(--bg-surface-raised);
     text-decoration: none;
+    transform: translateX(4px);
 }
 
 /* Fixed-width label aligns the values into a column, matching the
@@ -1078,6 +1319,7 @@ main > section {
 .contact-item--static:hover {
     border-color: var(--border);
     background-color: var(--bg-surface);
+    transform: none;
 }
 
 .contact__actions {
@@ -1172,8 +1414,10 @@ main > section {
     font-size: var(--text-sm);
 }
 
+/* Uses the page's category color, so a systems case study reads
+   teal and a software one reads amber. */
 .case-meta dt {
-    color: var(--accent);
+    color: var(--group);
 }
 
 .case-meta dd {
@@ -1213,7 +1457,7 @@ main > section {
     content: "\2014"; /* em dash */
     position: absolute;
     left: 0;
-    color: var(--accent);
+    color: var(--group);
 }
 
 .case-list strong {
@@ -1385,8 +1629,27 @@ main > section {
         scroll-behavior: auto !important;
     }
 
+    /* Color and border hover states are kept, because they are what
+       tell a visitor something is interactive. Only the movement is
+       removed. Every rule in this file that sets a transform on
+       hover or in an animation is listed here. */
     .card--interactive:hover,
-    .btn:active {
+    .btn:active,
+    .btn--primary:hover,
+    .btn--ghost:hover,
+    .tag:hover,
+    .contact-item:hover,
+    .project__link:hover span,
+    .hero__content > * {
+        transform: none;
+    }
+
+    /* The reveal transition is never installed in the first place:
+       js/main.js checks this same media query and does not add the
+       .js-reveal class, so nothing starts hidden. This is a second
+       layer of safety in case the class is present anyway. */
+    .js-reveal [data-reveal] {
+        opacity: 1;
         transform: none;
     }
 }
