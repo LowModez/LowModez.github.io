@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Home Lab &amp; Virtualization Environment | Ethan McKinzie</title>
+    <meta name="description" content="Case study: a personal lab environment built with Proxmox, Windows Server, and Windows clients to practice virtualization, systems administration, and networking.">
+
+    <!-- Paths step up one level, since this page lives in /projects/. -->
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+
+<body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+
+    <!-- ============================================================
+         HEADER / NAVIGATION
+         ============================================================ -->
+    <header class="site-header">
+        <div class="site-header__inner container">
+            <a class="brand" href="../index.html">Ethan McKinzie</a>
+
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-menu">
+                <span class="nav-toggle__bars" aria-hidden="true"></span>
+                <span class="visually-hidden">Menu</span>
+            </button>
+
+            <nav class="site-nav" id="site-menu" aria-label="Main navigation">
+                <ul class="site-nav__list">
+                    <li><a href="../index.html#about">About</a></li>
+                    <li><a href="../index.html#projects">Projects</a></li>
+                    <li><a href="../index.html#skills">Skills</a></li>
+                    <li><a href="../index.html#education">Education</a></li>
+                    <li><a href="../index.html#contact">Contact</a></li>
+                    <li class="site-nav__action">
+                        <a class="btn btn--ghost btn--sm" href="https://github.com/LowModez" target="_blank" rel="noopener">GitHub</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main">
+        <article class="case">
+            <a class="case__back" href="../index.html#projects">&larr; Back to projects</a>
+
+            <!-- ============================================================
+                 TITLE + AT-A-GLANCE
+                 ============================================================ -->
+            <header class="case__header">
+                <p class="eyebrow">Case study / Systems</p>
+                <h1>Home Lab &amp; Virtualization Environment</h1>
+
+                <p class="case__tagline">
+                    A personal lab built to practice virtualization, Windows Server
+                    administration, and networking in an environment where breaking
+                    something has no consequences.
+                </p>
+
+                <dl class="case-meta">
+                    <dt>status</dt>
+                    <dd>Ongoing &mdash; personal learning environment, not production infrastructure</dd>
+
+                    <dt>role</dt>
+                    <dd>Built and configured entirely by me</dd>
+
+                    <dt>tech</dt>
+                    <dd>Proxmox, Windows Server, Windows clients, Active Directory concepts, virtual networking</dd>
+                </dl>
+            </header>
+
+            <!-- ============================================================
+                 OVERVIEW
+                 ============================================================ -->
+            <section aria-labelledby="overview-heading">
+                <h2 id="overview-heading">Overview</h2>
+                <p>
+                    This is a lab, not infrastructure. It exists so I can install, configure,
+                    misconfigure, and rebuild the kinds of systems that show up in real IT
+                    environments &mdash; without any of it mattering if I get it wrong.
+                </p>
+                <p>
+                    Proxmox runs as the hypervisor, hosting Windows Server and Windows client
+                    virtual machines on a virtual network. That gives me a small Windows
+                    environment I can work through end to end: standing up a server,
+                    connecting clients to it, and seeing how the pieces actually fit together
+                    rather than reading about them.
+                </p>
+            </section>
+
+            <!-- ============================================================
+                 GOAL
+                 ============================================================ -->
+            <section aria-labelledby="goal-heading">
+                <h2 id="goal-heading">Why I built it</h2>
+                <p>
+                    My Information Technology coursework covered Windows Server, networking,
+                    virtualization, and Active Directory. Coursework tends to hand you an
+                    environment that is already working, which teaches you the steps but not
+                    what happens when a step fails.
+                </p>
+                <p>
+                    I wanted somewhere I had to build it myself from an empty hypervisor, and
+                    somewhere I could deliberately break things to find out how they fail and
+                    what the failure looks like from the client side. That is much closer to
+                    what support work actually involves.
+                </p>
+            </section>
+
+            <!-- ============================================================
+                 WHAT I CONFIGURED
+                 ------------------------------------------------------------
+                 ETHAN: this list is intentionally general, because I only
+                 wrote what I could confirm. Replace these with the specific
+                 things you actually did. Useful details to add if they apply:
+                   - Did you promote a server to a domain controller?
+                   - Did you join clients to a domain?
+                   - Did you create users, groups, or OUs?
+                   - Did you touch Group Policy?
+                   - Did you configure DHCP or DNS?
+                   - Did you set static IPs / subnets, or use VLANs?
+                   - Did you take snapshots or set up backups?
+                 Specifics are what make this section credible in an
+                 interview, so the more real detail here the better.
+                 ============================================================ -->
+            <section aria-labelledby="configured-heading">
+                <h2 id="configured-heading">What I set up</h2>
+                <ul class="case-list">
+                    <li>Installed and configured Proxmox as the hypervisor</li>
+                    <li>Created and provisioned virtual machines from scratch</li>
+                    <li>Installed and configured Windows Server</li>
+                    <li>Installed Windows client machines to connect to it</li>
+                    <li>Configured virtual networking so the machines could talk to each other</li>
+                    <li>Worked through Active Directory concepts in a live environment</li>
+                    <li>Handled the general system configuration each machine needed</li>
+                </ul>
+            </section>
+
+            <!-- ============================================================
+                 WHAT IT'S FOR
+                 ============================================================ -->
+            <section aria-labelledby="practice-heading">
+                <h2 id="practice-heading">What it lets me practice</h2>
+                <ul class="case-list">
+                    <li><strong>Virtualization</strong> &mdash; resource allocation, machine provisioning, and how a hypervisor sits underneath everything else</li>
+                    <li><strong>Windows Server administration</strong> &mdash; installation, configuration, and the roles a server fills for the clients that depend on it</li>
+                    <li><strong>Directory services</strong> &mdash; how Active Directory organizes a Windows environment and what clients rely on it for</li>
+                    <li><strong>Networking</strong> &mdash; addressing, connectivity between machines, and tracing why two systems cannot reach each other</li>
+                    <li><strong>Troubleshooting</strong> &mdash; working a problem from the symptom back to the cause, which is the same skill regardless of environment</li>
+                    <li><strong>Rebuilding</strong> &mdash; tearing an environment down and standing it back up, which is how you find out what you actually understood</li>
+                </ul>
+            </section>
+
+            <!-- ============================================================
+                 RELEVANCE
+                 ============================================================ -->
+            <section aria-labelledby="relevance-heading">
+                <h2 id="relevance-heading">Why it's on this site</h2>
+                <p>
+                    Support and systems work involves environments you did not build,
+                    breaking in ways nobody documented. The value of a lab is that it turns
+                    concepts I studied into something I have actually installed, connected,
+                    broken, and fixed &mdash; so when a Windows client cannot reach a server,
+                    I have a mental model of what sits between them.
+                </p>
+            </section>
+
+            <!-- ============================================================
+                 SCREENSHOTS / DIAGRAM
+                 ------------------------------------------------------------
+                 Nothing shown yet. Two things would strengthen this page a
+                 lot, in rough order of value:
+
+                   1. A simple network diagram of the lab. Boxes and lines is
+                      fine; hand-drawn and photographed is fine. It shows you
+                      can communicate an architecture.
+                   2. A screenshot of the Proxmox dashboard with the VM list.
+
+                 SANITIZE BEFORE ADDING: crop out or blur any public IP
+                 addresses, hostnames you would rather not publish, license
+                 keys, and anything identifying beyond the lab itself.
+                 Private ranges like 192.168.x.x are normally fine to show,
+                 but check the whole image, including sidebars.
+
+                 To use: drop files into assets/images/, uncomment, and fix
+                 the filenames. The gallery CSS is already written.
+                 ============================================================ -->
+            <!--
+            <section aria-labelledby="visuals-heading">
+                <h2 id="visuals-heading">Environment</h2>
+                <div class="case-gallery">
+                    <figure>
+                        <img src="../assets/images/homelab-diagram.png"
+                             alt="Network diagram of the lab showing the Proxmox host, the Windows Server virtual machine, and the Windows client machines on a shared virtual network.">
+                        <figcaption>Lab network layout</figcaption>
+                    </figure>
+                    <figure>
+                        <img src="../assets/images/homelab-proxmox.png"
+                             alt="The Proxmox web dashboard listing the virtual machines running in the lab.">
+                        <figcaption>Proxmox dashboard</figcaption>
+                    </figure>
+                </div>
+            </section>
+            -->
+
+            <!-- ============================================================
+                 WHERE IT'S GOING
+                 ============================================================ -->
+            <section aria-labelledby="next-heading">
+                <h2 id="next-heading">Where it's going next</h2>
+                <ul class="case-list">
+                    <li>Adding more client machines to make the environment less trivial</li>
+                    <li>Spending more time on the networking side: addressing, routing, and segmentation</li>
+                    <li>Documenting the build properly, so it can be rebuilt from notes rather than memory</li>
+                    <li>Practicing recovery: snapshots, backups, and restoring a machine after deliberately breaking it</li>
+                </ul>
+            </section>
+        </article>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; <span data-current-year>2026</span> Ethan McKinzie</p>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+</body>
+
+</html>
