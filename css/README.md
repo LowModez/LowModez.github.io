@@ -49,6 +49,32 @@ With five pages and no build step, that is the cheaper problem.
   entry is an unfinished animation.
 - **Anything specific to one page** goes in that page's file.
 
+## The look
+
+**Dark marble.** The three background depths are not neutral greys: each carries
+a slight green undertone, which is what makes the surface read as stone rather
+than as a generic dark theme, and what ties it to the sage accent.
+
+The veining is nine layered CSS gradients on a fixed pseudo-element in
+`base.css` — four vein layers, two clouding layers, three color washes. No image
+file, so it scales to any screen and costs nothing to download. Every alpha is
+under 4%: veins should be visible when looked for and invisible when reading.
+The four `--vein-*` tokens control the whole texture.
+
+**Typography.** Three families, all already on the machine, so there are still
+no web fonts and no flash of unstyled text:
+
+| Token | Face | Used for |
+|---|---|---|
+| `--font-display` | Constantia, then Cambria / Georgia | `h1` and `h2` only |
+| `--font-sans` | Segoe UI Variable Text, then Segoe UI | body copy |
+| `--font-mono` | Cascadia Code, then Consolas | small technical labels |
+
+Headings below `h2` stay in the sans: a serif at card-title size competes with
+body copy rather than framing it. The display serif is set at weight 500 with
+lighter letter-spacing, because serifs carry their own weight and tracking them
+tighter fills in the gaps their shapes depend on.
+
 ## The accent system
 
 Components never reference an accent color directly. They use three variables:
@@ -59,16 +85,17 @@ Components never reference an accent color directly. They use three variables:
 --group-soft   /* 9% alpha, for tinted backgrounds         */
 ```
 
-`tokens.css` defaults all three to amber. A modifier class overrides them for
-its own subtree:
+`tokens.css` defaults all three to sage, the primary accent. A modifier class
+overrides them for its own subtree:
 
 ```css
-.accent-teal   /* systems and networking      */
-.accent-violet /* physical infrastructure     */
-.accent-blue   /* education                   */
-.accent-rose   /* contact                     */
-.accent-amber  /* explicit reset back to amber */
-.accent-neutral/* deliberately quiet          */
+.accent-sage    /* software; also the explicit reset back to default */
+.accent-teal    /* systems and networking (aqua)                     */
+.accent-violet  /* physical infrastructure and hardware              */
+.accent-blue    /* education and study                               */
+.accent-rose    /* getting in touch                                  */
+.accent-gold    /* transferable and professional skills              */
+.accent-neutral /* deliberately quiet                                */
 ```
 
 Adding one of these to a section or card recolors its label, heading rule,

@@ -15,82 +15,109 @@
    ============================================================ */
 :root {
     /* --- Backgrounds -----------------------------------------
-       Three depths: the page itself, raised panels such as cards,
-       and a slightly lighter step for hover states. */
-    --bg-primary: #0d0d0f;
-    --bg-surface: #15161a;
-    --bg-surface-raised: #1c1e23;
+       Dark marble. Three depths: the page itself, raised panels
+       such as cards, and a lighter step for hover states.
+
+       These are not neutral greys. Each carries a slight green
+       undertone, which is what makes the surface read as stone
+       rather than as a flat dark theme, and what ties the whole
+       page to the sage accent. */
+    --bg-primary: #0e1211;
+    --bg-surface: #161c1a;
+    --bg-surface-raised: #1f2724;
 
     /* --- Borders ---------------------------------------------
-       Low-contrast dividers. Subtle on purpose: on a dark theme,
-       borders should suggest structure, not draw attention. */
-    --border: #26282f;
-    --border-strong: #33363f;
+       Low-contrast dividers, tinted to match the surfaces. Subtle
+       on purpose: borders should suggest structure, not draw
+       attention. */
+    --border: #2b3431;
+    --border-strong: #3c4844;
 
     /* --- Text -----------------------------------------------
-       Off-white rather than pure #fff. Pure white on near-black
-       is harsh to read for more than a paragraph or two.
-       Contrast against --bg-primary:
-         primary   ~15.9:1
-         secondary  ~6.9:1
-       Both clear WCAG AA (4.5:1) for body text. */
-    --text-primary: #e8e8ea;
-    --text-secondary: #9a9ba1;
+       White lettering, very slightly cooled so it sits on the
+       green-tinted stone rather than floating above it. Not pure
+       #ffffff: at full white, a page of text on a dark background
+       is harsh to read for more than a paragraph.
 
-    /* Lightened from #6f717a, which measured 3.99:1 on the page
-       background and 3.43:1 on raised panels - both below the 4.5:1
-       WCAG AA minimum for normal-size text. This value clears AA on
-       all three background depths (5.5:1, 5.1:1, 4.7:1). It is used
-       for footer text and figure captions, which are small, so
-       passing here matters more than the extra bit of contrast
-       costs in visual hierarchy. */
-    --text-muted: #868892;
+       Contrast against --bg-primary:
+         primary    17.5:1
+         secondary   9.2:1
+         muted       6.3:1
+       All three clear WCAG AA on all three background depths, and
+       the first two clear AAA. */
+    --text-primary: #f4f7f5;
+    --text-secondary: #adb8b3;
+    --text-muted: #8c9792;
+
+    /* --- Marble ---------------------------------------------
+       The veining drawn across the page background. Kept as tokens
+       so the whole texture can be strengthened or softened from
+       one place.
+
+       Alpha values are deliberately tiny. Veins should be visible
+       when looked for and invisible when reading. */
+    --vein-light: rgba(244, 247, 245, 0.035);
+    --vein-soft: rgba(244, 247, 245, 0.018);
+    --vein-accent: rgba(143, 216, 176, 0.030);
+    --vein-gold: rgba(230, 200, 138, 0.022);
 
     /* --- Accent ---------------------------------------------
-       Warm amber, one accent only. ~10.6:1 against the page
-       background, so it stays legible as link and label text
-       rather than being decoration that cannot be read.
+       Soft sage green. The primary accent, and the color the whole
+       palette is built around: the background's green undertone and
+       the marble veining both come from here.
+
+       11.3:1 against the page background, so it stays fully legible
+       as link and label text rather than being decoration that
+       cannot be read.
+
        The dim and soft variants are for borders and tinted
        backgrounds, never for text. */
-    --accent: #ffb020;
-    --accent-hover: #ffc352;
-    --accent-dim: rgba(255, 176, 32, 0.35);
-    --accent-soft: rgba(255, 176, 32, 0.09);
+    --accent: #8fd8b0;
+    --accent-hover: #a9e5c4;
+    --accent-dim: rgba(143, 216, 176, 0.35);
+    --accent-soft: rgba(143, 216, 176, 0.09);
 
     /* --- Category accents -----------------------------------
-       Two supporting hues. These are not decoration: each one is
-       tied to a category of work, so the color carries meaning.
+       Five supporting hues. These are not decoration: each is tied
+       to a category of work, so the color carries meaning.
 
-         amber   software, and anything currently active
-         teal    systems and networking
+         sage    software, and anything currently active
+         aqua    systems and networking
          violet  physical infrastructure and hardware
+         blue    education and study
+         rose    getting in touch
+         gold    transferable and professional skills
 
-       Amber stays dominant. These two appear only on category
-       labels and the hover states of the cards they belong to.
-       Contrast against --bg-primary:
-         teal   ~11.7:1
-         violet  ~7.2:1
-       Both clear WCAG AA, since both are used as label text. */
-    --accent-2: #5bd1c4;
-    --accent-2-dim: rgba(91, 209, 196, 0.35);
-    --accent-2-soft: rgba(91, 209, 196, 0.09);
+       Sage stays dominant. The others appear only on category
+       labels and on the hover states of the cards they belong to.
 
-    --accent-3: #a78bfa;
-    --accent-3-dim: rgba(167, 139, 250, 0.35);
-    --accent-3-soft: rgba(167, 139, 250, 0.09);
+       Measured against all three background depths, worst case:
+         aqua   8.7:1     blue  7.8:1
+         violet 6.6:1     rose  8.4:1
+         gold   9.5:1
+       All clear WCAG AA as label text; all but violet clear AAA.
 
-    /* Blue for education and study, rose for getting in touch.
-       Contrast against --bg-primary:
-         blue  ~9.1:1
-         rose ~10.0:1
-       Both clear AAA, measured on all three background depths. */
-    --accent-4: #7db4ff;
-    --accent-4-dim: rgba(125, 180, 255, 0.35);
-    --accent-4-soft: rgba(125, 180, 255, 0.09);
+       Gold is the marble pairing: veined stone and brass. It also
+       appears in the veining tokens above. */
+    --accent-2: #6fd3d0;
+    --accent-2-dim: rgba(111, 211, 208, 0.35);
+    --accent-2-soft: rgba(111, 211, 208, 0.09);
 
-    --accent-5: #ff9fb0;
-    --accent-5-dim: rgba(255, 159, 176, 0.35);
-    --accent-5-soft: rgba(255, 159, 176, 0.09);
+    --accent-3: #b39cfb;
+    --accent-3-dim: rgba(179, 156, 251, 0.35);
+    --accent-3-soft: rgba(179, 156, 251, 0.09);
+
+    --accent-4: #8bbcff;
+    --accent-4-dim: rgba(139, 188, 255, 0.35);
+    --accent-4-soft: rgba(139, 188, 255, 0.09);
+
+    --accent-5: #ffa8b8;
+    --accent-5-dim: rgba(255, 168, 184, 0.35);
+    --accent-5-soft: rgba(255, 168, 184, 0.09);
+
+    --accent-6: #e6c88a;
+    --accent-6-dim: rgba(230, 200, 138, 0.35);
+    --accent-6-soft: rgba(230, 200, 138, 0.09);
 
     /* Default "current category" colors. A card can override these
        three on itself, and every rule that references them picks up
@@ -100,14 +127,36 @@
     --group-soft: var(--accent-soft);
 
     /* --- Typography -----------------------------------------
-       System font stacks: no web fonts to download, which means
-       no extra network request, no layout shift while a font
-       loads, and text that renders instantly. Monospace is
-       reserved for small technical labels. */
-    --font-sans: system-ui, -apple-system, "Segoe UI", Roboto,
-                 "Helvetica Neue", Arial, sans-serif;
-    --font-mono: ui-monospace, "Cascadia Code", Consolas,
-                 "SF Mono", Menlo, monospace;
+       Three families, each with a job:
+
+         display   headings and the name. A serif, which is what
+                   gives the marble direction its weight. Constantia
+                   is a modern serif with low contrast between thick
+                   and thin strokes, so it holds up at large sizes
+                   on a dark background where a high-contrast serif
+                   like Times would go spindly.
+
+         sans      body copy. Segoe UI Variable Text is the current
+                   Windows text face and is noticeably cleaner at
+                   small sizes than plain Segoe UI.
+
+         mono      small technical labels only. Cascadia Code is
+                   Microsoft's terminal face, so the terminal
+                   references on this site are set in an actual
+                   terminal font.
+
+       Still no web fonts. Every family here is already on the
+       machine, which means no extra network request, no flash of
+       unstyled text, and no layout shift while a font loads. Each
+       stack falls back through progressively more common faces and
+       ends at a generic family, so the pairing survives on macOS,
+       Linux, and Android too. */
+    --font-display: Constantia, Cambria, Georgia,
+                    "Palatino Linotype", "Book Antiqua", serif;
+    --font-sans: "Segoe UI Variable Text", "Segoe UI", system-ui,
+                 -apple-system, Corbel, Roboto, Arial, sans-serif;
+    --font-mono: "Cascadia Code", "Cascadia Mono", Consolas,
+                 ui-monospace, "SF Mono", Menlo, monospace;
 
     /* Fluid type scale. clamp(min, preferred, max) lets each size
        grow with the viewport and then stop, so headings shrink

@@ -105,23 +105,38 @@ body {
     min-height: 100vh;
 }
 
-/* --- Page background --------------------------------------
-   Three soft color washes covering the whole page, not just the
-   hero: amber upper left, teal upper right, violet along the
-   bottom. Together they keep large dark areas from looking flat.
+/* --- Page background: marble ------------------------------
+   The page surface is dark green-grey stone with soft veining
+   running across it. Nine gradient layers, no image file, so it
+   scales to any screen size and costs nothing to download.
+
+   How the veining is built, from the top of the list down:
+
+     1-2  Fine hairline veins. A repeating-linear-gradient whose
+          color stops are only a fraction of a percent apart draws
+          a thin line; setting the repeat distance very wide means
+          you get one line rather than stripes. Two of these at
+          different angles cross each other.
+     3-4  Broader, softer veins in sage and gold, angled the other
+          way so the pattern never looks like a grid.
+     5-6  Wide diffuse clouding, which is what keeps the stone from
+          looking like a flat color with lines drawn on it.
+     7-9  The original color washes, now sage, aqua and violet.
+
+   Every alpha value is under 4%. Veins should be visible when
+   looked for and invisible when reading.
 
    Why a fixed pseudo-element instead of a background on <body>:
      - position: fixed with inset: 0 covers the entire viewport at
-       full width, so the wash spans the page rather than being
+       full width, so the texture spans the page rather than being
        confined to the centered content column.
-     - It stays put while the page scrolls, so the color does not
-       repeat or streak down a long page.
-     - background-attachment: fixed would achieve something similar
-       but is unreliable on iOS.
+     - It stays put while the page scrolls, so nothing repeats or
+       streaks down a long page.
+     - background-attachment: fixed would do something similar but
+       is unreliable on iOS.
 
    z-index: -1 places it behind all content. pointer-events: none
    means it can never intercept a click.
-   Alpha values are 5-10%: present, never a glow effect.
    ---------------------------------------------------------- */
 body::before {
     content: "";
@@ -131,9 +146,26 @@ body::before {
     pointer-events: none;
 
     background-image:
-        radial-gradient(60rem 40rem at 5% -10%, rgba(255, 176, 32, 0.10), transparent 65%),
-        radial-gradient(50rem 35rem at 100% 8%, rgba(91, 209, 196, 0.06), transparent 60%),
-        radial-gradient(55rem 40rem at 60% 105%, rgba(167, 139, 250, 0.05), transparent 60%);
+        /* Hairline veins, crossing at shallow angles. */
+        repeating-linear-gradient(24deg,
+            transparent 0 14.7%, var(--vein-light) 14.7% 14.9%, transparent 14.9% 32%),
+        repeating-linear-gradient(-38deg,
+            transparent 0 21%, var(--vein-soft) 21% 21.3%, transparent 21.3% 46%),
+
+        /* Broader veins in sage and gold, angled the other way. */
+        repeating-linear-gradient(-12deg,
+            transparent 0 33%, var(--vein-accent) 33% 33.7%, transparent 33.7% 68%),
+        repeating-linear-gradient(52deg,
+            transparent 0 41%, var(--vein-gold) 41% 41.6%, transparent 41.6% 84%),
+
+        /* Diffuse clouding, so the stone has depth between veins. */
+        radial-gradient(38rem 26rem at 22% 32%, var(--vein-soft), transparent 70%),
+        radial-gradient(30rem 34rem at 74% 66%, var(--vein-soft), transparent 70%),
+
+        /* The color washes. */
+        radial-gradient(60rem 40rem at 5% -10%, rgba(143, 216, 176, 0.10), transparent 65%),
+        radial-gradient(50rem 35rem at 100% 8%, rgba(111, 211, 208, 0.06), transparent 60%),
+        radial-gradient(55rem 40rem at 60% 105%, rgba(179, 156, 251, 0.05), transparent 60%);
     background-repeat: no-repeat;
 }
 
@@ -143,9 +175,25 @@ body::before {
    line lengths of multi-line headings in modern browsers. */
 h1, h2, h3, h4 {
     line-height: var(--leading-tight);
+    text-wrap: balance;
+}
+
+/* The two largest levels are set in the display serif. Below that,
+   headings return to the sans: a serif at card-title size competes
+   with body copy instead of framing it.
+
+   Serifs carry their own weight, so these are 500 rather than the
+   600 used elsewhere, and the letter-spacing is left alone. Tracking
+   a serif tighter fills in the gaps its shapes depend on. */
+h1, h2 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: -0.015em;
+}
+
+h3, h4 {
     font-weight: 600;
     letter-spacing: -0.02em;
-    text-wrap: balance;
 }
 
 h1 { font-size: var(--text-4xl); }

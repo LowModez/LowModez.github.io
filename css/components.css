@@ -50,21 +50,23 @@
     transform: translateY(1px);
 }
 
-/* Solid amber. Dark text on the accent because amber is a light
-   color, and light-on-light would be unreadable. */
+/* Solid sage. Dark text on the accent, because sage is a light
+   color and light-on-light would be unreadable. The dark value is a
+   deep green rather than black, so it belongs to the same family as
+   the button it sits on. It measures 11.3:1 against the sage. */
 .btn--primary {
     background-color: var(--accent);
-    color: #1a1204;
+    color: #08120d;
     font-weight: 600;
 }
 
-/* Lifts a pixel and casts a warm shadow in its own color, so the
-   button looks lit rather than outlined. */
+/* Lifts a pixel and casts a shadow in its own color, so the button
+   looks lit rather than outlined. */
 .btn--primary:hover {
     background-color: var(--accent-hover);
-    color: #1a1204;
+    color: #08120d;
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(255, 176, 32, 0.20);
+    box-shadow: 0 8px 20px rgba(143, 216, 176, 0.20);
 }
 
 /* Outlined, for secondary actions sitting next to the primary one. */
@@ -181,7 +183,7 @@
     padding: var(--space-1) var(--space-3);
 }
 
-/* Neutral variant for something finished. The amber pill is
+/* Neutral variant for something finished. The colored pill is
    reserved for what is currently active, so the eye lands on the
    in-progress item first. */
 .status--done {
@@ -197,7 +199,7 @@
    overriding the three variables here is enough: borders, hover
    tints, accent lines, and tags all follow automatically.
 
-   Omitting a modifier leaves the element on amber, the default set
+   Omitting a modifier leaves the element on sage, the default set
    in :root. */
 .accent-teal {
     --group: var(--accent-2);
@@ -211,10 +213,10 @@
     --group-soft: var(--accent-3-soft);
 }
 
-/* Explicit reset back to amber. Needed for a card that should stay
-   amber while sitting inside a section that sets another accent,
-   since --group would otherwise be inherited. */
-.accent-amber {
+/* Explicit reset back to sage, the primary accent. Needed for a card
+   that should stay sage while sitting inside a section that sets
+   another accent, since --group would otherwise be inherited. */
+.accent-sage {
     --group: var(--accent);
     --group-dim: var(--accent-dim);
     --group-soft: var(--accent-soft);
@@ -230,6 +232,14 @@
     --group: var(--accent-5);
     --group-dim: var(--accent-5-dim);
     --group-soft: var(--accent-5-soft);
+}
+
+/* Gold: the marble pairing. Used for transferable and professional
+   skills, which are not a technology category. */
+.accent-gold {
+    --group: var(--accent-6);
+    --group-dim: var(--accent-6-dim);
+    --group-soft: var(--accent-6-soft);
 }
 
 /* For categories that should stay quiet, such as transferable

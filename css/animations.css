@@ -16,12 +16,29 @@
         block at the end of css/responsive.css.
 
    CONTENTS
-     A  Keyframes
-     B  Page load
-     C  Reveal on scroll
-     D  Hover and interaction
-     E  Continuous ambient motion
-     F  Scroll-driven progress bar
+     A0  Registered properties (@property)
+     A   Keyframes
+     B   Page load
+     C   Reveal on scroll
+     D   Hover and interaction
+     E   Continuous ambient motion
+     F   Scroll-driven progress bar
+     G   Glow on hover
+     H   Pointer spotlight
+     H2  Travelling border light
+     H3  Three-dimensional tilt
+     H5  Clip-path wipe reveals
+     H6  Button ripple
+     H7  Animated progress bar gradient
+     H8  Hero parallax on scroll
+     I   Text effects
+     J   Ambient background
+     K   Media and figures
+     L   Micro-interactions
+
+   H4 was a page-wide glow that followed the cursor. It was removed
+   on request; the numbering of the sections after it is left alone
+   so the group letters stay stable.
    ============================================================ */
 
 
@@ -110,15 +127,6 @@
     to   { transform: translateX(220%); }
 }
 
-/* Very slow drift of the page's background washes. The distances
-   are small on purpose: the movement should be noticeable only if
-   you look for it. */
-@keyframes drift {
-      0% { transform: translate3d(0, 0, 0) scale(1); }
-     50% { transform: translate3d(2%, 1.5%, 0) scale(1.06); }
-    100% { transform: translate3d(0, 0, 0) scale(1); }
-}
-
 /* Blinking cursor for the monospace terminal touches. */
 @keyframes caret-blink {
     0%, 45%   { opacity: 1; }
@@ -156,15 +164,27 @@
     100% { transform: translate(0, 0) scale(1.05); }
 }
 
-/* Cycles a color through the accent palette. Used on the small
-   separators in the hero, which is the one place the whole color
-   system can be shown off without confusing anything. */
+/* Cycles a color through all six accents. Used on the small
+   separators in the hero, which is the one place the whole palette
+   can be shown at once without confusing anything: it is two
+   characters wide, so it reads as a detail rather than decoration. */
 @keyframes cycle-accents {
-      0% { color: var(--accent); }
-     25% { color: var(--accent-2); }
-     50% { color: var(--accent-3); }
-     75% { color: var(--accent-4); }
-    100% { color: var(--accent); }
+      0%  { color: var(--accent); }
+     17%  { color: var(--accent-2); }
+     34%  { color: var(--accent-3); }
+     50%  { color: var(--accent-4); }
+     67%  { color: var(--accent-5); }
+     84%  { color: var(--accent-6); }
+    100%  { color: var(--accent); }
+}
+
+/* Drifts a vein pattern very slowly across the stone. Applied to the
+   marble layer, at a scale small enough that the texture appears to
+   settle rather than to move. */
+@keyframes vein-drift {
+      0% { transform: translate3d(0, 0, 0) scale(1.02) rotate(0deg); }
+     50% { transform: translate3d(-1%, 1%, 0) scale(1.06) rotate(0.4deg); }
+    100% { transform: translate3d(0, 0, 0) scale(1.02) rotate(0deg); }
 }
 
 /* Nudge right and settle back, for arrows that indicate direction. */
@@ -243,7 +263,7 @@
 .hero__content > *:nth-child(4) { animation-delay: 270ms; }
 .hero__content > *:nth-child(5) { animation-delay: 360ms; }
 
-/* The amber rule beside the hero facts draws itself downward. */
+/* The sage rule beside the hero facts draws itself downward. */
 .hero__meta {
     position: relative;
 }
@@ -487,8 +507,12 @@
    animation. Nothing in the foreground moves on its own.
    ============================================================ */
 
+/* The marble layer breathes on a very slow cycle. A full pass takes
+   70 seconds and the veins travel about one percent of the viewport,
+   so the stone settles rather than slides. Any faster and a textured
+   background becomes something you notice while reading. */
 body::before {
-    animation: drift 40s ease-in-out infinite;
+    animation: vein-drift 70s ease-in-out infinite;
 }
 
 /* The dot inside an in-progress status pill. Only pills marked
@@ -562,7 +586,7 @@ body::before {
    Nothing on this site glows at rest. Every glow here responds to a
    cursor or to keyboard focus, and each is built from the --glow
    tokens, so the light always matches the element's own category
-   accent: amber cards glow amber, teal cards glow teal.
+   accent: sage cards glow sage, aqua cards glow aqua.
 
    box-shadow is used rather than filter: drop-shadow, because
    box-shadow is composited by the GPU and does not force the
@@ -583,7 +607,7 @@ body::before {
 /* --- Buttons ---------------------------------------------- */
 .btn--primary:hover {
     box-shadow:
-        0 0 20px -2px rgba(255, 176, 32, 0.45),
+        0 0 20px -2px rgba(143, 216, 176, 0.45),
         0 10px 28px rgba(0, 0, 0, 0.45);
 }
 
@@ -815,51 +839,6 @@ body::before {
         rotateX(var(--rx))
         rotateY(var(--ry))
         translateY(-3px);
-}
-
-
-/* ============================================================
-   H4  CURSOR GLOW
-   ------------------------------------------------------------
-   A single soft light that follows the pointer across the whole
-   page, sitting behind all content.
-
-   js/cursor-glow.js writes the pointer's viewport position into
-   --cursor-x and --cursor-y on this element. Everything else is
-   CSS.
-
-   It is one fixed element with one gradient, so the browser is
-   moving a single composited layer rather than recalculating
-   anything. The element defaults to opacity 0 and is only revealed
-   once the script confirms a real pointer exists, which keeps it
-   off touch devices entirely.
-   ============================================================ */
-
-.cursor-glow {
-    position: fixed;
-    inset: 0;
-
-    /* Behind all content, alongside the two ambient background
-       layers. A positive z-index would tint the text it passed over. */
-    z-index: -1;
-    pointer-events: none;
-
-    --cursor-x: 50%;
-    --cursor-y: 50%;
-
-    background-image: radial-gradient(
-        26rem circle at var(--cursor-x) var(--cursor-y),
-        rgba(255, 176, 32, 0.07),
-        transparent 60%
-    );
-
-    opacity: 0;
-    transition: opacity 600ms ease;
-}
-
-/* Added by the script only when a hovering pointer is present. */
-.cursor-glow.is-active {
-    opacity: 1;
 }
 
 

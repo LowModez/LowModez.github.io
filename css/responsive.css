@@ -223,12 +223,6 @@
         animation: none !important;
     }
 
-    /* The page-wide cursor glow is removed. js/cursor-glow.js also
-       returns early, so it is never revealed in the first place. */
-    .cursor-glow {
-        display: none;
-    }
-
     /* Clip-path wipes, the button ripple, the 404 glitch, and the
        hero's scroll-linked departure all stop. Each is set back to
        its finished state so nothing is left part-way through. */

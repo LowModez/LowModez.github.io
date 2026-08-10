@@ -55,7 +55,7 @@
 }
 
 /* Uses the page's category color, so a systems case study reads
-   teal and a software one reads amber. */
+   aqua and a software one reads sage. */
 .case-meta dt {
     color: var(--group);
 }
@@ -79,7 +79,7 @@
 }
 
 /* --- Bulleted lists --------------------------------------
-   An amber dash instead of a default bullet. The marker is drawn
+   A sage dash instead of a default bullet. The marker is drawn
    with a pseudo-element so its color is independent of the text. */
 .case-list {
     display: grid;

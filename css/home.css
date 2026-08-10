@@ -23,7 +23,7 @@
     /* Overrides the shared section padding for a tighter top. */
     padding-block: var(--space-12) var(--space-16);
 
-    /* The hero used to carry its own amber wash. That now lives on
+    /* The hero used to carry its own wash. That now lives on
        body::before so it spans the whole page at full width instead
        of being clipped to this section's centered column. */
 }
@@ -61,7 +61,7 @@
 }
 
 /* --- Monospace facts -------------------------------------
-   The amber left rule groups the lines together and ties them to
+   The sage left rule groups the lines together and ties them to
    the accent without adding a box. */
 .hero__meta {
     margin-top: var(--space-8);
@@ -149,7 +149,7 @@
 
 /* The category eyebrow sits directly above the title, so it does
    not need the larger gap the class carries by default. It is
-   colored by the card's category rather than always amber. */
+   colored by the card's category rather than always sage. */
 .project__header .eyebrow {
     margin-bottom: var(--space-2);
     color: var(--group);

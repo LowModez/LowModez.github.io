@@ -8,7 +8,6 @@
        mobile-nav.js      setupMobileNav()
        scroll-reveal.js   setupScrollReveal()
        card-pointer.js    setupCardPointer()
-       cursor-glow.js     setupCursorGlow()
 
    Those files only define functions. Nothing runs until this file
    calls it, which means there is exactly one place to look to see
@@ -32,7 +31,6 @@ function init() {
     setupMobileNav();
     setupScrollReveal();
     setupCardPointer();
-    setupCursorGlow();
 }
 
 /* The script tags sit at the bottom of the HTML, so every element

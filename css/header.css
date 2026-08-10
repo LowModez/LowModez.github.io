@@ -26,7 +26,7 @@
     /* Semi-transparent so content softly shows through, with a
        blur behind it. The solid fallback color is listed first
        for browsers without backdrop-filter support. */
-    background-color: rgba(13, 13, 15, 0.85);
+    background-color: rgba(14, 18, 17, 0.85);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
 
@@ -76,7 +76,7 @@
     text-decoration: none;
 }
 
-/* An amber underline drawn as a pseudo-element rather than with
+/* A sage underline drawn as a pseudo-element rather than with
    text-decoration, so it can be animated. The grow-on-hover motion
    itself lives in css/animations.css. */
 .site-nav__list a:not(.btn)::after {
