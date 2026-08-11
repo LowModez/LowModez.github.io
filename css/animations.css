@@ -133,13 +133,20 @@
     55%, 100% { opacity: 0; }
 }
 
-/* A single letter arriving: fades up out of a blur. The blur is what
-   makes it read as coming into focus rather than just sliding. */
-@keyframes char-in {
+/* A whole word rising into view from behind the bottom edge of its
+   own clipping window.
+
+   translateY(100%) is a full word-height below that edge, so the
+   word starts completely out of sight. The blur resolving as it
+   arrives is what makes it read as coming into focus rather than
+   merely sliding, and the slight upward drift past the resting
+   position is left out on purpose: the word should settle, not
+   bounce. */
+@keyframes word-rise {
     from {
         opacity: 0;
-        transform: translateY(0.45em) scale(0.94);
-        filter: blur(10px);
+        transform: translateY(100%);
+        filter: blur(12px);
     }
     to {
         opacity: 1;
@@ -148,16 +155,12 @@
     }
 }
 
-/* A letter warming to the accent color and back. Offset along the
-   word, this becomes a band of light travelling through the name.
-
-   Most of the cycle is spent at rest: the highlight should pass
-   through, not pulse. */
-@keyframes char-wave {
-      0%  { color: var(--text-primary); transform: none; }
-      6%  { color: var(--accent-hover); transform: translateY(-2px); }
-     14%  { color: var(--text-primary); transform: none; }
-    100%  { color: var(--text-primary); transform: none; }
+/* Draws the accent rule under the hero name outward from its left
+   end. It grows the background rather than the element, so nothing
+   around it is laid out again while it runs. */
+@keyframes rule-extend {
+    from { background-size: 0 100%; }
+    to   { background-size: 5rem 100%; }
 }
 
 /* A halo that breathes outward and fades. Used on the dot of an
@@ -690,12 +693,14 @@ body::before {
    Hovering a heading warms the text and lights its accent rule.
    A small reward for reading rather than scrolling past. */
 .section-title,
-.page-header h1 {
+.page-header h1,
+.hero__name {
     transition: text-shadow var(--transition-slow);
 }
 
 .section-title:hover,
-.page-header h1:hover {
+.page-header h1:hover,
+.hero__name:hover {
     text-shadow: var(--glow-text);
 }
 
@@ -997,72 +1002,58 @@ body::before {
    I  TEXT EFFECTS
    ============================================================ */
 
-/* --- Hero name: letter by letter --------------------------
-   The name assembles one letter at a time, each rising into place
-   out of a blur, and afterwards a highlight travels across the
-   letters on a slow loop.
+/* --- Hero name: word by word ------------------------------
+   The name rises into view a word at a time, out of a blur, from
+   behind the bottom edge of each word's own clipping window. Then
+   the accent rule beneath it draws itself outward.
 
-   Two animations per letter, both offset by position:
+   Two words and one rule, so three moving parts in total, and the
+   whole sequence is over in about a second and a half.
 
-     char-in    plays once. The letter fades up from below while a
-                blur resolves, which reads as it coming into focus
-                rather than merely sliding.
-     char-wave  loops. Each letter warms to the accent color and
-                back, and because the delay grows along the word the
-                effect is a band of light travelling through it.
+   This replaced a version that animated all fourteen letters
+   individually. That one arrived one character after another,
+   which read as text being typed rather than as a title
+   presenting itself, and it also carried a looping highlight that
+   kept the largest element on the page in permanent motion. A
+   clipped word rise is the quieter, more deliberate version of the
+   same idea: the movement is over, and then the page is still.
 
-   Why letters and not a gradient: the previous version painted the
-   whole heading with a moving gradient and used background-clip:
-   text to trim it to the glyphs. That technique cannot be combined
-   with per-letter movement, because a transformed child is painted
-   separately and the parent's background no longer clips to it,
-   which leaves the letters invisible. Animating the letters
-   themselves has no such conflict.
-
-   The delays are written out rather than generated. There is no
-   loop in CSS, and fourteen lines that can be read at a glance are
-   better than a clever trick here.
+   The clipping window is what makes this work. Because the word
+   travels up from below a hidden edge rather than fading in on the
+   spot, there is a sense of something arriving from somewhere,
+   which a fade cannot give.
    ---------------------------------------------------------- */
-.hero__name-inner {
-    /* inline-block so the wrapper takes the size of its letters and
-       the line box does not collapse. */
-    display: inline-block;
+.hero__word-text {
+    animation: word-rise 900ms var(--ease-out) both;
 }
 
-.hero__char {
-    /* Required for transform and filter to apply: neither has any
-       effect on a purely inline element. */
-    display: inline-block;
+/* The surname follows the first name closely enough to read as one
+   movement, not as two separate events. A pseudo-element is not
+   counted by nth-child, so these positions are the two words. */
+.hero__word:nth-child(1) .hero__word-text { animation-delay:   0ms; }
+.hero__word:nth-child(2) .hero__word-text { animation-delay: 130ms; }
 
-    animation:
-        char-in 700ms var(--ease-out) both,
-        char-wave 6s var(--ease-smooth) infinite;
+/* The rule waits for both words to be in place before it draws.
+
+   The fill mode is "backwards", not "both", and that matters: a
+   forwards fill would leave the animation holding background-size
+   at its final value permanently, and an animated value outranks
+   every ordinary declaration, so the hover below would silently do
+   nothing. Backwards fill only covers the delay, holding the rule
+   at zero width until its turn, and then hands the property back.
+   The keyframe ends at exactly the 5rem set in home.css, so there
+   is nothing to see at the handover. */
+.hero__name::after {
+    animation: rule-extend 700ms var(--ease-out) 900ms backwards;
+
+    /* Hovering extends it, which is the name's one interactive
+       response. Declared here rather than in home.css so every
+       moving part of this element is described in one place. */
+    transition: background-size var(--transition-slow) var(--ease-out);
 }
 
-/* char-in runs at 45ms intervals, char-wave at 90ms, so the arrival
-   is brisk and the travelling highlight is unhurried. The wave waits
-   for the arrival to finish before it starts. */
-.hero__char:nth-child(1)  { animation-delay:    0ms, 1600ms; }
-.hero__char:nth-child(2)  { animation-delay:   45ms, 1690ms; }
-.hero__char:nth-child(3)  { animation-delay:   90ms, 1780ms; }
-.hero__char:nth-child(4)  { animation-delay:  135ms, 1870ms; }
-.hero__char:nth-child(5)  { animation-delay:  180ms, 1960ms; }
-.hero__char:nth-child(6)  { animation-delay:  225ms, 2050ms; }
-.hero__char:nth-child(7)  { animation-delay:  270ms, 2140ms; }
-.hero__char:nth-child(8)  { animation-delay:  315ms, 2230ms; }
-.hero__char:nth-child(9)  { animation-delay:  360ms, 2320ms; }
-.hero__char:nth-child(10) { animation-delay:  405ms, 2410ms; }
-.hero__char:nth-child(11) { animation-delay:  450ms, 2500ms; }
-.hero__char:nth-child(12) { animation-delay:  495ms, 2590ms; }
-.hero__char:nth-child(13) { animation-delay:  540ms, 2680ms; }
-.hero__char:nth-child(14) { animation-delay:  585ms, 2770ms; }
-
-/* Hovering the name sends the highlight through immediately, at
-   speed. A small thing to find, and it costs nothing. */
-.hero__name:hover .hero__char {
-    animation:
-        char-in 700ms var(--ease-out) both,
-        char-wave 1.4s var(--ease-smooth) infinite;
+.hero__name:hover::after {
+    background-size: 9rem 100%;
 }
 
 /* --- Hero separators -------------------------------------

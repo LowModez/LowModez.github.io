@@ -206,6 +206,19 @@
     border-color: var(--border-strong);
 }
 
+/* Quieter still, for something scoped but not yet built. The dashed
+   border is the honest signal: it says "outlined, not finished"
+   without needing a longer label, and it is visible to a reader who
+   cannot distinguish the two greys. Nothing on a planned card
+   pulses or links out, because there is nothing running to look at
+   yet. */
+.status--planned {
+    color: var(--text-muted);
+    background-color: transparent;
+    border-style: dashed;
+    border-color: var(--border-strong);
+}
+
 /* --- Category accent modifiers ---------------------------
    Add one of these to any element to change which accent its
    subtree uses. Because the rules elsewhere all reference

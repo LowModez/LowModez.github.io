@@ -124,7 +124,7 @@ whole file:
 | H | Pointer spotlight |
 | H2 | Travelling border light |
 | H3 | Three-dimensional tilt |
-| H4 | Page-wide cursor glow |
+| H4 | *(removed: page-wide cursor glow)* |
 | H5 | Clip-path wipe reveals |
 | H6 | Button ripple |
 | H7 | Animated progress bar gradient |
@@ -136,24 +136,27 @@ whole file:
 
 ### Progressive enhancement
 
-Eleven `@supports` blocks guard the techniques that are not yet universal:
-`mask-composite`, `background-clip: text`, and scroll-driven
-`animation-timeline`. Each is written so that a browser without the feature
-shows the plain version rather than a broken one.
+Five `@supports` blocks guard the techniques that are not yet universal:
+`mask-composite` for the travelling border light, and scroll-driven
+`animation-timeline` for the progress bar, the ambient hue shift, and the
+hero's departure. Each is written so that a browser without the feature shows
+the plain version rather than a broken one.
 
-The `background-clip: text` guard is the one to be careful with. That technique
-needs `color: transparent`, so without the guard the hero name would be
-invisible rather than merely unanimated.
+The rule these guards follow: an effect may fail to run, but it may never leave
+content unreadable. The hero name is the example. Its words animate in from
+behind a clipping edge, so `animation-fill-mode` and the reduced-motion block
+in `responsive.css` both have to leave them visible; a version of that effect
+which hid the text by default would take the h1 with it whenever the animation
+did not run.
 
 ### What JavaScript is allowed to do
 
-Three effects need the pointer's position, which CSS cannot read. The scripts
-that supply it write nothing but coordinates:
+Two effects need the pointer's position, which CSS cannot read. The script
+that supplies it writes nothing but coordinates:
 
 | File | Writes | Read by |
 |---|---|---|
 | `card-pointer.js` | `--mx`, `--my`, `--rx`, `--ry` | Card spotlight and tilt |
-| `cursor-glow.js` | `--cursor-x`, `--cursor-y` | The page-wide glow |
 
 No script sets a color, a size, an opacity, or a transform. Every visual
 decision stays in this folder. All of them exit early under reduced motion and

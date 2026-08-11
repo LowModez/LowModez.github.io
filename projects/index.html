@@ -88,9 +88,10 @@
                 <p class="eyebrow">Index / Projects</p>
                 <h1 id="projects-heading">Projects</h1>
                 <p class="page-header__lead measure">
-                    Everything I've built and documented so far. Each project has a
-                    case study covering what it does, how it is put together, and what
-                    I was practicing by building it.
+                    Everything I have built so far, plus the smaller things I have
+                    scoped and lined up next. The finished ones carry a case study
+                    covering what the project does, how it is put together, and what I
+                    was practicing by building it.
                 </p>
             </header>
 
@@ -159,11 +160,121 @@
                         </a>
                     </p>
                 </article>
+
+                <!-- --- This site --- -->
+                <article class="card card--interactive project accent-gold" data-reveal>
+                    <div class="project__header">
+                        <div>
+                            <p class="eyebrow">Web / Front-End</p>
+                            <h2 class="project__title">This Portfolio Site</h2>
+                        </div>
+                        <p class="status status--done">live</p>
+                    </div>
+
+                    <p class="project__desc">
+                        Hand-written HTML and CSS with no framework, no build step, and no
+                        dependencies, deployed on GitHub Pages. The layout is CSS Grid and
+                        Flexbox, every color and size comes from custom properties in one
+                        tokens file, and keyboard navigation, focus states, and
+                        reduced-motion support were part of the build rather than added
+                        afterwards.
+                    </p>
+
+                    <ul class="tag-list project__tags" aria-label="Technologies used">
+                        <li class="tag">HTML</li>
+                        <li class="tag">CSS</li>
+                        <li class="tag">Vanilla JavaScript</li>
+                        <li class="tag">Accessibility</li>
+                        <li class="tag">GitHub Pages</li>
+                    </ul>
+                </article>
+
+                <!-- --- Password generator ---
+                     Planned. No case study link until it exists. -->
+                <article class="card card--interactive project" data-reveal>
+                    <div class="project__header">
+                        <div>
+                            <p class="eyebrow">Software / C++</p>
+                            <h2 class="project__title">Password Generator</h2>
+                        </div>
+                        <p class="status status--planned">planned</p>
+                    </div>
+
+                    <p class="project__desc">
+                        A small command line tool that builds a password to a requested
+                        length from a chosen set of character groups. The point of it is
+                        the parts a beginner exercise usually skips: generating from the
+                        standard library's random facilities rather than rand(), validating
+                        arguments before using them, and guaranteeing at least one
+                        character from every group the user asked for.
+                    </p>
+
+                    <ul class="tag-list project__tags" aria-label="Technologies used">
+                        <li class="tag">C++</li>
+                        <li class="tag">Standard Library</li>
+                        <li class="tag">CLI Arguments</li>
+                        <li class="tag">Input Validation</li>
+                    </ul>
+                </article>
+
+                <!-- --- File organizer --- -->
+                <article class="card card--interactive project" data-reveal>
+                    <div class="project__header">
+                        <div>
+                            <p class="eyebrow">Software / Python</p>
+                            <h2 class="project__title">File Organizer</h2>
+                        </div>
+                        <p class="status status--planned">planned</p>
+                    </div>
+
+                    <p class="project__desc">
+                        A script that sorts a cluttered folder into subfolders by file type,
+                        written to solve an actual annoyance rather than an exercise. It
+                        runs in preview mode by default so it prints what it would move
+                        before it moves anything, handles name collisions instead of
+                        overwriting, and logs every action it takes.
+                    </p>
+
+                    <ul class="tag-list project__tags" aria-label="Technologies used">
+                        <li class="tag">Python</li>
+                        <li class="tag">pathlib</li>
+                        <li class="tag">argparse</li>
+                        <li class="tag">Automation</li>
+                    </ul>
+                </article>
+
+                <!-- --- Subnet calculator --- -->
+                <article class="card card--interactive project accent-teal" data-reveal>
+                    <div class="project__header">
+                        <div>
+                            <p class="eyebrow">Networking / Python</p>
+                            <h2 class="project__title">Subnet Calculator</h2>
+                        </div>
+                        <p class="status status--planned">planned</p>
+                    </div>
+
+                    <p class="project__desc">
+                        Takes an address in CIDR notation and prints the network address,
+                        the broadcast address, the usable host range, the subnet mask, and
+                        the number of hosts. It is a small program, but it sits exactly
+                        where my two backgrounds meet: it is the arithmetic I already do by
+                        hand on a job, written down as code.
+                    </p>
+
+                    <ul class="tag-list project__tags" aria-label="Technologies used">
+                        <li class="tag">Python</li>
+                        <li class="tag">ipaddress</li>
+                        <li class="tag">Subnetting</li>
+                        <li class="tag">TCP/IP</li>
+                    </ul>
+                </article>
             </div>
 
             <p class="page-footnote" data-reveal>
-                More will appear here as I build them. I would rather list two projects
-                I can talk through in detail than pad the page.
+                Anything marked <span class="status status--planned">planned</span> is
+                scoped but not built yet, and is listed without a case study until it is.
+                A project gets a write-up here once there is something real to write
+                about.
             </p>
         </section>
     </main>

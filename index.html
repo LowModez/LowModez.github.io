@@ -103,17 +103,21 @@
              ============================================================ -->
         <section id="top" class="hero" aria-labelledby="hero-heading">
             <div class="hero__content">
-                <h1 id="hero-heading" class="hero__name" aria-label="Ethan McKinzie">
-                    <!-- Each letter is its own element so it can be animated
-                         separately. The wrapper is aria-hidden and the real
-                         name lives in aria-label on the h1, because some
-                         screen readers announce split-up text letter by
-                         letter. Selecting and copying the name still works.
+                <h1 id="hero-heading" class="hero__name">
+                    <!-- One wrapper per word. The outer span is a window
+                         with its overflow hidden; the inner span is the
+                         word itself, which starts below that window and
+                         rises up into it. Nothing is split into letters,
+                         so the name arrives as a whole rather than being
+                         typed out character by character.
 
-                         The spans are all on one line on purpose: a newline
-                         between them would collapse to a rendered space and
-                         pull the letters apart. -->
-                    <span class="hero__name-inner" aria-hidden="true"><span class="hero__char">E</span><span class="hero__char">t</span><span class="hero__char">h</span><span class="hero__char">a</span><span class="hero__char">n</span><span class="hero__char">&nbsp;</span><span class="hero__char">M</span><span class="hero__char">c</span><span class="hero__char">K</span><span class="hero__char">i</span><span class="hero__char">n</span><span class="hero__char">z</span><span class="hero__char">i</span><span class="hero__char">e</span></span>
+                         The text is written in normal capitalization and
+                         set to uppercase in CSS. Two reasons: some screen
+                         readers read an all-caps word as initials, and
+                         copying the name should give "Ethan McKinzie"
+                         rather than a shout. -->
+                    <span class="hero__word"><span class="hero__word-text">Ethan</span></span>
+                    <span class="hero__word"><span class="hero__word-text">McKinzie</span></span>
                 </h1>
 
                 <p class="hero__roles has-caret">
@@ -273,6 +277,115 @@
                             Read case study <span aria-hidden="true">&rarr;</span>
                         </a>
                     </p>
+                </article>
+
+                <!-- --- This site --- -->
+                <article class="card card--interactive project accent-gold" data-reveal>
+                    <div class="project__header">
+                        <div>
+                            <p class="eyebrow">Web / Front-End</p>
+                            <h3 class="project__title">This Portfolio Site</h3>
+                        </div>
+                        <p class="status status--done">live</p>
+                    </div>
+
+                    <p class="project__desc">
+                        Hand-written HTML and CSS with no framework, no build step, and no
+                        dependencies, deployed on GitHub Pages. The layout is CSS Grid and
+                        Flexbox, every color and size comes from custom properties in one
+                        tokens file, and the small amount of JavaScript is limited to the
+                        things CSS cannot do. Keyboard navigation, focus states, and
+                        reduced-motion support were part of the build rather than added
+                        afterwards.
+                    </p>
+
+                    <ul class="tag-list project__tags" aria-label="Technologies used">
+                        <li class="tag">HTML</li>
+                        <li class="tag">CSS</li>
+                        <li class="tag">Vanilla JavaScript</li>
+                        <li class="tag">Accessibility</li>
+                        <li class="tag">GitHub Pages</li>
+                    </ul>
+                </article>
+
+                <!-- --- Password generator ---
+                     Planned. No case study link until it exists. -->
+                <article class="card card--interactive project" data-reveal>
+                    <div class="project__header">
+                        <div>
+                            <p class="eyebrow">Software / C++</p>
+                            <h3 class="project__title">Password Generator</h3>
+                        </div>
+                        <p class="status status--planned">planned</p>
+                    </div>
+
+                    <p class="project__desc">
+                        A small command line tool that builds a password to a requested
+                        length from a chosen set of character groups. The point of it is
+                        the parts a beginner exercise usually skips: generating from the
+                        standard library's random facilities rather than rand(), validating
+                        arguments before using them, and guaranteeing at least one
+                        character from every group the user asked for.
+                    </p>
+
+                    <ul class="tag-list project__tags" aria-label="Technologies used">
+                        <li class="tag">C++</li>
+                        <li class="tag">Standard Library</li>
+                        <li class="tag">CLI Arguments</li>
+                        <li class="tag">Input Validation</li>
+                    </ul>
+                </article>
+
+                <!-- --- File organizer --- -->
+                <article class="card card--interactive project" data-reveal>
+                    <div class="project__header">
+                        <div>
+                            <p class="eyebrow">Software / Python</p>
+                            <h3 class="project__title">File Organizer</h3>
+                        </div>
+                        <p class="status status--planned">planned</p>
+                    </div>
+
+                    <p class="project__desc">
+                        A script that sorts a cluttered folder into subfolders by file type,
+                        written to solve an actual annoyance rather than an exercise. It
+                        runs in preview mode by default so it prints what it would move
+                        before it moves anything, handles name collisions instead of
+                        overwriting, and logs every action it takes.
+                    </p>
+
+                    <ul class="tag-list project__tags" aria-label="Technologies used">
+                        <li class="tag">Python</li>
+                        <li class="tag">pathlib</li>
+                        <li class="tag">argparse</li>
+                        <li class="tag">Automation</li>
+                    </ul>
+                </article>
+
+                <!-- --- Subnet calculator --- -->
+                <article class="card card--interactive project accent-teal" data-reveal>
+                    <div class="project__header">
+                        <div>
+                            <p class="eyebrow">Networking / Python</p>
+                            <h3 class="project__title">Subnet Calculator</h3>
+                        </div>
+                        <p class="status status--planned">planned</p>
+                    </div>
+
+                    <p class="project__desc">
+                        Takes an address in CIDR notation and prints the network address,
+                        the broadcast address, the usable host range, the subnet mask, and
+                        the number of hosts. It is a small program, but it sits exactly
+                        where my two backgrounds meet: it is the arithmetic I already do by
+                        hand on a job, written down as code.
+                    </p>
+
+                    <ul class="tag-list project__tags" aria-label="Technologies used">
+                        <li class="tag">Python</li>
+                        <li class="tag">ipaddress</li>
+                        <li class="tag">Subnetting</li>
+                        <li class="tag">TCP/IP</li>
+                    </ul>
                 </article>
             </div>
 

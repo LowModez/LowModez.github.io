@@ -176,17 +176,26 @@
         animation: none !important;
     }
 
-    /* The hero name's letters must be forced back to their finished
-       state. Their arrival animation starts them blurred, shifted,
-       and fully transparent, so without this the name would be left
-       unreadable rather than merely still. */
-    .hero__char,
-    .hero__name:hover .hero__char {
+    /* The hero name's words must be forced back to their finished
+       state. Their arrival animation starts them blurred, shifted
+       out of sight below a clipping edge, and fully transparent, so
+       without this the name would be left missing rather than
+       merely still. */
+    .hero__word-text {
         animation: none !important;
         opacity: 1 !important;
         transform: none !important;
         filter: none !important;
-        color: var(--text-primary) !important;
+    }
+
+    /* Same for the accent rule under the name: it starts at zero
+       width, so it is pinned to its finished length. That also
+       settles the hover, since an important declaration outranks
+       the hover rule that would otherwise extend it. Resizing an
+       element is movement even when nothing appears to travel. */
+    .hero__name::after {
+        animation: none !important;
+        background-size: 5rem 100% !important;
     }
 
     /* Hover glows are kept: they are a state signal, not movement.

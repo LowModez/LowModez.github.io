@@ -38,6 +38,76 @@
     width: 100%;
 }
 
+/* --- Name -------------------------------------------------
+   The h1, set in uppercase. Capitals give the top of the page a
+   flat, even weight that reads as a mark rather than a sentence,
+   which suits the display serif and the stone background.
+
+   base.css tracks h1 slightly tight at -0.015em, which suits
+   mixed-case text but closes capitals up until they touch. The
+   positive value here reverses that and gives them room.
+
+   Flex rather than plain inline text: each word needs to be its
+   own box so it can be clipped and animated, and flex-wrap lets
+   the two words stack cleanly on a phone instead of being pulled
+   apart by the whitespace between them. */
+.hero__name {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 0.3em;
+
+    text-transform: uppercase;
+    letter-spacing: 0.015em;
+    line-height: 1.05;
+}
+
+/* The window each word rises into. overflow: hidden is what hides
+   the word beforehand: it starts below this box's bottom edge, so
+   there is nothing to see until it travels up.
+
+   The padding and the matching negative margin give the letters a
+   little room underneath, so the hover glow is not sliced off by
+   the same edge that does the clipping. The negative margin
+   cancels the padding's effect on layout, leaving the spacing
+   below the name unchanged. */
+.hero__word {
+    display: inline-block;
+    overflow: hidden;
+    padding-bottom: 0.14em;
+    margin-bottom: -0.14em;
+}
+
+/* Required for transform and filter to apply: neither has any
+   effect on a purely inline element. */
+.hero__word-text {
+    display: inline-block;
+}
+
+/* A short accent rule under the name. It gives the block a base to
+   sit on and matches the rule beneath every section heading.
+
+   flex-basis of 100% puts it on its own row, since the name is a
+   flex container and a pseudo-element is one of its items. Its
+   visible length comes from background-size rather than width,
+   because a background can be resized without the element itself
+   changing size, which is what lets it be drawn in and extended on
+   hover without disturbing anything around it. */
+.hero__name::after {
+    content: "";
+    flex: 0 0 100%;
+    height: 2px;
+    margin-top: var(--space-5);
+
+    background-image: linear-gradient(
+        90deg,
+        var(--accent),
+        var(--accent-dim),
+        transparent
+    );
+    background-repeat: no-repeat;
+    background-size: 5rem 100%;
+}
+
 /* --- Role line -------------------------------------------
    Sits directly under the name. Not a heading, because it is a
    description rather than a section title. */
@@ -160,6 +230,21 @@
     color: var(--group);
     background-color: var(--group-soft);
     border-color: var(--group-dim);
+}
+
+/* Except a planned one, which stays grey and dashed. The rule
+   above would otherwise repaint it in the card's accent, because
+   the two selectors have equal specificity and this file loads
+   after components.css.
+
+   That is the whole point of the pill: a planned project should not
+   look as alive as a running one from across the page. Restating
+   the colors here, next to the rule that overrides them, is
+   clearer than raising the specificity of the original. */
+.project .status--planned {
+    color: var(--text-muted);
+    background-color: transparent;
+    border-color: var(--border-strong);
 }
 
 /* Sized explicitly rather than left to the heading default, because
