@@ -249,8 +249,29 @@
     border-bottom: 1px solid var(--group-dim);
 }
 
+/* One line of context under each category name. Without it the
+   section is six lists of nouns; with it, a reader knows why each
+   group exists before reading a single tag. */
+.skill-group__note {
+    margin-bottom: var(--space-4);
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-secondary);
+}
+
+/* When a title is followed by a note, the title gives up most of its
+   own bottom margin so the two read as one block.
+
+   :has() selects an element by what it contains or is followed by,
+   which is the only way to style the title based on something after
+   it. The alternative was a negative margin on the note, which would
+   have described the fix rather than the intent. */
+.skill-group__title:has(+ .skill-group__note) {
+    margin-bottom: var(--space-2);
+}
+
 /* A small dot in the category color. This is what makes the
-   grouping readable at a glance: teal cards are systems work,
+   grouping readable at a glance: aqua cards are systems work,
    violet cards are physical infrastructure. */
 .skill-group__title::before {
     content: "";

@@ -88,6 +88,41 @@ html {
     background-color: var(--bg-primary);
 }
 
+/* --- Stone grain ------------------------------------------
+   A fine speckle over the entire page. This is the layer that makes
+   the marble read as stone rather than as gradients: real polished
+   stone has grain, and without it large flat areas look digital.
+
+   The texture is generated, not downloaded. feTurbulence is an SVG
+   filter that produces fractal noise, and the whole SVG is embedded
+   as a data URI, so it is part of this stylesheet: no image file, no
+   extra request, and it never repeats visibly because the noise is
+   computed rather than tiled.
+
+   baseFrequency controls the grain size. Higher values give a finer
+   speckle; this is deliberately near the top of the range so the
+   grain reads as surface rather than as visible dots.
+
+   Three layers now sit behind the content, each with one job:
+     html::before   static grain          (this rule)
+     body::before   marble veining        drifts very slowly
+     body::after    soft colored orbs     floats independently
+   ---------------------------------------------------------- */
+html::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)'/%3E%3C/svg%3E");
+
+    /* Very low, and it has to be: grain is a texture you feel rather
+       than see. Above about 5% it starts to look like a dirty screen
+       and it costs text legibility. */
+    opacity: 0.035;
+}
+
 body {
     /* position: relative establishes the stacking context that the
        fixed background layer below is placed into. */
@@ -146,21 +181,47 @@ body::before {
     pointer-events: none;
 
     background-image:
-        /* Hairline veins, crossing at shallow angles. */
+        /* Hairline veins. Seven layers rather than four, at angles and
+           spacings that share no common factor, so the pattern never
+           resolves into a grid or an obvious repeat. Each layer also
+           carries a second, fainter line at an unrelated offset, which
+           is what breaks up the evenness that gives a repeating
+           gradient away.
+
+           The widths vary too: a vein that holds one thickness across
+           a whole wall looks printed, not geological. */
         repeating-linear-gradient(24deg,
-            transparent 0 14.7%, var(--vein-light) 14.7% 14.9%, transparent 14.9% 32%),
+            transparent 0 14.7%, var(--vein-light) 14.7% 14.9%,
+            transparent 14.9% 23.1%, var(--vein-soft) 23.1% 23.2%,
+            transparent 23.2% 32%),
         repeating-linear-gradient(-38deg,
-            transparent 0 21%, var(--vein-soft) 21% 21.3%, transparent 21.3% 46%),
+            transparent 0 21%, var(--vein-soft) 21% 21.3%,
+            transparent 21.3% 46%),
+        repeating-linear-gradient(67deg,
+            transparent 0 27.3%, var(--vein-light) 27.3% 27.45%,
+            transparent 27.45% 59%),
+        repeating-linear-gradient(-71deg,
+            transparent 0 37.9%, var(--vein-soft) 37.9% 38.2%,
+            transparent 38.2% 73%),
 
-        /* Broader veins in sage and gold, angled the other way. */
+        /* Broader veins in sage and gold, angled across the hairlines. */
         repeating-linear-gradient(-12deg,
-            transparent 0 33%, var(--vein-accent) 33% 33.7%, transparent 33.7% 68%),
+            transparent 0 33%, var(--vein-accent) 33% 33.7%,
+            transparent 33.7% 68%),
         repeating-linear-gradient(52deg,
-            transparent 0 41%, var(--vein-gold) 41% 41.6%, transparent 41.6% 84%),
+            transparent 0 41%, var(--vein-gold) 41% 41.6%,
+            transparent 41.6% 84%),
+        repeating-linear-gradient(8deg,
+            transparent 0 56.4%, var(--vein-accent) 56.4% 56.9%,
+            transparent 56.9% 119%),
 
-        /* Diffuse clouding, so the stone has depth between veins. */
+        /* Diffuse clouding, so the stone has depth between the veins
+           instead of a flat field with lines drawn on it. Four patches
+           at different sizes, none centred. */
         radial-gradient(38rem 26rem at 22% 32%, var(--vein-soft), transparent 70%),
         radial-gradient(30rem 34rem at 74% 66%, var(--vein-soft), transparent 70%),
+        radial-gradient(46rem 20rem at 58% 12%, var(--vein-soft), transparent 72%),
+        radial-gradient(24rem 30rem at 8% 84%, var(--vein-light), transparent 74%),
 
         /* The color washes. */
         radial-gradient(60rem 40rem at 5% -10%, rgba(143, 216, 176, 0.10), transparent 65%),

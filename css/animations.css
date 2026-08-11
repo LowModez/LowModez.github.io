@@ -133,13 +133,31 @@
     55%, 100% { opacity: 0; }
 }
 
-/* A highlight travelling across text. Paired with background-clip:
-   text, this reads as a sheen crossing the letters. The background
-   is wider than the element, so moving its position moves the
-   bright band across the glyphs. */
-@keyframes shimmer-text {
-      0% { background-position: 200% 50%; }
-    100% { background-position: -60% 50%; }
+/* A single letter arriving: fades up out of a blur. The blur is what
+   makes it read as coming into focus rather than just sliding. */
+@keyframes char-in {
+    from {
+        opacity: 0;
+        transform: translateY(0.45em) scale(0.94);
+        filter: blur(10px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+        filter: blur(0);
+    }
+}
+
+/* A letter warming to the accent color and back. Offset along the
+   word, this becomes a band of light travelling through the name.
+
+   Most of the cycle is spent at rest: the highlight should pass
+   through, not pulse. */
+@keyframes char-wave {
+      0%  { color: var(--text-primary); transform: none; }
+      6%  { color: var(--accent-hover); transform: translateY(-2px); }
+     14%  { color: var(--text-primary); transform: none; }
+    100%  { color: var(--text-primary); transform: none; }
 }
 
 /* A halo that breathes outward and fades. Used on the dot of an
@@ -256,6 +274,12 @@
    nothing flashes into place early. */
 .hero__content > * {
     animation: rise-in 600ms ease both;
+}
+
+/* The name opts out of the block-level entrance: its letters animate
+   individually, and running both would move the same text twice. */
+.hero__name {
+    animation: none;
 }
 
 .hero__content > *:nth-child(2) { animation-delay:  90ms; }
@@ -725,12 +749,20 @@ body::before {
     --mx: 50%;
     --my: 50%;
 
-    background-image: radial-gradient(
-        14rem circle at var(--mx) var(--my),
-        var(--group-soft),
-        transparent 62%
-    );
-    background-repeat: no-repeat;
+    /* The spotlight goes on top, then the two stone layers from
+       components.css are repeated underneath it. Background layers
+       replace rather than merge, so an interactive card has to
+       redeclare the sheen and vein it would otherwise lose. */
+    background-image:
+        radial-gradient(
+            14rem circle at var(--mx) var(--my),
+            var(--group-soft),
+            transparent 62%
+        ),
+        linear-gradient(180deg, var(--vein-light), transparent 45%),
+        repeating-linear-gradient(-34deg,
+            transparent 0 58%, var(--vein-soft) 58% 58.5%,
+            transparent 58.5% 120%);
 }
 
 
@@ -965,36 +997,72 @@ body::before {
    I  TEXT EFFECTS
    ============================================================ */
 
-/* --- Hero name shimmer -----------------------------------
-   A slow sheen crossing the name. The text is painted with a
-   gradient rather than a flat color, and background-clip: text
-   trims that gradient to the shape of the letters. Animating the
-   gradient's position moves the bright band across them.
+/* --- Hero name: letter by letter --------------------------
+   The name assembles one letter at a time, each rising into place
+   out of a blur, and afterwards a highlight travels across the
+   letters on a slow loop.
 
-   The @supports guard is essential rather than cautious: the
-   technique requires color: transparent, so in a browser without
-   background-clip: text the name would be invisible. Guarded this
-   way, such a browser applies none of it and shows solid off-white
-   text instead.
+   Two animations per letter, both offset by position:
+
+     char-in    plays once. The letter fades up from below while a
+                blur resolves, which reads as it coming into focus
+                rather than merely sliding.
+     char-wave  loops. Each letter warms to the accent color and
+                back, and because the delay grows along the word the
+                effect is a band of light travelling through it.
+
+   Why letters and not a gradient: the previous version painted the
+   whole heading with a moving gradient and used background-clip:
+   text to trim it to the glyphs. That technique cannot be combined
+   with per-letter movement, because a transformed child is painted
+   separately and the parent's background no longer clips to it,
+   which leaves the letters invisible. Animating the letters
+   themselves has no such conflict.
+
+   The delays are written out rather than generated. There is no
+   loop in CSS, and fourteen lines that can be read at a glance are
+   better than a clever trick here.
    ---------------------------------------------------------- */
-@supports ((background-clip: text) or (-webkit-background-clip: text)) {
-    .hero h1 {
-        background-image: linear-gradient(
-            100deg,
-            var(--text-primary) 42%,
-            #ffffff 50%,
-            var(--text-primary) 58%
-        );
-        background-size: 260% 100%;
-        background-repeat: no-repeat;
+.hero__name-inner {
+    /* inline-block so the wrapper takes the size of its letters and
+       the line box does not collapse. */
+    display: inline-block;
+}
 
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
+.hero__char {
+    /* Required for transform and filter to apply: neither has any
+       effect on a purely inline element. */
+    display: inline-block;
 
-        /* Starts after the hero has finished arriving. */
-        animation: shimmer-text 7s var(--ease-smooth) 1.2s infinite;
-    }
+    animation:
+        char-in 700ms var(--ease-out) both,
+        char-wave 6s var(--ease-smooth) infinite;
+}
+
+/* char-in runs at 45ms intervals, char-wave at 90ms, so the arrival
+   is brisk and the travelling highlight is unhurried. The wave waits
+   for the arrival to finish before it starts. */
+.hero__char:nth-child(1)  { animation-delay:    0ms, 1600ms; }
+.hero__char:nth-child(2)  { animation-delay:   45ms, 1690ms; }
+.hero__char:nth-child(3)  { animation-delay:   90ms, 1780ms; }
+.hero__char:nth-child(4)  { animation-delay:  135ms, 1870ms; }
+.hero__char:nth-child(5)  { animation-delay:  180ms, 1960ms; }
+.hero__char:nth-child(6)  { animation-delay:  225ms, 2050ms; }
+.hero__char:nth-child(7)  { animation-delay:  270ms, 2140ms; }
+.hero__char:nth-child(8)  { animation-delay:  315ms, 2230ms; }
+.hero__char:nth-child(9)  { animation-delay:  360ms, 2320ms; }
+.hero__char:nth-child(10) { animation-delay:  405ms, 2410ms; }
+.hero__char:nth-child(11) { animation-delay:  450ms, 2500ms; }
+.hero__char:nth-child(12) { animation-delay:  495ms, 2590ms; }
+.hero__char:nth-child(13) { animation-delay:  540ms, 2680ms; }
+.hero__char:nth-child(14) { animation-delay:  585ms, 2770ms; }
+
+/* Hovering the name sends the highlight through immediately, at
+   speed. A small thing to find, and it costs nothing. */
+.hero__name:hover .hero__char {
+    animation:
+        char-in 700ms var(--ease-out) both,
+        char-wave 1.4s var(--ease-smooth) infinite;
 }
 
 /* --- Hero separators -------------------------------------
