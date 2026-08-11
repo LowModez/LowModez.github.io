@@ -66,6 +66,18 @@ h1, h2, h3, h4, h5, h6, p, li, a {
     overflow-wrap: break-word;
 }
 
+/* The hidden attribute means "not relevant yet", and browsers
+   already style it as display: none. That default is weak enough
+   for any later display rule to beat it by accident, which would
+   put an element back on screen while it is still marked hidden.
+
+   The site uses the attribute for one thing: the email contact row,
+   which stays hidden until js/email-link.js has built a working
+   link. Restating the rule here is what guarantees it holds. */
+[hidden] {
+    display: none !important;
+}
+
 
 /* ============================================================
    03  BASE ELEMENTS

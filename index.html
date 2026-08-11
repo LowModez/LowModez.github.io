@@ -541,31 +541,49 @@
             </p>
 
             <!-- ============================================================
-                 ETHAN: three items are commented out below because I will
-                 not publish contact details you have not confirmed.
-                 Uncomment and fill in whichever you want on the site:
+                 ETHAN: one item is still commented out below, because I
+                 will not publish a detail you have not confirmed.
 
-                   1. EMAIL     - which address should recruiters use?
-                                  A firstname.lastname style address reads
-                                  better to a hiring manager than a handle.
-                   2. LINKEDIN  - paste your profile URL.
-                   3. LOCATION  - "Dallas-Fort Worth, Texas" or similar.
-                                  Recruiters filter on location, so this
-                                  usually helps. City and state only, never
-                                  a street address.
+                   LOCATION - "Dallas-Fort Worth, Texas" or similar.
+                              Recruiters filter on location, so this
+                              usually helps. City and state only, never a
+                              street address.
 
                  The resume button further down works the same way: drop the
                  PDF into assets/documents/ and uncomment it.
                  ============================================================ -->
             <ul class="contact-list">
-                <!--
-                <li>
-                    <a class="contact-item" href="mailto:YOUR_EMAIL_HERE">
+                <!-- The address is deliberately absent from this file. The
+                     link is built at load time by js/email-link.js, which
+                     stores it as two reversed fragments, and the visible
+                     text never shows it. Address harvesters crawl public
+                     repositories and pages looking for anything shaped like
+                     an address, and this repository is public.
+
+                     The row starts hidden and that script reveals it once
+                     the link works, so a visitor without JavaScript is
+                     never shown a contact row that does nothing. -->
+                <li data-reveal hidden>
+                    <a class="contact-item" data-email-link>
                         <span class="contact-item__label">email</span>
-                        <span class="contact-item__value">YOUR_EMAIL_HERE</span>
+                        <span class="contact-item__value">Send me an email</span>
                     </a>
                 </li>
-                -->
+
+                <li data-reveal>
+                    <a class="contact-item" href="https://www.linkedin.com/in/ethan-mckinzie-a74b49311/" target="_blank" rel="noopener">
+                        <span class="contact-item__label">linkedin</span>
+                        <!-- ETHAN: the trailing characters are the ID
+                             LinkedIn assigns by default. Settings and
+                             privacy > Edit public profile & URL lets you
+                             claim a clean one, e.g. /in/ethan-mckinzie.
+                             Tell me once you have and I will shorten both
+                             this text and the link above it. Until then it
+                             stays written out in full, because a shortened
+                             version here would not resolve. -->
+                        <span class="contact-item__value">linkedin.com/in/ethan-mckinzie-a74b49311</span>
+                    </a>
+                </li>
 
                 <li data-reveal>
                     <a class="contact-item" href="https://github.com/LowModez" target="_blank" rel="noopener">
@@ -573,15 +591,6 @@
                         <span class="contact-item__value">github.com/LowModez</span>
                     </a>
                 </li>
-
-                <!--
-                <li>
-                    <a class="contact-item" href="YOUR_LINKEDIN_URL_HERE" target="_blank" rel="noopener">
-                        <span class="contact-item__label">linkedin</span>
-                        <span class="contact-item__value">linkedin.com/in/YOUR_HANDLE</span>
-                    </a>
-                </li>
-                -->
 
                 <!--
                 <li>
@@ -616,6 +625,7 @@
     <!-- Each file defines one behavior. main.js runs last and is the
          only file that calls anything. -->
     <script src="js/footer-year.js"></script>
+    <script src="js/email-link.js"></script>
     <script src="js/mobile-nav.js"></script>
     <script src="js/scroll-reveal.js"></script>
     <script src="js/card-pointer.js"></script>

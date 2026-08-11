@@ -5,6 +5,7 @@
    Each behavior on this site lives in its own file with one job:
 
        footer-year.js     updateFooterYear()
+       email-link.js      setupEmailLink()
        mobile-nav.js      setupMobileNav()
        scroll-reveal.js   setupScrollReveal()
        card-pointer.js    setupCardPointer()
@@ -28,6 +29,12 @@
 
 function init() {
     updateFooterYear();
+
+    /* Before setupScrollReveal, on purpose. This reveals the email
+       row, and the reveal observer should be watching a row that is
+       already part of the layout. */
+    setupEmailLink();
+
     setupMobileNav();
     setupScrollReveal();
     setupCardPointer();

@@ -113,10 +113,10 @@ LowModez.github.io/
 │
 ├── js/                         One behavior per file
 │   ├── footer-year.js          Keeps the copyright year current
+│   ├── email-link.js           Builds the mailto link at load time
 │   ├── mobile-nav.js           Narrow-screen navigation menu
 │   ├── scroll-reveal.js        Fades sections in on scroll
 │   ├── card-pointer.js         Card glow and tilt follow the cursor
-│   ├── cursor-glow.js          Page-wide glow follows the cursor
 │   └── main.js                 Entry point, calls the above
 │
 ├── assets/
