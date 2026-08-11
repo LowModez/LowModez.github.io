@@ -11,9 +11,9 @@ A portfolio covering my move from Information Technology into Computer Science
 and software development. It presents my projects, technical skills, and
 education, with individual case-study pages for the larger projects.
 
-I'm currently pursuing a **B.S. in Computer Science with an Artificial
-Intelligence concentration** at Full Sail University, following a completed
-**A.S. in Information Technology**.
+I'm currently pursuing an **A.S. in Computer Science** at Full Sail University,
+following a completed **A.S. in Information Technology**, and continuing from
+there toward a bachelor's with an Artificial Intelligence concentration.
 
 ---
 
